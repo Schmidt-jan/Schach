@@ -2,7 +2,7 @@ package Schach
 
 import java.awt.Color
 
-class Bishop(override var posX: Char, override var posY : Int, override val color: Color) extends Figure (posX, posY, color) {
+class Bishop(posX: Char, posY : Int, override val color: Color) extends Figure (posX, posY, color) {
 
   override def toString: String = {
     color match {
