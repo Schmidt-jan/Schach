@@ -32,8 +32,8 @@ object Schach {
   }
 
 
-  def main(args: Array[String]): Unit = {
-
+  def main(args: Array[String]) {
+/*
     println("Welcome to Chess")
     println("What is your name?")
     val name = scala.io.StdIn.readLine()
@@ -44,6 +44,11 @@ object Schach {
     val field = createGameField()
     println(field)
     println(field.length)
-  }
+    */
 
+
+    val gameField = new GameField()
+    gameField.init()
+    println(gameField.toString());
+  }
 }
