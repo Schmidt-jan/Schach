@@ -54,13 +54,32 @@ case class GameField() {
   }
 
   def moveValid(): Boolean = true
-/*
+
   def moveTo(posXNow : Char, posYNow : Int, posXNext : Char, posYNext: Int): Boolean = {
     if (moveValid()) {
 
+      if (gameField(posXNow)(posYNow) != null) {
+        gameField(posXNext)(posYNext) = gameField(posXNow)(posYNow)
+        gameField(posXNow)(posYNow) = null
+        true
+      } else false
+    }
+    false
+  }
+
+  def change(input : Char) : Int = {
+    input match {
+      case 'A' => 0
+      case 'B' => 1
+      case 'C' => 2
+      case 'D' => 3
+      case 'E' => 4
+      case 'F' => 5
+      case 'G' => 6
+      case 'H' => 7
     }
   }
-*/
+
   override def toString: String = {
     var build = new StringBuilder()
     for (y <- Range(7, -1, -1)){
