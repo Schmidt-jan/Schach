@@ -50,5 +50,7 @@ object Schach {
     val gameField = new GameField()
     gameField.init()
     println(gameField.toString());
+    gameField.moveTo('A', 2, 'A', 4)
+    println(gameField.toString());
   }
 }
