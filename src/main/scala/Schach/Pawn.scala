@@ -2,9 +2,9 @@ package Schach
 
 import java.awt.Color
 
-class Pawn(posX: Char,posY : Int, override val color: Color) extends Figure (posX, posY, color) {
+class Pawn(posX: Int,posY : Int, override val color: Color) extends Figure (posX, posY, color) {
 
-  var firstMove = true;
+  var firstMove = true
 
   override def toString: String = {
     color match {

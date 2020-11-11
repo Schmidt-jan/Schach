@@ -4,7 +4,7 @@ import java.awt.Color
 
 
 case class GameField() {
-  val gameField = Array.ofDim[Figure](8, 8)
+  val gameField: Array[Array[Figure]] = Array.ofDim[Figure](8, 8)
 
   def init() {
     initBlack()
@@ -59,7 +59,10 @@ case class GameField() {
     if (moveValid()) {
 
       if (gameField(posXNow)(posYNow) != null) {
-        gameField(posXNext)(posYNext) = gameField(posXNow)(posYNow)
+        val figure = gameField(posXNow)(posYNow)
+        figure.posX = posXNext
+        figure.posY = posYNext
+        gameField(posXNext)(posYNext) = figure
         gameField(posXNow)(posYNow) =  null
         true
       } else false
@@ -67,9 +70,17 @@ case class GameField() {
     false
   }
 
+  def getFigure(xPos : Int, yPos : Int): Figure = {
+    gameField(xPos)(yPos)
+  }
+
   override def toString: String = {
-    var build = new StringBuilder()
+    val build = new StringBuilder
+    build.append("\tA\tB\tC\tD\tE\tF\tG\tH\n")
+    build.append("\t──────────────────────────────\n")
+
     for (y <- Range(7, -1, -1)){
+      build.append(y + 1).append(" │\t")
 
       for (x <- 0 to 7){
         if (gameField(x)(y) != null){
@@ -78,7 +89,6 @@ case class GameField() {
       }
       build.append("\n")
     }
-
-    build.toString()
+    build.toString
   }
 }
