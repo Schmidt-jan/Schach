@@ -1,5 +1,5 @@
 package Schach
-
+import aview.Tui
 object Schach {
 /*
   def createGameField(): String = {
@@ -58,7 +58,9 @@ object Schach {
      */
     println(gameField.toString());
 
-
+    println("Move the chess pieces: position they are at now -> position they should go to")
+    println("Usage example: A2 A3")
+    println("Type 'exit' to leave\n")
     var abbruch = false
     val tui = new Tui
     while (abbruch == false) {
@@ -66,6 +68,7 @@ object Schach {
 
       if (line.equals("exit")) {
         abbruch = true
+        println("exiting...")
       } else {
         if (tui.controlInput(line)) {
           val ret = tui.readInput(line)

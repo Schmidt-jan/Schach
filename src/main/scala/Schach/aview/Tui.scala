@@ -1,4 +1,4 @@
-package Schach
+package Schach.aview
 
 class Tui {
 
