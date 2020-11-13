@@ -20,5 +20,9 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
     "should not move to" in {
       gameField.moveTo(1, 1, 2,5) should be(false)
     }
+
+    "have a nice String representation" in {
+      gameField.toString shouldBe a[String]
+    }
   }
 }
