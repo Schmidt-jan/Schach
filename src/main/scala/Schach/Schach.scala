@@ -1,37 +1,9 @@
 package Schach
 import aview.Tui
+import model._
+
 object Schach {
-/*
-  def createGameField(): String = {
-    val aToH = List("a", "b", "c", "d", "e", "f", "g", "h")
-    val numbers = List("8", "7", "6", "5", "4", "3", "2", "1")
-    val cellSide = " │   │   │   │   │   │   │   │   │"
-    val cellMiddle = "├───┼───┼───┼───┼───┼───┼───┼───┤"
-    val cellBottom = "  └───┴───┴───┴───┴───┴───┴───┴───┘"
-    val field = new StringBuilder(" ")
 
-    for (i <- 0 to 7) field.append("   " + aToH(i))
-    field.append("\n")
-
-    field.append("  ┌───┬───┬───┬───┬───┬───┬───┬───┐\n")
-
-
-    for (x <- 0 to 7) {
-      for (i <- 0 to 1) {
-        if (i == 0) field.append(numbers(x)).append(cellSide).append("\n")
-        else {
-          if (x < 7) field.append("  ").append(cellMiddle).append("\n")
-          else field.append(cellBottom)
-        }
-      }
-
-    }
-    //Test
-
-    field.toString()
-  }
-
- */
 
   def main(args: Array[String]) {
     /*
@@ -54,7 +26,6 @@ object Schach {
     println(gameField.toString());
     gameField.moveTo(1, 1, 1, 3)
     gameField.moveTo(0, 0, 0, 5)
-
      */
     println(gameField.toString());
 

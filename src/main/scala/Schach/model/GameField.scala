@@ -1,7 +1,6 @@
-package Schach
+package Schach.model
 
 import java.awt.Color
-
 
 case class GameField() {
   val gameField: Array[Array[Figure]] = Array.ofDim[Figure](8, 8)
@@ -55,7 +54,7 @@ case class GameField() {
 
   def moveValid(): Boolean = true
 
-  def moveTo(posXNow : Int, posYNow : Int, posXNext : Int, posYNext: Int): Boolean = {
+  def moveTo(posXNow: Int, posYNow: Int, posXNext: Int, posYNext: Int): Boolean = {
     if (moveValid()) {
 
       if (gameField(posXNow)(posYNow) != null) {
@@ -63,14 +62,14 @@ case class GameField() {
         figure.posX = posXNext
         figure.posY = posYNext
         gameField(posXNext)(posYNext) = figure
-        gameField(posXNow)(posYNow) =  null
+        gameField(posXNow)(posYNow) = null
         true
       } else false
     }
     false
   }
 
-  def getFigure(xPos : Int, yPos : Int): Figure = {
+  def getFigure(xPos: Int, yPos: Int): Figure = {
     gameField(xPos)(yPos)
   }
 
@@ -79,11 +78,11 @@ case class GameField() {
     build.append("\tA\tB\tC\tD\tE\tF\tG\tH\n")
     build.append("\t──────────────────────────────\n")
 
-    for (y <- Range(7, -1, -1)){
+    for (y <- Range(7, -1, -1)) {
       build.append(y + 1).append(" │\t")
 
-      for (x <- 0 to 7){
-        if (gameField(x)(y) != null){
+      for (x <- 0 to 7) {
+        if (gameField(x)(y) != null) {
           build.append(gameField(x)(y).toString).append("\t")
         } else build.append("_\t")
       }

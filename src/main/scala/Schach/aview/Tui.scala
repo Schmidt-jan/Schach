@@ -1,6 +1,11 @@
 package Schach.aview
 
-class Tui {
+import Schach.controller.Controller
+import Schach.util.Observer
+
+class Tui(controller : Controller) extends Observer{
+
+  controller.add(this)
 
   def readInput(line: String): Array[Int] = {
     val fromX = getPoint(line.charAt(0))
@@ -35,4 +40,6 @@ class Tui {
       case _ => -1
     }
   }
+
+  override def update: Unit = println(controller.gameFieldToString)
 }
