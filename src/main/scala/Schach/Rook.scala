@@ -2,7 +2,7 @@ package Schach
 
 import java.awt.Color
 
-class Rook(posX: Char, posY : Int, override val color: Color) extends Figure (posX, posY, color) {
+case class Rook(override val posX: Char, override val posY : Int, override val color: Color) extends Figure (posX, posY, color) {
 
   override def toString: String = {
     color match {
