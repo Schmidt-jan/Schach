@@ -10,11 +10,11 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
     val gameField = GameField()
     gameField.init()
 
-    val figure = gameField.getFigure(1 ,1)
+    val figure = gameField.isSet(1 ,1)
     gameField.moveTo(1, 1, 2, 3)
     "move to" in {
-      gameField.getFigure(2, 3) should be(figure)
-      gameField.getFigure(1,1) should be(null)
+      gameField.isSet(2, 3) should be(true)
+      gameField.isSet(1,1) should be(false)
     }
 
     "should not move to" in {

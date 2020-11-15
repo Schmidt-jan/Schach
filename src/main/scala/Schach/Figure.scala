@@ -1,11 +1,13 @@
 package Schach
 
-import java.awt.Color
+trait Figure {
+  var x  : Int = _
+  var y : Int = _
 
-abstract class Figure (var posX : Int, var posY : Int, val color : Color) extends Any{
-
-  def moveTo(x : Int, y : Int): Boolean = {
-    false
+  def moveTo(nextX : Int, nextY : Int): Boolean = {
+    x = nextX
+    y = nextY
+    true
   }
 
   def moveIsValid(x : Int, y : Int): Boolean = {
