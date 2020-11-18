@@ -6,7 +6,6 @@ import Schach.util.Observable
 class Controller(var gameField: GameField) extends Observable{
   def createGameField(): Unit = {
     gameField = new GameField
-    gameField.init()
     notifyObservers
   }
 
