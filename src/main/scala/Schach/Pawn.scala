@@ -2,7 +2,7 @@ package Schach
 
 import java.awt.Color
 
-case class Pawn(posX: Int, posY : Int, color: Color) extends Figure {
+case class Pawn(x: Int, y : Int, color: Color) extends Figure {
 
   var firstMove = true
 

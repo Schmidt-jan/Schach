@@ -48,20 +48,20 @@ object Schach {
     */
 
 
-    val gameField = new GameField()
-    gameField.init()
+    val gameField = GameField()
+
     /*
     println(gameField.toString());
     gameField.moveTo(1, 1, 1, 3)
     gameField.moveTo(0, 0, 0, 5)
 
      */
-    println(gameField.toString());
+    println(gameField.toString())
 
 
     var abbruch = false
     val tui = new Tui
-    while (abbruch == false) {
+    while (!abbruch) {
       val line = scala.io.StdIn.readLine()
 
       if (line.equals("exit")) {
@@ -69,7 +69,7 @@ object Schach {
       } else {
         if (tui.controlInput(line)) {
           val ret = tui.readInput(line)
-          gameField.moveTo(ret(0), ret(1), ret(2), ret(3))
+          gameField.setGameField(gameField.moveTo(ret(0), ret(1), ret(2), ret(3)))
           println(gameField.toString)
         } else {
           println("Wrong input")

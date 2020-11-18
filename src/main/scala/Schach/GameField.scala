@@ -2,91 +2,64 @@ package Schach
 
 import java.awt.Color
 
-
 case class GameField() {
-  var gameField: Array[Array[Option[Figure]]] = Array.ofDim(8, 8)
+  var gameField: Vector[Figure] = Vector(
+      Rook(0, 0, Color.WHITE), Knight(1, 0, Color.WHITE), Bishop(2, 0, Color.WHITE), King(3, 0, Color.WHITE),
+      Queen(4, 0, Color.WHITE), Bishop(5, 0, Color.WHITE), Knight(6, 0, Color.WHITE), Rook(7, 0, Color.WHITE),
+      Pawn(0, 1, Color.WHITE), Pawn(1, 1, Color.WHITE), Pawn(2, 1, Color.WHITE), Pawn(3, 1, Color.WHITE),
+      Pawn(4, 1, Color.WHITE), Pawn(5, 1, Color.WHITE), Pawn(6, 1, Color.WHITE), Pawn(7, 1, Color.WHITE),
 
-  def init() {
-    val white = initWhite()
-    gameField(0) = white(0)
-    gameField(1) = white(1)
+      Pawn(0, 6, Color.BLACK), Pawn(1, 6, Color.BLACK), Pawn(2, 6, Color.BLACK), Pawn(3, 6, Color.BLACK),
+      Pawn(4, 6, Color.BLACK), Pawn(5, 6, Color.BLACK), Pawn(6, 6, Color.BLACK), Pawn(7, 6, Color.BLACK),
+      Rook(0, 7, Color.BLACK), Knight(1, 7, Color.BLACK), Bishop(2, 7, Color.BLACK), King(3, 7, Color.BLACK),
+      Queen(4, 7, Color.BLACK), Bishop(5, 7, Color.BLACK), Knight(6, 7, Color.BLACK), Rook(7, 7, Color.BLACK))
 
-    for (x <- Range(2, 6))
-      gameField(x) = Array(None, None, None, None, None, None, None, None)
 
-    val black = initBlack()
-    gameField(6) = black(0)
-    gameField(7) = black(1)
-  }
+  def validPawn(figure: Pawn, xNext: Int, yNext: Int) = true
+  def validRook(figure: Rook, xNext: Int, yNext: Int) = true
+  def validKnight(figure: Knight, xNext: Int, yNext: Int) = true
+  def validBishop(figure: Bishop, xNext: Int, yNext: Int) = true
+  def validQueen(figure: Queen, xNext: Int, yNext: Int) = true
+  def validKing(figure: King, xNext: Int, yNext: Int) = true
 
-  def initWhite(): Array[Array[Option[Figure]]] = {
-    Array(Array[Option[Figure]](
-      Option(Rook(0, 0, Color.WHITE)),
-      Option(Knight(1, 0, Color.WHITE)),
-      Option(Bishop(2, 0, Color.WHITE)),
-      Option(King(3, 0, Color.WHITE)),
-      Option(Queen(4, 0, Color.WHITE)),
-      Option(Bishop(5, 0, Color.WHITE)),
-      Option(Knight(6, 0, Color.WHITE)),
-      Option(Rook(7, 0, Color.WHITE))),
 
-      Array[Option[Figure]](
-        Option(Pawn(0, 1, Color.WHITE)),
-        Option(Pawn(1, 1, Color.WHITE)),
-        Option(Pawn(2, 1, Color.WHITE)),
-        Option(Pawn(3, 1, Color.WHITE)),
-        Option(Pawn(4, 1, Color.WHITE)),
-        Option(Pawn(5, 1, Color.WHITE)),
-        Option(Pawn(6, 1, Color.WHITE)),
-        Option(Pawn(7, 1, Color.WHITE))))
-  }
-
-  def initBlack(): Array[Array[Option[Figure]]] = {
-    Array(Array[Option[Figure]](
-      Option(Pawn(0, 6, Color.BLACK)),
-      Option(Pawn(1, 6, Color.BLACK)),
-      Option(Pawn(2, 6, Color.BLACK)),
-      Option(Pawn(3, 6, Color.BLACK)),
-      Option(Pawn(4, 6, Color.BLACK)),
-      Option(Pawn(5, 6, Color.BLACK)),
-      Option(Pawn(6, 6, Color.BLACK)),
-      Option(Pawn(7, 6, Color.BLACK))),
-
-      Array[Option[Figure]](
-        Option(Rook(0, 7, Color.BLACK)),
-        Option(Knight(1, 7, Color.BLACK)),
-        Option(Bishop(2, 7, Color.BLACK)),
-        Option(King(3, 7, Color.BLACK)),
-        Option(Queen(4, 7, Color.BLACK)),
-        Option(Bishop(5, 7, Color.BLACK)),
-        Option(Knight(6, 7, Color.BLACK)),
-        Option(Rook(7, 7, Color.BLACK))))
-
-  }
-
-  def moveValid(): Boolean = true
-
-  def moveTo(posXNow: Int, posYNow: Int, posXNext: Int, posYNext: Int) : Boolean = {
-    if (moveValid()) {
-      gameField(posXNow)(posYNow) match {
-        case Some(value) =>  value.moveTo(posXNext, posYNext)
-                      gameField(posXNext)(posYNext) = Option(value)
-                      gameField(posXNow)(posYNow) = None
-                      return true
-        case None => return false
-      }
-    }
-    false
-  }
-
-  def isSet(xPos: Int, yPos: Int) : Boolean = {
-    gameField(xPos)(yPos) match {
-      case Some(value) => true
+  def moveValid(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
+    getFigure(xNow, yNow) match {
+      case Some(figure : Pawn) => validPawn(figure, xNext, yNext)
+      case Some(figure : Rook) => validRook(figure, xNext, yNext)
+      case Some(figure : Knight) => validKnight(figure, xNext, yNext)
+      case Some(figure : Bishop) => validBishop(figure, xNext, yNext)
+      case Some(figure : Queen) => validQueen(figure, xNext, yNext)
+      case Some(figure : King) => validKing(figure, xNext, yNext)
       case None => false
     }
   }
 
+
+  def moveTo(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Vector[Figure] = if (moveValid(xNow, yNow, xNext, yNext)) {
+    val figure = getFigure(xNow, yNow).get
+    figure match {
+      case p: Pawn => gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color)
+      case p: Rook => gameField.filter(_ != figure) :+ Rook(xNext, yNext, figure.color)
+      case p: Knight => gameField.filter(_ != figure) :+ Knight(xNext, yNext, figure.color)
+      case p: Bishop => gameField.filter(_ != figure) :+ Bishop(xNext, yNext, figure.color)
+      case p: Queen => gameField.filter(_ != figure) :+ Queen(xNext, yNext, figure.color)
+      case p: King => gameField.filter(_ != figure) :+ King(xNext, yNext, figure.color)
+    }
+  } else {
+    gameField
+  }
+
+  def setGameField(vector: Vector[Figure]): Unit = {
+    gameField = vector
+  }
+
+  def getFigure(xPos: Int, yPos: Int): Option[Figure] = {
+    gameField.filter(_.x == xPos).find(_.y == yPos)
+  }
+
   override def toString: String = {
+
     val build = new StringBuilder
     build.append("\tA\tB\tC\tD\tE\tF\tG\tH\n")
     build.append("\t──────────────────────────────\n")
@@ -94,8 +67,10 @@ case class GameField() {
     for (y <- Range(7, -1, -1)) {
       build.append(y + 1).append(" │\t")
 
+      val row = gameField.filter(_.y == y)
+
       for (x <- 0 to 7) {
-        gameField(y)(x) match {
+        row.find(_.x == x) match {
           case Some(value) => build.append(value.toString + "\t")
           case None => build.append("─\t")
         }
@@ -104,4 +79,5 @@ case class GameField() {
     }
     build.toString
   }
+
 }
