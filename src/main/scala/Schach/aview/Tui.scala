@@ -1,18 +1,39 @@
 package Schach.aview
 
-class Tui {
+import Schach.controller.Controller
+import Schach.util.Observer
 
-  def readInput(line: String): Array[Int] = {
-    val fromX = getPoint(line.charAt(0))
-    val fromY = getPoint(line.charAt(1))
-    val toX = getPoint(line.charAt(3))
-    val toY = getPoint(line.charAt(4))
-    Array(fromX, fromY, toX, toY)
+class Tui(controller: Controller) extends Observer{
+
+  controller.add(this)
+
+
+  def interactWithUser(input: String):Unit = {
+    val args = input.split(" ")
+
+    args(0) match {
+      case "new" => controller.createGameField
+      case "move" =>
+        if (args.size == 3 && controller.controlInput(args(1)) && controller.controlInput(args(2))) {
+          val command = args(1).concat(" ").concat(args(2))
+          controller.movePiece(readInput(command))
+        }
+        else {
+          println("Wrong Input: Invalid Move")
+        }
+      case _ => println("No Valid Command")
+    }
   }
 
-  def controlInput(line: String): Boolean = {
-    line.matches("([A-H][1-8]\\s[A-H][1-8])")
+
+  def readInput(line: String): Vector[Int] = {
+      val fromX = getPoint(line.charAt(0))
+      val fromY = getPoint(line.charAt(1))
+      val toX = getPoint(line.charAt(3))
+      val toY = getPoint(line.charAt(4))
+      Vector(fromX, fromY, toX, toY)
   }
+
 
   def getPoint(input: Char): Int = {
     input match {
@@ -35,4 +56,6 @@ class Tui {
       case _ => -1
     }
   }
+
+  override def update: Unit = println(controller.gameFieldToString)
 }

@@ -1,4 +1,4 @@
-package Schach
+package Schach.model
 
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import org.scalatest.matchers.should.Matchers

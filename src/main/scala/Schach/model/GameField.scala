@@ -1,5 +1,7 @@
-package Schach
+package Schach.model
 import java.awt.Color
+
+
 
 class GameField(gameField: Vector[Figure]) {
 
@@ -13,13 +15,13 @@ class GameField(gameField: Vector[Figure]) {
     Pawn(4, 6, Color.BLACK), Pawn(5, 6, Color.BLACK), Pawn(6, 6, Color.BLACK), Pawn(7, 6, Color.BLACK),
     Rook(0, 7, Color.BLACK), Knight(1, 7, Color.BLACK), Bishop(2, 7, Color.BLACK), King(3, 7, Color.BLACK),
     Queen(4, 7, Color.BLACK), Bishop(5, 7, Color.BLACK), Knight(6, 7, Color.BLACK), Rook(7, 7, Color.BLACK)))
-
+  //Benni
   def validPawn(figure: Pawn, xNext: Int, yNext: Int) = true
 
   def validRook(figure: Rook, xNext: Int, yNext: Int) = true
 
   def validKnight(figure: Knight, xNext: Int, yNext: Int) = true
-
+  //Jan
   def validBishop(figure: Bishop, xNext: Int, yNext: Int) = true
 
   def validQueen(figure: Queen, xNext: Int, yNext: Int) = true

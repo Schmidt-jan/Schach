@@ -1,37 +1,11 @@
 package Schach
+
 import aview.Tui
+import model.GameField
+import controller.Controller
+
 object Schach {
-/*
-  def createGameField(): String = {
-    val aToH = List("a", "b", "c", "d", "e", "f", "g", "h")
-    val numbers = List("8", "7", "6", "5", "4", "3", "2", "1")
-    val cellSide = " │   │   │   │   │   │   │   │   │"
-    val cellMiddle = "├───┼───┼───┼───┼───┼───┼───┼───┤"
-    val cellBottom = "  └───┴───┴───┴───┴───┴───┴───┴───┘"
-    val field = new StringBuilder(" ")
 
-    for (i <- 0 to 7) field.append("   " + aToH(i))
-    field.append("\n")
-
-    field.append("  ┌───┬───┬───┬───┬───┬───┬───┬───┐\n")
-
-
-    for (x <- 0 to 7) {
-      for (i <- 0 to 1) {
-        if (i == 0) field.append(numbers(x)).append(cellSide).append("\n")
-        else {
-          if (x < 7) field.append("  ").append(cellMiddle).append("\n")
-          else field.append(cellBottom)
-        }
-      }
-
-    }
-    //Test
-
-    field.toString()
-  }
-
- */
 
   def main(args: Array[String]) {
     /*
@@ -48,35 +22,30 @@ object Schach {
     */
 
 
-    var gameField = new GameField()
 
+
+    var break = false
+    val controller = new Controller(new GameField)
+    val tui = new Tui(controller)
+    controller.notifyObservers
+    //println(controller.gameFieldToString)
     /*
-    println(gameField.toString());
-    gameField.moveTo(1, 1, 1, 3)
-    gameField.moveTo(0, 0, 0, 5)
-
+    val gameField = new GameField().moveTo(0, 0, 0, 6)
+    println(gameField.toString)
      */
-    println(gameField.toString())
 
     println("Move the chess pieces: position they are at now -> position they should go to")
     println("Usage example: A2 A3")
     println("Type 'exit' to leave\n")
-    var abbruch = false
-    val tui = new Tui
-    while (!abbruch) {
+
+    while (!break) {
       val line = scala.io.StdIn.readLine()
 
       if (line.equals("exit")) {
-        abbruch = true
+        break = true
         println("exiting...")
       } else {
-        if (tui.controlInput(line)) {
-          val ret = tui.readInput(line)
-          gameField = gameField.moveTo(ret(0), ret(1), ret(2), ret(3))
-          println(gameField.toString)
-        } else {
-          println("Wrong input")
-        }
+        tui.interactWithUser(line)
       }
     }
   }

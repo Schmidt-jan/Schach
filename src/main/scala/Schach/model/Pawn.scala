@@ -1,4 +1,4 @@
-package Schach
+package Schach.model
 
 import java.awt.Color
 

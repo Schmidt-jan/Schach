@@ -1,8 +1,9 @@
-package Schach
+package Schach.model
 
 case class Pieces(value: Int) {
   val pieces = List("pawn", "rook", "knight", "bishop", "queen", "king")
-  def getPiece(): String ={
+
+  def getPiece(): String = {
     pieces(value)
   }
 }
