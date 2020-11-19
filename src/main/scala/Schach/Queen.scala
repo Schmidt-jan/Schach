@@ -2,7 +2,7 @@ package Schach
 
 import java.awt.Color
 
-class Queen(posX: Int, posY : Int, override val color: Color) extends Figure (posX, posY, color) {
+case class Queen(x: Int, y : Int, color: Color) extends Figure {
 
   override def toString: String = {
     color match {
