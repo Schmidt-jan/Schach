@@ -1,25 +1,18 @@
 package Schach.model
-
 import java.awt.Color
 
-case class GameField(gameField: Vector[Figure]) {
+class GameField(gameField: Vector[Figure]) {
 
-  def this()  {
-    this(init())
-  }
+  def this() = this(Vector(
+    Rook(0, 0, Color.WHITE), Knight(1, 0, Color.WHITE), Bishop(2, 0, Color.WHITE), King(3, 0, Color.WHITE),
+    Queen(4, 0, Color.WHITE), Bishop(5, 0, Color.WHITE), Knight(6, 0, Color.WHITE), Rook(7, 0, Color.WHITE),
+    Pawn(0, 1, Color.WHITE), Pawn(1, 1, Color.WHITE), Pawn(2, 1, Color.WHITE), Pawn(3, 1, Color.WHITE),
+    Pawn(4, 1, Color.WHITE), Pawn(5, 1, Color.WHITE), Pawn(6, 1, Color.WHITE), Pawn(7, 1, Color.WHITE),
 
-  def init(): Vector[Figure] = {
-    Vector(
-      Rook(0, 0, Color.WHITE), Knight(1, 0, Color.WHITE), Bishop(2, 0, Color.WHITE), King(3, 0, Color.WHITE),
-      Queen(4, 0, Color.WHITE), Bishop(5, 0, Color.WHITE), Knight(6, 0, Color.WHITE), Rook(7, 0, Color.WHITE),
-      Pawn(0, 1, Color.WHITE), Pawn(1, 1, Color.WHITE), Pawn(2, 1, Color.WHITE), Pawn(3, 1, Color.WHITE),
-      Pawn(4, 1, Color.WHITE), Pawn(5, 1, Color.WHITE), Pawn(6, 1, Color.WHITE), Pawn(7, 1, Color.WHITE),
-
-      Pawn(0, 6, Color.BLACK), Pawn(1, 6, Color.BLACK), Pawn(2, 6, Color.BLACK), Pawn(3, 6, Color.BLACK),
-      Pawn(4, 6, Color.BLACK), Pawn(5, 6, Color.BLACK), Pawn(6, 6, Color.BLACK), Pawn(7, 6, Color.BLACK),
-      Rook(0, 7, Color.BLACK), Knight(1, 7, Color.BLACK), Bishop(2, 7, Color.BLACK), King(3, 7, Color.BLACK),
-      Queen(4, 7, Color.BLACK), Bishop(5, 7, Color.BLACK), Knight(6, 7, Color.BLACK), Rook(7, 7, Color.BLACK))
-  }
+    Pawn(0, 6, Color.BLACK), Pawn(1, 6, Color.BLACK), Pawn(2, 6, Color.BLACK), Pawn(3, 6, Color.BLACK),
+    Pawn(4, 6, Color.BLACK), Pawn(5, 6, Color.BLACK), Pawn(6, 6, Color.BLACK), Pawn(7, 6, Color.BLACK),
+    Rook(0, 7, Color.BLACK), Knight(1, 7, Color.BLACK), Bishop(2, 7, Color.BLACK), King(3, 7, Color.BLACK),
+    Queen(4, 7, Color.BLACK), Bishop(5, 7, Color.BLACK), Knight(6, 7, Color.BLACK), Rook(7, 7, Color.BLACK)))
 
   def validPawn(figure: Pawn, xNext: Int, yNext: Int) = true
 
@@ -47,18 +40,18 @@ case class GameField(gameField: Vector[Figure]) {
   }
 
 
-  def moveTo(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Vector[Figure] = if (moveValid(xNow, yNow, xNext, yNext)) {
+  def moveTo(xNow: Int, yNow: Int, xNext: Int, yNext: Int): GameField = if (moveValid(xNow, yNow, xNext, yNext)) {
     val figure = getFigure(xNow, yNow).get
     figure match {
-      case p: Pawn => gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color)
-      case p: Rook => gameField.filter(_ != figure) :+ Rook(xNext, yNext, figure.color)
-      case p: Knight => gameField.filter(_ != figure) :+ Knight(xNext, yNext, figure.color)
-      case p: Bishop => gameField.filter(_ != figure) :+ Bishop(xNext, yNext, figure.color)
-      case p: Queen => gameField.filter(_ != figure) :+ Queen(xNext, yNext, figure.color)
-      case p: King => gameField.filter(_ != figure) :+ King(xNext, yNext, figure.color)
+      case p: Pawn => new GameField(gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color))
+      case p: Rook => new GameField(gameField.filter(_ != figure) :+ Rook(xNext, yNext, figure.color))
+      case p: Knight => new GameField(gameField.filter(_ != figure) :+ Knight(xNext, yNext, figure.color))
+      case p: Bishop => new GameField(gameField.filter(_ != figure) :+ Bishop(xNext, yNext, figure.color))
+      case p: Queen => new GameField(gameField.filter(_ != figure) :+ Queen(xNext, yNext, figure.color))
+      case p: King => new GameField(gameField.filter(_ != figure) :+ King(xNext, yNext, figure.color))
     }
   } else {
-    gameField
+    this
   }
 
   def getFigure(xPos: Int, yPos: Int): Option[Figure] = {
