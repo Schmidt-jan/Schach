@@ -1,6 +1,9 @@
 package Schach
 import aview.Tui
 import model._
+import controller.Controller
+
+import scala.io.StdIn
 
 object Schach {
 
@@ -19,32 +22,18 @@ object Schach {
     println(field.length)
     */
 
+    val controller = new Controller(new GameField)
+    val tui = new Tui(controller)
 
-    val gameField = GameField()
+    var stop = false
 
-    /*
-    println(gameField.toString());
-    gameField.moveTo(1, 1, 1, 3)
-    gameField.moveTo(0, 0, 0, 5)
-     */
-    println(gameField.toString())
-
-
-    var abbruch = false
-    val tui = new Tui
-    while (!abbruch) {
-      val line = scala.io.StdIn.readLine()
+    while (!stop) {
+      val line = StdIn.readLine()
 
       if (line.equals("exit")) {
-        abbruch = true
+        stop = true
       } else {
-        if (tui.controlInput(line)) {
-          val ret = tui.readInput(line)
-          gameField.moveTo(ret(0), ret(1), ret(2), ret(3))
-          println(gameField.toString)
-        } else {
-          println("Wrong input")
-        }
+        tui.doCommand(line)
       }
     }
   }
