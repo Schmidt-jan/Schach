@@ -56,6 +56,58 @@ class GameField(gameField: Vector[Figure]) {
     this
   }
 
+  def wayToIsFreeStraight(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
+    if (xNow == xNext && yNow == yNext) false
+
+    //horizontal move
+    if (xNow == xNext) {
+      var incY = 1
+      if (yNow > yNext) incY = -1
+
+      for(y <- Range(yNow, yNext, incY)){
+        if (gameField.filter(! _.checked).exists(input => input.y == y && input.x  == xNow)) false
+      }
+      true
+    }
+    //horizontal move
+    else if (yNow == yNext) {
+      var incX = 1
+      if (xNow > xNext) incX = -1
+
+      for(x <- Range(xNow, xNext, incX)) {
+        if(gameField.filter(! _.checked).exists(input => input.x == x && input.y == yNow)) false
+      }
+      true
+    }
+    false
+
+  }
+
+  def wayToIsFreeDiagonal(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
+    if ((Math.abs(xNow - xNext) != Math.abs(yNow - yNext)) || (xNow == xNext || yNow == yNext)) {
+      return false
+    }
+
+    var y = yNow
+    //standard move diagonal right up
+    var incX = 1
+    var incY = 1
+
+    //move diagonal left
+    if (xNext < xNow) {
+      incX = -1
+      if (yNext < yNow) incY = -1          //move down
+    }
+    //move diagonal right
+    else if (yNext < yNow) incY = -1       //move down
+
+    for (x <- Range(xNow, xNext, incX)) {
+      if (!gameField.filter(! _.checked).exists(input => input.x == x && input.y == y))   y += incY
+      else false
+    }
+    true
+  }
+
   def getFigure(xPos: Int, yPos: Int): Option[Figure] = {
     gameField.filter(_.x == xPos).find(_.y == yPos)
   }
