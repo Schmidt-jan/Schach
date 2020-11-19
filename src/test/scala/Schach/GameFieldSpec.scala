@@ -7,7 +7,7 @@ import org.scalatest.wordspec.AnyWordSpec
 class GameFieldSpec extends AnyWordSpec with Matchers {
 
   "Figure should from " should {
-    val gameField = GameField()
+    var gameField = new GameField()
 
 
     val figure = gameField.getFigure(1, 1)
@@ -15,7 +15,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       figure.get  mustBe a [Pawn]
     }
 
-    gameField.setGameField(gameField.moveTo(1, 1, 2, 3))
+    gameField = gameField.moveTo(1, 1, 2, 3)
     "move to" in {
       gameField.getFigure(1, 1) should be(None)
       gameField.getFigure(2,3).get mustBe a [Pawn]

@@ -48,7 +48,7 @@ object Schach {
     */
 
 
-    val gameField = GameField()
+    var gameField = new GameField()
 
     /*
     println(gameField.toString());
@@ -69,7 +69,7 @@ object Schach {
       } else {
         if (tui.controlInput(line)) {
           val ret = tui.readInput(line)
-          gameField.moveTo(ret(0), ret(1), ret(2), ret(3))
+          gameField = gameField.moveTo(ret(0), ret(1), ret(2), ret(3))
           println(gameField.toString)
         } else {
           println("Wrong input")
