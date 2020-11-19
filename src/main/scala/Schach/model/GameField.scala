@@ -24,36 +24,30 @@ class GameField(gameField: Vector[Figure]) {
   def validKnight(figure: Knight, xNext: Int, yNext: Int) = true
 
 
-
   //Jan
   def validBishop(figure: Bishop, xNext: Int, yNext: Int): Boolean = {
-    wayToIsFreeDiagonal(figure.x, figure.y, xNext, yNext) &&
-      moveToFieldAllowed(xNext, yNext, figure.color)
+    val first = wayToIsFreeDiagonal(figure.x, figure.y, xNext, yNext)
+    val second = moveToFieldAllowed(xNext, yNext, figure.color)
+    first && second
   }
 
-  def validQueen(figure: Queen, xNext: Int, yNext: Int) : Boolean = {
-    if (figure.x == xNext ||  figure.y == yNext){
+  def validQueen(figure: Queen, xNext: Int, yNext: Int): Boolean = {
+    if (figure.x == xNext || figure.y == yNext) {
       wayToIsFreeStraight(figure.x, figure.y, xNext, yNext) && moveToFieldAllowed(xNext, yNext, figure.color)
     } else {
       wayToIsFreeDiagonal(figure.x, figure.y, xNext, yNext) && moveToFieldAllowed(xNext, yNext, figure.color)
     }
   }
 
-  def validKing(figure: King, xNext: Int, yNext: Int) : Boolean = {
+  def validKing(figure: King, xNext: Int, yNext: Int): Boolean = {
     if (Math.abs(figure.x - xNext) <= 1 && Math.abs(figure.y - yNext) <= 1) {
 
-      if (figure.x == xNext || figure.y == yNext) {
-        wayToIsFreeStraight(figure.x, figure.y, xNext, yNext) &&
-          moveToFieldAllowed(xNext, yNext, figure.color)
-      } else {
-        wayToIsFreeDiagonal(figure.x, figure.y, xNext, yNext) &&
-          moveToFieldAllowed(xNext, yNext, figure.color)
-      }
+      moveToFieldAllowed(xNext, yNext, figure.color)
     } else false
   }
 
 
-  def moveToFieldAllowed(x : Int, y : Int, color : Color) : Boolean = getFigure(x, y) match {
+  def moveToFieldAllowed(x: Int, y: Int, color: Color): Boolean = getFigure(x, y) match {
     case Some(figure2) => !figure2.isInstanceOf[King] &&
       figure2.color != color &&
       !isCheck(gameField.filter(_.isInstanceOf[King]).find(_ == color).get)
@@ -89,27 +83,28 @@ class GameField(gameField: Vector[Figure]) {
 
 
   def wayToIsFreeStraight(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
-    if (xNow == xNext && yNow == yNext) false
+    if (xNow == xNext && yNow == yNext) return false
 
     //horizontal move
     if (xNow == xNext) {
       var incY = 1
       if (yNow > yNext) incY = -1
 
-      for (y <- Range(yNow, yNext, incY)) {
-        if (gameField.filter(!_.checked).exists(input => input.y == y && input.x == xNow)) false
+      for (y <- Range(yNow + incY, yNext, incY)) {
+        if (gameField.exists(input => input.y == y && input.x == xNow)) return false
       }
-      true
+      return true
     }
+
     //horizontal move
     else if (yNow == yNext) {
       var incX = 1
       if (xNow > xNext) incX = -1
 
-      for (x <- Range(xNow, xNext, incX)) {
-        if (gameField.filter(!_.checked).exists(input => input.x == x && input.y == yNow)) false
+      for (x <- Range(xNow + incX, xNext, incX)) {
+        if (gameField.exists(input => input.x == x && input.y == yNow)) return false
       }
-      true
+      return true
     }
     false
 
@@ -120,7 +115,6 @@ class GameField(gameField: Vector[Figure]) {
       return false
     }
 
-    var y = yNow
     //standard move diagonal right up
     var incX = 1
     var incY = 1
@@ -133,15 +127,17 @@ class GameField(gameField: Vector[Figure]) {
     //move diagonal right
     else if (yNext < yNow) incY = -1 //move down
 
-    for (x <- Range(xNow, xNext, incX)) {
-      if (!gameField.filter(!_.checked).exists(input => input.x == x && input.y == y)) y += incY
-      else false
+    var y = yNow + incY
+
+    for (x <- Range(xNow + incX, xNext, incX)) {
+      if (!gameField.exists(input => input.x == x && input.y == y)) y += incY
+      else return false
     }
     true
   }
 
   def getFigure(xPos: Int, yPos: Int): Option[Figure] = {
-    gameField.filter(!_.checked).filter(_.x == xPos).find(_.y == yPos)
+    gameField.filter(_.x == xPos).find(_.y == yPos)
   }
 
   override def toString: String = {
