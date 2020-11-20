@@ -50,7 +50,7 @@ class GameField(gameField: Vector[Figure]) {
   def moveToFieldAllowed(x: Int, y: Int, color: Color): Boolean = getFigure(x, y) match {
     case Some(figure2) => !figure2.isInstanceOf[King] &&
       figure2.color != color &&
-      !isCheck(gameField.filter(_.isInstanceOf[King]).find(_ == color).get)
+      !isCheck(gameField.filter(_.isInstanceOf[King]).find(_.color == color).get)
     case None => true
   }
 
@@ -64,7 +64,7 @@ class GameField(gameField: Vector[Figure]) {
       case Some(figure: Bishop) => validBishop(figure, xNext, yNext)
       case Some(figure: Queen) => validQueen(figure, xNext, yNext)
       case Some(figure: King) => validKing(figure, xNext, yNext)
-      case None => false
+      case _ => false
     }
   }
 
