@@ -35,7 +35,8 @@ object Schach {
      */
 
     println("Move the chess pieces: position they are at now -> position they should go to")
-    println("Usage example: A2 A3")
+    println("Create a new GameField with 'new'")
+    println("Usage example: move A2 A3")
     println("Type 'exit' to leave\n")
 
     while (!break) {
