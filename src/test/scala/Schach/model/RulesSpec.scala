@@ -51,8 +51,10 @@ class RulesSpec extends AnyWordSpec with Matchers {
       val king = King(4, 2, Color.WHITE)
       rule.validKing(king, 4, 4) should be(false)
     }
-    "Check if gameField has been given to Rules" in {
-      rule.gameField shouldBe a [GameField]
+    "Check if Rook is moving as intended" in {
+      val r = Rook(0,3, Color.WHITE)
+      rule.validRook(r, 7,3) should be(true)
+      rule.validRook(r, 2,5) should be(false)
     }
   }
 

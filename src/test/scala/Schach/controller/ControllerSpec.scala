@@ -34,6 +34,10 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       "return a string representation of the GameField" in {
         controller.gameFieldToString shouldBe a[String]
       }
+      "remove an observer" in {
+        controller.remove(observer)
+        controller.subscribers should not contain (observer)
+      }
     }
   }
 

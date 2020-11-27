@@ -26,6 +26,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
     "moving test" in {
       gameField = new GameField()
       gameField.wayToIsFreeDiagonal(2,0,6,4) should be(false)
+      gameField.wayToIsFreeDiagonal(3,2,0,5) should be(true)
 
       gameField = gameField.moveTo(3,1,3,2)
 
@@ -57,6 +58,10 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
     "have a nice String representation" in {
       gameField.toString shouldBe a[String]
+    }
+    "check if check" in {
+      val f = King(3,0, Color.WHITE)
+      gameField.isCheck(f) should be(false)
     }
   }
 }
