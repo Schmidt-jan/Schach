@@ -4,7 +4,7 @@ import java.awt.Color
 
 case class Rules(gameField: GameField) {
 
-  def moveValid(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
+  def moveValidFigure(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
     gameField.getFigure(xNow, yNow) match {
       case Some(figure: Pawn) => validPawn(figure, xNext, yNext)
       case Some(figure: Rook) => validRook(figure, xNext, yNext)
@@ -19,7 +19,7 @@ case class Rules(gameField: GameField) {
   //Benni
   //xPos Move Option for diagonal Hit has to be added later
   def validPawn(figure: Pawn, xNext: Int, yNext: Int): Boolean = {
-    if ((figure.color == Color.BLACK && figure.y > yNext) || (figure.color == Color.WHITE && figure.y < yNext)) {
+    if ((figure.color == Color.BLACK && figure.y < yNext) || (figure.color == Color.WHITE && figure.y > yNext)) {
       false
     }
     else if (figure.hasBeenMoved) {

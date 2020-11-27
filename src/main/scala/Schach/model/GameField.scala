@@ -5,6 +5,7 @@ import java.awt.Color
 
 class GameField(gameField: Vector[Figure]) {
 
+
   def this() = this(Vector(
     Rook(0, 0, Color.WHITE), Knight(1, 0, Color.WHITE), Bishop(2, 0, Color.WHITE), King(3, 0, Color.WHITE),
     Queen(4, 0, Color.WHITE), Bishop(5, 0, Color.WHITE), Knight(6, 0, Color.WHITE), Rook(7, 0, Color.WHITE),
@@ -28,6 +29,11 @@ class GameField(gameField: Vector[Figure]) {
       case p: King => new GameField(gameField.filter(_ != figure) :+ King(xNext, yNext, figure.color))
       case _ => this
     }
+  }
+
+  def moveValid(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
+    val rule = Rules(this)
+    rule.moveValidFigure(xNow, yNow, xNext, yNext)
   }
 
   def moveToFieldAllowed(x: Int, y: Int, color: Color): Boolean = getFigure(x, y) match {
