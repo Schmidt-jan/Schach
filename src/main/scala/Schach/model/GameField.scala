@@ -19,6 +19,7 @@ class GameField(gameField: Vector[Figure]) {
 
 
   def moveTo(xNow: Int, yNow: Int, xNext: Int, yNext: Int): GameField = {
+    if (getFigure(xNow, yNow).isEmpty) return this
     val figure = getFigure(xNow, yNow).get
     figure match {
       case p: Pawn => new GameField(gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color, Some(true)))
@@ -27,7 +28,6 @@ class GameField(gameField: Vector[Figure]) {
       case p: Bishop => new GameField(gameField.filter(_ != figure) :+ Bishop(xNext, yNext, figure.color))
       case p: Queen => new GameField(gameField.filter(_ != figure) :+ Queen(xNext, yNext, figure.color))
       case p: King => new GameField(gameField.filter(_ != figure) :+ King(xNext, yNext, figure.color))
-      case _ => this
     }
   }
 
@@ -38,8 +38,7 @@ class GameField(gameField: Vector[Figure]) {
 
   def moveToFieldAllowed(x: Int, y: Int, color: Color): Boolean = getFigure(x, y) match {
     case Some(figure2) => !figure2.isInstanceOf[King] &&
-      figure2.color != color &&
-      !isCheck(gameField.filter(_.isInstanceOf[King]).find(_ == color).get)
+      figure2.color != color && !isCheck(gameField.filter(_.isInstanceOf[King]).find(_ == color).get)
     case None => true
   }
 
