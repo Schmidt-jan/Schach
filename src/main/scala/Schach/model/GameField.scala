@@ -16,36 +16,19 @@ class GameField(gameField: Vector[Figure]) {
     Rook(0, 7, Color.BLACK), Knight(1, 7, Color.BLACK), Bishop(2, 7, Color.BLACK), King(3, 7, Color.BLACK),
     Queen(4, 7, Color.BLACK), Bishop(5, 7, Color.BLACK), Knight(6, 7, Color.BLACK), Rook(7, 7, Color.BLACK)))
 
-  //Benni
-  def validPawn(figure: Pawn, xNext: Int, yNext: Int) = true
 
-  def validRook(figure: Rook, xNext: Int, yNext: Int) = true
-
-  def validKnight(figure: Knight, xNext: Int, yNext: Int) = true
-
-
-  //Jan
-  def validBishop(figure: Bishop, xNext: Int, yNext: Int): Boolean = {
-    val first = wayToIsFreeDiagonal(figure.x, figure.y, xNext, yNext)
-    val second = moveToFieldAllowed(xNext, yNext, figure.color)
-    first && second
-  }
-
-  def validQueen(figure: Queen, xNext: Int, yNext: Int): Boolean = {
-    if (figure.x == xNext || figure.y == yNext) {
-      wayToIsFreeStraight(figure.x, figure.y, xNext, yNext) && moveToFieldAllowed(xNext, yNext, figure.color)
-    } else {
-      wayToIsFreeDiagonal(figure.x, figure.y, xNext, yNext) && moveToFieldAllowed(xNext, yNext, figure.color)
+  def moveTo(xNow: Int, yNow: Int, xNext: Int, yNext: Int): GameField = {
+    val figure = getFigure(xNow, yNow).get
+    figure match {
+      case p: Pawn => new GameField(gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color, Some(true)))
+      case p: Rook => new GameField(gameField.filter(_ != figure) :+ Rook(xNext, yNext, figure.color))
+      case p: Knight => new GameField(gameField.filter(_ != figure) :+ Knight(xNext, yNext, figure.color))
+      case p: Bishop => new GameField(gameField.filter(_ != figure) :+ Bishop(xNext, yNext, figure.color))
+      case p: Queen => new GameField(gameField.filter(_ != figure) :+ Queen(xNext, yNext, figure.color))
+      case p: King => new GameField(gameField.filter(_ != figure) :+ King(xNext, yNext, figure.color))
+      case _ => this
     }
   }
-
-  def validKing(figure: King, xNext: Int, yNext: Int): Boolean = {
-    if (Math.abs(figure.x - xNext) <= 1 && Math.abs(figure.y - yNext) <= 1) {
-
-      moveToFieldAllowed(xNext, yNext, figure.color)
-    } else false
-  }
-
 
   def moveToFieldAllowed(x: Int, y: Int, color: Color): Boolean = getFigure(x, y) match {
     case Some(figure2) => !figure2.isInstanceOf[King] &&
@@ -56,36 +39,10 @@ class GameField(gameField: Vector[Figure]) {
 
   def isCheck(king: Figure): Boolean = false
 
-  def moveValid(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
-    getFigure(xNow, yNow) match {
-      case Some(figure: Pawn) => validPawn(figure, xNext, yNext)
-      case Some(figure: Rook) => validRook(figure, xNext, yNext)
-      case Some(figure: Knight) => validKnight(figure, xNext, yNext)
-      case Some(figure: Bishop) => validBishop(figure, xNext, yNext)
-      case Some(figure: Queen) => validQueen(figure, xNext, yNext)
-      case Some(figure: King) => validKing(figure, xNext, yNext)
-      case None => false
-    }
-  }
-
-
-  def moveTo(xNow: Int, yNow: Int, xNext: Int, yNext: Int): GameField = if (moveValid(xNow, yNow, xNext, yNext)) {
-    val figure = getFigure(xNow, yNow).get
-    figure match {
-      case p: Pawn => new GameField(gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color))
-      case p: Rook => new GameField(gameField.filter(_ != figure) :+ Rook(xNext, yNext, figure.color))
-      case p: Knight => new GameField(gameField.filter(_ != figure) :+ Knight(xNext, yNext, figure.color))
-      case p: Bishop => new GameField(gameField.filter(_ != figure) :+ Bishop(xNext, yNext, figure.color))
-      case p: Queen => new GameField(gameField.filter(_ != figure) :+ Queen(xNext, yNext, figure.color))
-      case p: King => new GameField(gameField.filter(_ != figure) :+ King(xNext, yNext, figure.color))
-    }
-  } else this
-
-
   def wayToIsFreeStraight(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
     if (xNow == xNext && yNow == yNext) return false
 
-    //horizontal move
+    //vertical move
     if (xNow == xNext) {
       var incY = 1
       if (yNow > yNext) incY = -1
@@ -135,6 +92,9 @@ class GameField(gameField: Vector[Figure]) {
     }
     true
   }
+
+
+
 
   def getFigure(xPos: Int, yPos: Int): Option[Figure] = {
     gameField.filter(_.x == xPos).find(_.y == yPos)

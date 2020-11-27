@@ -16,7 +16,11 @@ class Tui(controller: Controller) extends Observer{
       case "move" =>
         if (args.size == 3 && controller.controlInput(args(1)) && controller.controlInput(args(2))) {
           val command = args(1).concat(" ").concat(args(2))
-          controller.movePiece(readInput(command))
+          if (controller.moveIsValid(readInput(command))) {
+            controller.movePiece(readInput(command))
+          } else {
+            println("That Move is against the Rules!")
+          }
         }
         else {
           println("Wrong Input: Invalid Move")
