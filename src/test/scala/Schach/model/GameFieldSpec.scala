@@ -50,6 +50,28 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.wayToIsFreeStraight(0,4,3,4) should be (true)
 
     }
+    "do some more move cases" in {
+      gameField = new GameField()
+      gameField = gameField.moveTo(0, 1, 0, 3)
+      gameField = gameField.moveTo(0, 0, 0, 2)
+      gameField.getFigure(0,2).get shouldBe a[Rook]
+
+      gameField = gameField.moveTo(1, 0, 2, 2)
+      gameField.getFigure(2, 2).get shouldBe a[Knight]
+      gameField = gameField.moveTo(1, 5, 2, 5)
+      gameField.getFigure(2, 5) should be(None)
+
+    }
+    "cases for black figures trying to move" in {
+      gameField = new GameField()
+      gameField.wayToIsFreeStraight(1, 6, 1, 4) should be(true)
+
+      gameField = gameField.moveTo(1, 6, 1, 4 )
+      gameField.wayToIsFreeDiagonal(2, 7, 0, 5) should be(true)
+
+      gameField = gameField.moveTo(7, 7, 7, 5)
+      gameField.wayToIsFreeStraight(7, 5, 4, 5) should be(true)
+    }
     "check if moving to a specific cell is allowed" in {
       gameField = new GameField()
       gameField.moveToFieldAllowed(1, 0, Color.WHITE) should be(false)
