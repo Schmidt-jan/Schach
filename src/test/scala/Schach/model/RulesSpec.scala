@@ -29,10 +29,8 @@ class RulesSpec extends AnyWordSpec with Matchers {
       rule.validPawn(p, 0, 0) should be(false)
       rule.validPawn(p2, 0, 7) should be(false)
 
-
-      rule.validPawn(p, 0, 2) should be(true)
       rule.validPawn(p3, 0, 3) should be(false)
-      rule.validPawn(p3, 0, 2) should be(true)
+
     }
   }
 
