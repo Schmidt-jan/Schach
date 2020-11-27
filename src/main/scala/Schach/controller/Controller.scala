@@ -5,6 +5,7 @@ import Schach.util.Observable
 
 class Controller(var gameField: GameField) extends Observable{
 
+
   def createGameField: Unit = {
     gameField = new GameField()
     notifyObservers
@@ -19,6 +20,10 @@ class Controller(var gameField: GameField) extends Observable{
   def movePiece(newPos: Vector[Int]): Unit = {
     gameField = gameField.moveTo(newPos(0), newPos(1), newPos(2), newPos(3))
     notifyObservers
+  }
+
+  def moveIsValid(newPos: Vector[Int]): Boolean = {
+    gameField.moveValid(newPos(0), newPos(1), newPos(2), newPos(3))
   }
 
 

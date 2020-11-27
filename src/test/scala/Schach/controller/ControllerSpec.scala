@@ -27,8 +27,16 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.movePiece(vec)
         observer.updated should be(true)
       }
+      "check if a move is valid" in {
+        val v = Vector(1, 1, 1, 3)
+        controller.moveIsValid(v) should be(true)
+      }
       "return a string representation of the GameField" in {
         controller.gameFieldToString shouldBe a[String]
+      }
+      "remove an observer" in {
+        controller.remove(observer)
+        controller.subscribers should not contain (observer)
       }
     }
   }
