@@ -1,13 +1,15 @@
 package Schach.controller
 
-import Schach.model.GameField
+import Schach.model.{ChessGameFieldBuilder, GameField}
 import Schach.util.Observable
 
 class Controller(var gameField: GameField) extends Observable{
 
 
   def createGameField: Unit = {
-    gameField = new GameField()
+    val builder = new ChessGameFieldBuilder
+    builder.makeGameField()
+    gameField = builder.getGameField
     notifyObservers
   }
 

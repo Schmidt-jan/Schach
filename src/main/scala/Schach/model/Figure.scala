@@ -7,4 +7,5 @@ trait Figure {
   val y : Int
   val color : Color
   val checked : Boolean = false
+
 }
