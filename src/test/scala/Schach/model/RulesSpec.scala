@@ -8,7 +8,10 @@ import org.scalatest.wordspec.AnyWordSpec
 class RulesSpec extends AnyWordSpec with Matchers {
 
   "Rules" should {
-    val gameField = new GameField()
+    val builder = new ChessGameFieldBuilder
+    builder.makeGameField()
+
+    val gameField = builder.getGameField
     val rule = Rules(gameField)
 
 

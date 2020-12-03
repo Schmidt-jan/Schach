@@ -9,7 +9,9 @@ import org.scalatest.wordspec.AnyWordSpec
 class GameFieldSpec extends AnyWordSpec with Matchers {
 
   "Figure should from " should {
-    var gameField = new GameField()
+    val builder = new ChessGameFieldBuilder
+    builder.makeGameField()
+    var gameField = builder.getGameField
 
     val figure = gameField.getFigure(1, 1)
     "should be" in {
@@ -24,7 +26,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
 
     "moving test" in {
-      gameField = new GameField()
+      gameField = builder.getGameField
       gameField.wayToIsFreeDiagonal(2,0,6,4) should be(false)
       gameField.wayToIsFreeDiagonal(3,2,0,5) should be(true)
 
@@ -51,7 +53,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
     }
     "do some more move cases" in {
-      gameField = new GameField()
+      gameField = builder.getGameField
       gameField = gameField.moveTo(0, 1, 0, 3)
       gameField = gameField.moveTo(0, 0, 0, 2)
       gameField.getFigure(0,2).get shouldBe a[Rook]
@@ -63,7 +65,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
     }
     "cases for black figures trying to move" in {
-      gameField = new GameField()
+      gameField = builder.getGameField
       gameField.wayToIsFreeStraight(1, 6, 1, 4) should be(true)
 
       gameField = gameField.moveTo(1, 6, 1, 4 )
@@ -73,7 +75,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.wayToIsFreeStraight(7, 5, 4, 5) should be(true)
     }
     "check if moving to a specific cell is allowed" in {
-      gameField = new GameField()
+      gameField = builder.getGameField
       gameField.moveToFieldAllowed(1, 0, Color.WHITE) should be(false)
       gameField.moveToFieldAllowed(0, 2, Color.WHITE) should be(true)
     }
