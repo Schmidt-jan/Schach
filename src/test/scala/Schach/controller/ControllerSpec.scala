@@ -1,7 +1,7 @@
 package Schach.controller
 
 import Schach.model.GameField
-import Schach.util.Observer
+import Schach.util.{Caretaker, Observer, UndoManager}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -12,7 +12,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
     "observed by an Observer" should {
       val field = new GameField()
       val controller = new Controller(field)
-      val vec = Vector(0, 1, 0,2)
+      val vec = Vector(0, 1, 0, 2)
       val observer = new Observer {
         var updated: Boolean = false
         def isUpdated: Boolean = updated
@@ -36,8 +36,42 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       }
       "remove an observer" in {
         controller.remove(observer)
-        controller.subscribers should not contain (observer)
+        controller.subscribers should not contain(observer)
       }
+    }
+    "used as an Originator" should {
+      val field = new GameField()
+      val controller = new Controller(field)
+      val vec = Vector(0, 1, 0, 2)
+
+      "handle undo/redo correctly" in {
+        controller.createGameField
+        controller.movePiece(vec)
+        val old = controller.gameFieldToString
+
+        controller.undo()
+        controller.gameFieldToString should not be (old)
+
+        controller.redo()
+        controller.gameFieldToString should be(old)
+      }
+
+      "save and load a state" in {
+        controller.createGameField
+        val old = controller.gameFieldToString
+        controller.save()
+
+        controller.movePiece(vec)
+        controller.gameFieldToString should not be (old)
+
+        controller.restore()
+        controller.gameFieldToString should be(old)
+      }
+      "inform if there is a current save state" in {
+        controller.save()
+        controller.caretaker.called should be(true)
+      }
+
     }
   }
 

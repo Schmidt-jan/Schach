@@ -25,6 +25,15 @@ class Tui(controller: Controller) extends Observer{
         else {
           println("Wrong Input: Invalid Move")
         }
+      case "undo" => controller.undo()
+      case "redo" => controller.redo()
+      case "save" => controller.save()
+      case "load" =>
+        if (controller.caretaker.called){
+          controller.restore()
+        } else {
+          println("No Save created yet")
+        }
       case _ => println("No Valid Command")
     }
   }
