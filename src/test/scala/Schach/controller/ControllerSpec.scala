@@ -10,7 +10,7 @@ import org.scalatest.wordspec.AnyWordSpec
 class ControllerSpec extends AnyWordSpec with Matchers {
   "A Controller" when  {
     "observed by an Observer" should {
-      val field = new GameField()
+      val field = GameField.getInstance()
       val controller = new Controller(field)
       val vec = Vector(0, 1, 0,2)
       val observer = new Observer {
@@ -36,7 +36,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       }
       "remove an observer" in {
         controller.remove(observer)
-        controller.subscribers should not contain (observer)
+        controller.subscribers should not contain observer
       }
     }
   }
