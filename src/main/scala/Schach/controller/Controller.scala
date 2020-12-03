@@ -6,7 +6,7 @@ import Schach.util.Observable
 class Controller(var gameField: GameField) extends Observable{
 
 
-  def createGameField: Unit = {
+  def createGameField() : Unit = {
     val builder = new ChessGameFieldBuilder
     builder.makeGameField()
     gameField = builder.getGameField

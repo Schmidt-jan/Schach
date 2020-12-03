@@ -9,10 +9,10 @@ import org.scalatest.wordspec.AnyWordSpec
 class TuiSpec extends AnyWordSpec with Matchers {
 
   "A Tui" should {
-    val controller = new Controller(GameField.getInstance())
+    val controller = new Controller(new GameField)
     val tui = new Tui(controller)
     val input = "A1 F2"
-    var field = GameField.getInstance()
+    var field = new GameField()
     "convert a letter into a number for the GameField" in {
       tui.getPoint(input.charAt(0)) should be(0)
       tui.getPoint(input.charAt(1)) should be (0)

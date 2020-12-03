@@ -31,11 +31,11 @@ class Tui(controller: Controller) extends Observer{
 
 
   def readInput(line: String): Vector[Int] = {
-      val fromX = getPoint(line.charAt(0))
-      val fromY = getPoint(line.charAt(1))
-      val toX = getPoint(line.charAt(3))
-      val toY = getPoint(line.charAt(4))
-      Vector(fromX, fromY, toX, toY)
+    val fromX = getPoint(line.charAt(0))
+    val fromY = getPoint(line.charAt(1))
+    val toX = getPoint(line.charAt(3))
+    val toY = getPoint(line.charAt(4))
+    Vector(fromX, fromY, toX, toY)
   }
 
 

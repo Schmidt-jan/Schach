@@ -12,7 +12,7 @@ class RulesSpec extends AnyWordSpec with Matchers {
     builder.makeGameField()
 
     val gameField = builder.getGameField
-    val rule = Rules()
+    val rule = Rules(gameField)
 
 
 

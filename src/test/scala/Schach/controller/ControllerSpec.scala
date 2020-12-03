@@ -10,7 +10,7 @@ import org.scalatest.wordspec.AnyWordSpec
 class ControllerSpec extends AnyWordSpec with Matchers {
   "A Controller" when  {
     "observed by an Observer" should {
-      val field = GameField.getInstance()
+      val field = new GameField()
       val controller = new Controller(field)
       val vec = Vector(0, 1, 0,2)
       val observer = new Observer {
