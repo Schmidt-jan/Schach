@@ -3,7 +3,7 @@ package Schach.aview
 import Schach.controller.Controller
 import Schach.util.Observer
 
-import scala.util.{Failure, Success, Try}
+import scala.util.Success
 
 class Tui(controller: Controller) extends Observer{
 
@@ -18,9 +18,10 @@ class Tui(controller: Controller) extends Observer{
       case "move" =>
         if (args.size == 3 && controller.controlInput(args(1)) && controller.controlInput(args(2))) {
           val command = args(1).concat(" ").concat(args(2))
-          Try(controller.moveIsValid(readInput(command))) match {
-            case Success(value) =>  controller.movePiece(readInput(command))
-            case Failure(exception) =>  println("That Move is against the Rules!")
+          if (controller.moveIsValid(readInput(command))) {
+            controller.movePiece(readInput(command))
+          } else {
+            println("That Move is against the Rules!")
           }
         }
         else {

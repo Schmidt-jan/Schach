@@ -2,6 +2,8 @@ package Schach.model
 
 import java.awt.Color
 
+import scala.util.{Failure, Success, Try}
+
 
 class GameField(private var gameField: Vector[Figure]) {
 
@@ -40,16 +42,24 @@ class GameField(private var gameField: Vector[Figure]) {
 
   def moveValid(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
     val rule = Rules(this)
-    if (rule.moveValidFigure(xNow, yNow, xNext, yNext)) true
-    else throw new IllegalArgumentException
+    rule.moveValidFigure(xNow, yNow, xNext, yNext)
   }
 
   def moveToFieldAllowed(x: Int, y: Int, color: Color): Boolean = getFigure(x, y) match {
-    case Some(figure2) => !figure2.isInstanceOf[King] && figure2.color != color && !isCheck(gameField.filter(_.isInstanceOf[King]).find(_.color == color).get)
+    case Some(figure2) =>
+      val check1 = !figure2.isInstanceOf[King] && figure2.color != color
+      val check2= Try(isCheck(gameField.filter(_.isInstanceOf[King]).find(_.color == color).get)) match {
+        case Success(value) => value
+        case Failure(exception) => return false
+      }
+      check1 && check2
+
     case None => true
   }
 
-  def isCheck(king: Figure): Boolean = false
+  def isCheck(king: Figure): Boolean = {
+    throw new UnsupportedOperationException("isCheck() is still not supported")
+  }
 
   def wayToIsFreeStraight(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
     if (xNow == xNext && yNow == yNext) return false
@@ -104,8 +114,6 @@ class GameField(private var gameField: Vector[Figure]) {
     }
     true
   }
-
-
 
 
   def getFigure(xPos: Int, yPos: Int): Option[Figure] = {

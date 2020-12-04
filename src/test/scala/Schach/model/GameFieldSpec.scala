@@ -86,7 +86,8 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
     }
     "check if check" in {
       val f = King(3,0, Color.WHITE)
-      gameField.isCheck(f) should be(false)
+      val thrown = the [UnsupportedOperationException] thrownBy gameField.isCheck(f)
+      thrown.getMessage should equal("isCheck() is still not supported")
     }
     /*
     "set a GameField" in {
