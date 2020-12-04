@@ -13,6 +13,16 @@ class TuiSpec extends AnyWordSpec with Matchers {
     val tui = new Tui(controller)
     val input = "A1 F2"
     var field = GameField.getInstance
+    "work correctly on undoing an invalid command" in {
+      tui.interactWithUser("new")
+      val old = controller.gameFieldToString
+
+      tui.interactWithUser("undo")
+      controller.gameFieldToString should be(old)
+
+      tui.interactWithUser("redo")
+      controller.gameFieldToString should be(old)
+    }
     "convert a letter into a number for the GameField" in {
       tui.getPoint(input.charAt(0)) should be(0)
       tui.getPoint(input.charAt(1)) should be (0)
@@ -63,6 +73,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
       tui.interactWithUser("move A2 A3")
       controller.gameFieldToString should not be (old)
     }
+
     "undo and redo a move" in {
       tui.interactWithUser("move B1 A3")
       val old = controller.gameFieldToString
@@ -81,6 +92,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
       tui.interactWithUser("load")
       controller.gameFieldToString should be(old)
     }
+
   }
 
 }
