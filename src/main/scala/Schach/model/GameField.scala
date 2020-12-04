@@ -15,7 +15,7 @@ class GameField(private var gameField: Vector[Figure]) {
     this
   }
 
-  def getFigures(): Vector[Figure] = {
+  def getFigures: Vector[Figure] = {
     gameField
   }
 
@@ -142,6 +142,7 @@ class GameField(private var gameField: Vector[Figure]) {
 
 object GameField {
   private var instance : GameField = null
+
   def getInstance:GameField = {
     if (instance == null) {
       instance= new GameField(Vector())
