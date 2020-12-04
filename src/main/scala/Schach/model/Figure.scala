@@ -9,6 +9,7 @@ trait Figure {
   val checked : Boolean = false
 
 }
+/*
 object Figure {
   def apply(kind : String, x : Int, y : Int, color : Color): Figure = kind.toLowerCase match {
     case "pawn" => Pawn(x, y, color)
@@ -19,3 +20,4 @@ object Figure {
     case "king" => King(x, y, color)
   }
 }
+ */

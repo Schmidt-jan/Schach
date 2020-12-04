@@ -40,8 +40,6 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       }
     }
     "used as an Originator" should {
-      val builder = new ChessGameFieldBuilder()
-      val field = builder.getNewGameField()
       val controller = new Controller()
       val vec = Vector(0, 1, 0, 2)
 
