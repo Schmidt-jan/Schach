@@ -21,8 +21,7 @@ case class Rules(gameField: GameField) {
   def validPawn(figure: Pawn, xNext: Int, yNext: Int): Boolean = {
     if ((figure.color == Color.BLACK && figure.y < yNext) || (figure.color == Color.WHITE && figure.y > yNext)) {
       false
-    }
-    else if (figure.hasBeenMoved) {
+    } else if (figure.hasBeenMoved) {
       if (Math.abs(figure.x - xNext) == 0 && Math.abs(figure.y - yNext) == 1) {
         gameField.wayToIsFreeStraight(figure.x, figure.y, xNext, yNext) && gameField.moveToFieldAllowed(xNext, yNext, figure.color)
       } else false

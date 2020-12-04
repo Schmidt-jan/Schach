@@ -40,7 +40,8 @@ class GameField(private var gameField: Vector[Figure]) {
 
   def moveValid(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
     val rule = Rules(this)
-    rule.moveValidFigure(xNow, yNow, xNext, yNext)
+    if (rule.moveValidFigure(xNow, yNow, xNext, yNext)) true
+    else throw new IllegalArgumentException
   }
 
   def moveToFieldAllowed(x: Int, y: Int, color: Color): Boolean = getFigure(x, y) match {
