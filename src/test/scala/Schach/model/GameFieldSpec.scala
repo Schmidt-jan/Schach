@@ -78,6 +78,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField = builder.getNewGameField
       gameField.moveToFieldAllowed(1, 0, Color.WHITE) should be(false)
       gameField.moveToFieldAllowed(0, 2, Color.WHITE) should be(true)
+      gameField.moveToFieldAllowed(2, 1, Color.WHITE) should be (false)
     }
 
     "have a nice String representation" in {
