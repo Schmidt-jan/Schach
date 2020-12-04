@@ -10,5 +10,5 @@ trait GameFieldBuilder {
 
   def getNewGameField : GameField
 
-  def setGameField(newField : GameField) : GameField
+  //def setGameField(newField : GameField) : GameField
 }

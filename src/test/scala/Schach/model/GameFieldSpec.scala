@@ -11,6 +11,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
   "Figure should from " should {
     val builder = new ChessGameFieldBuilder
     var gameField = builder.getNewGameField
+    var gameField2 = builder.getNewGameField()
 
     val figure = gameField.getFigure(1, 1)
     "should be" in {
@@ -86,5 +87,14 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       val f = King(3,0, Color.WHITE)
       gameField.isCheck(f) should be(false)
     }
+    /*
+    "set a GameField" in {
+      gameField = builder.getNewGameField
+      gameField2 = gameField2.moveTo(1, 0, 2, 2)
+      val old = gameField2.toString
+      gameField = builder.setGameField(gameField2)
+      gameField.toString should be (old)
+    }
+     */
   }
 }

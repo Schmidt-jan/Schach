@@ -40,8 +40,11 @@ class ChessGameFieldBuilder extends GameFieldBuilder {
     instance
   }
 
+  /*
   override def setGameField(newField : GameField) : GameField = {
     getNewGameField()
     instance.addFigures(newField.getFigures())
   }
+   */
+
 }

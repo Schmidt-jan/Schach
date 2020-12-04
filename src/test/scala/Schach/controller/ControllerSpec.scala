@@ -60,7 +60,6 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       "save and load a state" in {
         controller.createGameField
         val old = controller.gameFieldToString
-        print(old)
         controller.save()
 
         controller.movePiece(vec)
