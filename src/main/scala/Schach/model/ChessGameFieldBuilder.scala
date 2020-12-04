@@ -2,6 +2,8 @@ package Schach.model
 
 import java.awt.Color
 
+import Schach.util.GameFieldBuilder
+
 class ChessGameFieldBuilder extends GameFieldBuilder {
 
   private val gameField = new GameField

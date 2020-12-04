@@ -1,7 +1,7 @@
 package Schach.aview
 
 import Schach.controller.Controller
-import Schach.model.GameField
+import Schach.model.{GameField, Pawn}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -61,9 +61,26 @@ class TuiSpec extends AnyWordSpec with Matchers {
       tui.interactWithUser("machmal XY ZX")
       controller.gameFieldToString should be(old)
       tui.interactWithUser("move A2 A3")
-      controller.gameFieldToString should not be old
+      controller.gameFieldToString should not be (old)
     }
+    "undo and redo a move" in {
+      tui.interactWithUser("move B1 A3")
+      val old = controller.gameFieldToString
 
+      tui.interactWithUser("undo")
+      controller.gameFieldToString should not be (old)
+
+      tui.interactWithUser("redo")
+      controller.gameFieldToString should be (old)
+    }
+    "save and load a state" in {
+      tui.interactWithUser("move B1 A3")
+      tui.interactWithUser("save")
+      val old = controller.gameFieldToString
+      tui.interactWithUser("move A3 B5")
+      tui.interactWithUser("load")
+      controller.gameFieldToString should be(old)
+    }
   }
 
 }
