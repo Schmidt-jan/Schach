@@ -4,7 +4,7 @@ import Schach.model.{ChessGameFieldBuilder, GameField}
 import Schach.util.{Caretaker, Observable, Originator, UndoManager}
 
 class Controller() extends Observable with Originator{
-  var gameField = GameField.getInstance
+  var gameField : GameField = GameField.getInstance
   val undoManager = new UndoManager
   val caretaker = new Caretaker
 
