@@ -8,15 +8,14 @@ import org.scalatest.wordspec.AnyWordSpec
 class RulesSpec extends AnyWordSpec with Matchers {
 
   "Rules" should {
+
     val builder = new ChessGameFieldBuilder
-    builder.makeGameField()
-
-    val gameField = builder.getGameField
-    val rule = Rules(gameField)
-
-
+    var gameField : GameField = builder.getNewGameField()
+    var rule = Rules(gameField)
 
     "confirm if a move is according to the rules" in {
+      gameField = builder.getNewGameField
+      rule = Rules(gameField)
       gameField.moveValid(0,0,0,2) should be(false)
       gameField.moveValid(1,0,0,2) should be(true)
       gameField.moveValid(2,0,1,2) should be(false)
@@ -27,6 +26,8 @@ class RulesSpec extends AnyWordSpec with Matchers {
     }
 
     "make sure Pawn is moving as intended" in {
+      gameField = builder.getNewGameField
+      rule = Rules(gameField)
       val p = Pawn(0,1, Color.WHITE)
       p.hasBeenMoved should be(false)
       val p2 = Pawn(0,6, Color.BLACK)

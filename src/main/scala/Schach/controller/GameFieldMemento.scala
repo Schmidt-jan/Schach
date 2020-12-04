@@ -1,12 +1,12 @@
 package Schach.controller
 
-import Schach.model.GameField
+import Schach.model.Figure
 import Schach.util.Memento
 
-class GameFieldMemento(field: GameField) extends Memento{
+class GameFieldMemento(field: Vector[Figure]) extends Memento{
   private val gameField = field
 
-  override def getField: GameField = {
+  override def getFigures : Vector[Figure] = {
     gameField
   }
 }

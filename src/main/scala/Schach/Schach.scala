@@ -25,7 +25,7 @@ object Schach {
     var break = false
     val builder = new ChessGameFieldBuilder
     builder.makeGameField()
-    val controller = new Controller(builder.getGameField)
+    val controller = new Controller()
     val tui = new Tui(controller)
     controller.notifyObservers
     //println(controller.gameFieldToString)

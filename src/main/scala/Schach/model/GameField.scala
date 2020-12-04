@@ -3,26 +3,38 @@ package Schach.model
 import java.awt.Color
 
 
-case class GameField(var gameField: Vector[Figure]) {
+class GameField(private var gameField: Vector[Figure]) {
 
-  def this() = this(Vector())
+
 
   def addFigures(figures : Vector[Figure]) : GameField = {
-    if (!gameField.contains(figures)) gameField = gameField.appendedAll(figures)
+    for (in <- gameField) {
+      if (figures.contains(in)) return this
+    }
+    gameField = gameField.appendedAll(figures)
     this
   }
 
+  def getFigures(): Vector[Figure] = {
+    gameField
+  }
 
   def moveTo(xNow: Int, yNow: Int, xNext: Int, yNext: Int): GameField = {
     if (getFigure(xNow, yNow).isEmpty) return this
     val figure = getFigure(xNow, yNow).get
     figure match {
-      case p: Pawn => GameField(gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color, Some(true)))
-      case p: Rook => GameField(gameField.filter(_ != figure) :+ Rook(xNext, yNext, figure.color))
-      case p: Knight => GameField(gameField.filter(_ != figure) :+ Knight(xNext, yNext, figure.color))
-      case p: Bishop => GameField(gameField.filter(_ != figure) :+ Bishop(xNext, yNext, figure.color))
-      case p: Queen => GameField(gameField.filter(_ != figure) :+ Queen(xNext, yNext, figure.color))
-      case p: King => GameField(gameField.filter(_ != figure) :+ King(xNext, yNext, figure.color))
+      case p: Pawn => gameField = gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color, Some(true))
+        this
+      case p: Rook => gameField = gameField.filter(_ != figure) :+ Rook(xNext, yNext, figure.color)
+        this
+      case p: Knight => gameField = gameField.filter(_ != figure) :+ Knight(xNext, yNext, figure.color)
+        this
+      case p: Bishop => gameField = gameField.filter(_ != figure) :+ Bishop(xNext, yNext, figure.color)
+        this
+      case p: Queen => gameField = gameField.filter(_ != figure) :+ Queen(xNext, yNext, figure.color)
+        this
+      case p: King => gameField = gameField.filter(_ != figure) :+ King(xNext, yNext, figure.color)
+        this
     }
   }
 
@@ -99,6 +111,11 @@ case class GameField(var gameField: Vector[Figure]) {
     gameField.filter(_.x == xPos).find(_.y == yPos)
   }
 
+  def clear() : Boolean = {
+    gameField = Vector.empty
+    gameField.isEmpty
+  }
+
   override def toString: String = {
 
     val build = new StringBuilder
@@ -121,4 +138,14 @@ case class GameField(var gameField: Vector[Figure]) {
     build.toString
   }
 
+}
+
+object GameField {
+  private var instance : GameField = null
+  def getInstance:GameField = {
+    if (instance == null) {
+      instance= new GameField(Vector())
+    }
+    instance
+  }
 }

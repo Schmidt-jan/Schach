@@ -1,7 +1,7 @@
 package Schach.controller
 
-import Schach.model.GameField
-import Schach.util.{Caretaker, Observer, UndoManager}
+import Schach.model.{ChessGameFieldBuilder, GameField}
+import Schach.util.Observer
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -10,8 +10,8 @@ import org.scalatest.wordspec.AnyWordSpec
 class ControllerSpec extends AnyWordSpec with Matchers {
   "A Controller" when  {
     "observed by an Observer" should {
-      val field = new GameField()
-      val controller = new Controller(field)
+      val field = GameField.getInstance
+      val controller = new Controller()
       val vec = Vector(0, 1, 0, 2)
       val observer = new Observer {
         var updated: Boolean = false
@@ -40,8 +40,9 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       }
     }
     "used as an Originator" should {
-      val field = new GameField()
-      val controller = new Controller(field)
+      val builder = new ChessGameFieldBuilder()
+      val field = builder.getNewGameField()
+      val controller = new Controller()
       val vec = Vector(0, 1, 0, 2)
 
       "handle undo/redo correctly" in {
@@ -59,6 +60,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       "save and load a state" in {
         controller.createGameField
         val old = controller.gameFieldToString
+        print(old)
         controller.save()
 
         controller.movePiece(vec)

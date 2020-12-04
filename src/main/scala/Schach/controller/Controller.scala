@@ -1,17 +1,17 @@
 package Schach.controller
 
 import Schach.model.{ChessGameFieldBuilder, GameField}
-import Schach.util.{Caretaker, Memento, Observable, Originator, UndoManager}
+import Schach.util.{Caretaker, Observable, Originator, UndoManager}
 
-class Controller(var gameField: GameField) extends Observable with Originator{
+class Controller() extends Observable with Originator{
+  var gameField = GameField.getInstance
   val undoManager = new UndoManager
   val caretaker = new Caretaker
 
 
   def createGameField() : Unit = {
     val builder = new ChessGameFieldBuilder
-    builder.makeGameField()
-    gameField = builder.getGameField
+    gameField = builder.getNewGameField()
     notifyObservers
   }
 
@@ -31,23 +31,24 @@ class Controller(var gameField: GameField) extends Observable with Originator{
   }
 
   def undo(): Unit = {
-    undoManager.undoStep
+    undoManager.undoStep()
     notifyObservers
   }
 
   def redo(): Unit = {
-    undoManager.redoStep
+    undoManager.redoStep()
     notifyObservers
   }
 
   def save(): Unit = {
-    val memento = new GameFieldMemento(gameField)
+    val memento = new GameFieldMemento(gameField.getFigures())
     caretaker.called = true
     caretaker.addMemento(memento)
   }
 
   def restore(): Unit = {
-    gameField = caretaker.getMemento.getField
+    gameField.clear()
+    gameField.addFigures(caretaker.getMemento.getFigures)
     notifyObservers
   }
 

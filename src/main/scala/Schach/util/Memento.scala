@@ -1,7 +1,7 @@
 package Schach.util
 
-import Schach.model.GameField
+import Schach.model.Figure
 
 trait Memento {
-  def getField: GameField
+  def getFigures: Vector[Figure]
 }
