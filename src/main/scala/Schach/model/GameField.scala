@@ -15,7 +15,7 @@ class GameField(private var gameField: Vector[Figure]) {
     this
   }
 
-  def getFigures: Vector[Figure] = {
+  def getFigures(): Vector[Figure] = {
     gameField
   }
 
