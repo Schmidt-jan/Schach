@@ -1,10 +1,8 @@
 package Schach
 
-import java.awt.Color
-
 import aview.Tui
-import model.GameField
 import controller.Controller
+import model._
 
 
 object Schach {
@@ -25,7 +23,9 @@ object Schach {
     */
 
     var break = false
-    val controller = new Controller(new GameField)
+    val builder = new ChessGameFieldBuilder
+    builder.makeGameField()
+    val controller = new Controller()
     val tui = new Tui(controller)
     controller.notifyObservers
     //println(controller.gameFieldToString)

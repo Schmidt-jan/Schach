@@ -3,10 +3,11 @@ package Schach.aview
 import Schach.controller.Controller
 import Schach.util.Observer
 
+import scala.util.{Failure, Try}
+
 class Tui(controller: Controller) extends Observer{
 
   controller.add(this)
-
 
   def interactWithUser(input: String):Unit = {
     val args = input.split(" ")
@@ -25,17 +26,26 @@ class Tui(controller: Controller) extends Observer{
         else {
           println("Wrong Input: Invalid Move")
         }
+      case "undo" => controller.undo()
+      case "redo" => controller.redo()
+      case "save" => controller.save()
+      case "load" =>
+        if (controller.caretaker.called){
+          controller.restore()
+        } else {
+          println("No Save created yet")
+        }
       case _ => println("No Valid Command")
     }
   }
 
 
   def readInput(line: String): Vector[Int] = {
-      val fromX = getPoint(line.charAt(0))
-      val fromY = getPoint(line.charAt(1))
-      val toX = getPoint(line.charAt(3))
-      val toY = getPoint(line.charAt(4))
-      Vector(fromX, fromY, toX, toY)
+    val fromX = getPoint(line.charAt(0))
+    val fromY = getPoint(line.charAt(1))
+    val toX = getPoint(line.charAt(3))
+    val toY = getPoint(line.charAt(4))
+    Vector(fromX, fromY, toX, toY)
   }
 
 

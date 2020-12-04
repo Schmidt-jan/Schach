@@ -1,7 +1,7 @@
 package Schach.aview
 
 import Schach.controller.Controller
-import Schach.model.{GameField, Pawn}
+import Schach.model.GameField
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -9,10 +9,20 @@ import org.scalatest.wordspec.AnyWordSpec
 class TuiSpec extends AnyWordSpec with Matchers {
 
   "A Tui" should {
-    val controller = new Controller(new GameField)
+    val controller = new Controller()
     val tui = new Tui(controller)
     val input = "A1 F2"
-    var field = new GameField()
+    var field = GameField.getInstance
+    "work correctly on undoing an invalid command" in {
+      tui.interactWithUser("new")
+      val old = controller.gameFieldToString
+
+      tui.interactWithUser("undo")
+      controller.gameFieldToString should be(old)
+
+      tui.interactWithUser("redo")
+      controller.gameFieldToString should be(old)
+    }
     "convert a letter into a number for the GameField" in {
       tui.getPoint(input.charAt(0)) should be(0)
       tui.getPoint(input.charAt(1)) should be (0)
@@ -61,7 +71,26 @@ class TuiSpec extends AnyWordSpec with Matchers {
       tui.interactWithUser("machmal XY ZX")
       controller.gameFieldToString should be(old)
       tui.interactWithUser("move A2 A3")
-      controller.gameFieldToString should not be(old)
+      controller.gameFieldToString should not be (old)
+    }
+
+    "undo and redo a move" in {
+      tui.interactWithUser("move B1 A3")
+      val old = controller.gameFieldToString
+
+      tui.interactWithUser("undo")
+      controller.gameFieldToString should not be (old)
+
+      tui.interactWithUser("redo")
+      controller.gameFieldToString should be (old)
+    }
+    "save and load a state" in {
+      tui.interactWithUser("move B1 A3")
+      tui.interactWithUser("save")
+      val old = controller.gameFieldToString
+      tui.interactWithUser("move A3 B5")
+      tui.interactWithUser("load")
+      controller.gameFieldToString should be(old)
     }
 
   }
