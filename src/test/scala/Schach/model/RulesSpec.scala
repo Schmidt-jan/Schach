@@ -14,7 +14,7 @@ class RulesSpec extends AnyWordSpec with Matchers {
     var rule = Rules(gameField)
 
     "confirm if a move is according to the rules" in {
-      gameField = builder.getNewGameField
+      gameField = builder.getNewGameField()
       rule = Rules(gameField)
       gameField.moveValid(0,0,0,2) should be(false)
       gameField.moveValid(1,0,0,2) should be(true)
@@ -26,7 +26,7 @@ class RulesSpec extends AnyWordSpec with Matchers {
     }
 
     "make sure Pawn is moving as intended" in {
-      gameField = builder.getNewGameField
+      gameField = builder.getNewGameField()
       rule = Rules(gameField)
       val p = Pawn(0,1, Color.WHITE)
       p.hasBeenMoved should be(false)
