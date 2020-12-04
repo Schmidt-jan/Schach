@@ -3,10 +3,11 @@ package Schach.aview
 import Schach.controller.Controller
 import Schach.util.Observer
 
+import scala.util.{Failure, Try}
+
 class Tui(controller: Controller) extends Observer{
 
   controller.add(this)
-
 
   def interactWithUser(input: String):Unit = {
     val args = input.split(" ")
