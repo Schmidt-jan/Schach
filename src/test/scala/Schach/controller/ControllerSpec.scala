@@ -43,14 +43,15 @@ class ControllerSpec extends AnyWordSpec with Matchers {
 
       "handle undo/redo correctly" in {
         controller.createGameField()
+        
         controller.movePiece(vec)
-        val old = controller.gameFieldToString
+        val tmp = controller.gameFieldToString
 
         controller.undo()
-        controller.gameFieldToString should not be old
+        controller.gameFieldToString should not be tmp
 
         controller.redo()
-        controller.gameFieldToString should be(old)
+        controller.gameFieldToString should be(tmp)
       }
 
       "save and load a state" in {
