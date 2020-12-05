@@ -63,6 +63,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
       controller.gameField shouldBe a [GameField]
     }
     "move according to the input" in {
+      tui.interactWithUser("new")
       tui.interactWithUser("move A1 A2")
       controller.moveIsValid(tui.readInput("A2 A3")) should be(true)
       controller.moveIsValid(tui.readInput("A1 A1")) should be(false)
