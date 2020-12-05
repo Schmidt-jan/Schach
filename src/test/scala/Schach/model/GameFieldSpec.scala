@@ -79,6 +79,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.moveToFieldAllowed(1, 0, Color.WHITE) should be(false)
       gameField.moveToFieldAllowed(0, 2, Color.WHITE) should be(true)
       gameField.moveToFieldAllowed(2, 1, Color.WHITE) should be (false)
+      gameField.moveToFieldAllowed(0, 6, Color.WHITE) should be(true)
     }
 
     "have a nice String representation" in {
@@ -87,6 +88,16 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
     "check if check" in {
       val f = King(3,0, Color.WHITE)
       gameField.isCheck(f) should be(false)
+    }
+    "add Figures correctly" in {
+      gameField = builder.getNewGameField()
+      val old = gameField.toString
+      val vec = Vector(Rook(0, 0, Color.WHITE), Knight(1, 0, Color.WHITE), Bishop(2, 0, Color.WHITE), King(3, 0, Color.WHITE),
+        Queen(4, 0, Color.WHITE), Bishop(5, 0, Color.WHITE), Knight(6, 0, Color.WHITE), Rook(7, 0, Color.WHITE),
+        Pawn(0, 1, Color.WHITE), Pawn(1, 1, Color.WHITE), Pawn(2, 1, Color.WHITE), Pawn(3, 1, Color.WHITE),
+        Pawn(4, 1, Color.WHITE), Pawn(5, 1, Color.WHITE), Pawn(6, 1, Color.WHITE), Pawn(7, 1, Color.WHITE))
+      gameField.addFigures(vec)
+      gameField.toString should be(old)
     }
     /*
     "set a GameField" in {

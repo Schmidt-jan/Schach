@@ -39,7 +39,6 @@ class RulesSpec extends AnyWordSpec with Matchers {
       rule.validPawn(p3, 7, 2) should be(true)
       rule.validPawn(p, 0, 3) should be(true)
       rule.validPawn(p, 0, 4) should be(false)
-      println(gameField.toString)
 
     }
 
@@ -47,6 +46,7 @@ class RulesSpec extends AnyWordSpec with Matchers {
       val k = Knight(1, 0, Color.WHITE)
       rule.validKnight(k, 2, 2) should be(true)
       rule.validKnight(k, 3, 1) should be(false)
+      rule.validKnight(k, 0, 4) should be(false)
     }
     "Queen should be able to move diagonally" in {
       val q = Queen(3, 2, Color.WHITE)
