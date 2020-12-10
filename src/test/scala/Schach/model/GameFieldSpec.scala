@@ -11,7 +11,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
   "Figure should from " should {
     val builder = new ChessGameFieldBuilder
     var gameField = builder.getNewGameField
-    var gameField2 = builder.getNewGameField()
+
 
     val figure = gameField.getFigure(1, 1)
     "should be" in {
@@ -74,6 +74,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField = gameField.moveTo(7, 7, 7, 5)
       gameField.wayToIsFreeStraight(7, 5, 4, 5) should be(true)
     }
+
     "check if moving to a specific cell is allowed" in {
       gameField = builder.getNewGameField
       gameField.moveToFieldAllowed(1, 0, Color.WHITE) should be(false)
@@ -84,6 +85,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
     "have a nice String representation" in {
       gameField.toString shouldBe a[String]
     }
+
     "check if check" in {
       val f = King(3,0, Color.WHITE)
       val thrown = the [UnsupportedOperationException] thrownBy gameField.isCheck(f)

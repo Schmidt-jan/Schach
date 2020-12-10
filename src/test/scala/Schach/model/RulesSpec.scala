@@ -10,7 +10,7 @@ class RulesSpec extends AnyWordSpec with Matchers {
   "Rules" should {
 
     val builder = new ChessGameFieldBuilder
-    var gameField : GameField = builder.getNewGameField()
+    var gameField : GameField = builder.getNewGameField
     var rule = Rules(gameField)
 
     "confirm if a move is according to the rules" in {

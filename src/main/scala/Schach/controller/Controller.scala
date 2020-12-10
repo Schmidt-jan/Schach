@@ -11,7 +11,7 @@ class Controller() extends Observable with Originator{
 
   def createGameField() : Unit = {
     val builder = new ChessGameFieldBuilder
-    gameField = builder.getNewGameField()
+    gameField = builder.getNewGameField
     notifyObservers
   }
 
@@ -41,7 +41,7 @@ class Controller() extends Observable with Originator{
   }
 
   def save(): Unit = {
-    val memento = new GameFieldMemento(gameField.getFigures())
+    val memento = new GameFieldMemento(gameField.getFigures)
     caretaker.called = true
     caretaker.addMemento(memento)
   }

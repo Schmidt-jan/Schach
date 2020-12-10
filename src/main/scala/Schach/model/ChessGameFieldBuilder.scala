@@ -43,7 +43,7 @@ class ChessGameFieldBuilder extends GameFieldBuilder {
     instance
   }
 
-  override def getNewGameField(): GameField = {
+  override def getNewGameField: GameField = {
     makeGameField()
     instance
   }

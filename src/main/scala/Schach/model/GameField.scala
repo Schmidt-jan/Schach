@@ -17,7 +17,7 @@ class GameField(private var gameField: Vector[Figure]) {
     this
   }
 
-  def getFigures(): Vector[Figure] = {
+  def getFigures: Vector[Figure] = {
     gameField
   }
 
@@ -25,17 +25,17 @@ class GameField(private var gameField: Vector[Figure]) {
     if (getFigure(xNow, yNow).isEmpty) return this
     val figure = getFigure(xNow, yNow).get
     figure match {
-      case p: Pawn => gameField = gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color, Some(true))
+      case _: Pawn => gameField = gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color, Some(true))
         this
-      case p: Rook => gameField = gameField.filter(_ != figure) :+ Rook(xNext, yNext, figure.color)
+      case _: Rook => gameField = gameField.filter(_ != figure) :+ Rook(xNext, yNext, figure.color)
         this
-      case p: Knight => gameField = gameField.filter(_ != figure) :+ Knight(xNext, yNext, figure.color)
+      case _: Knight => gameField = gameField.filter(_ != figure) :+ Knight(xNext, yNext, figure.color)
         this
-      case p: Bishop => gameField = gameField.filter(_ != figure) :+ Bishop(xNext, yNext, figure.color)
+      case _: Bishop => gameField = gameField.filter(_ != figure) :+ Bishop(xNext, yNext, figure.color)
         this
-      case p: Queen => gameField = gameField.filter(_ != figure) :+ Queen(xNext, yNext, figure.color)
+      case _: Queen => gameField = gameField.filter(_ != figure) :+ Queen(xNext, yNext, figure.color)
         this
-      case p: King => gameField = gameField.filter(_ != figure) :+ King(xNext, yNext, figure.color)
+      case _: King => gameField = gameField.filter(_ != figure) :+ King(xNext, yNext, figure.color)
         this
     }
   }
