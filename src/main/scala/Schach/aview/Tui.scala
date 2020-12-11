@@ -5,10 +5,10 @@ import Schach.util.Observer
 
 import scala.util.Success
 
+
 class Tui(controller: Controller) extends Observer{
 
   controller.add(this)
-
 
   def interactWithUser(input: String) : Unit = {
     val args = input.split(" ")
