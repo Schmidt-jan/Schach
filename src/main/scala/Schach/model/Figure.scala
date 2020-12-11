@@ -6,7 +6,7 @@ trait Figure {
   val x  : Int
   val y : Int
   val color : Color
-  val checked : Boolean = false
+  var checked: Boolean = false
 
 }
 object Figure {

@@ -4,13 +4,13 @@ import Schach.model.{ChessGameFieldBuilder, GameField}
 import Schach.util.{Caretaker, Observable, Originator, UndoManager}
 
 class Controller() extends Observable with Originator{
-  var gameField : GameField = GameField.getInstance
+  val builder = new ChessGameFieldBuilder
+  var gameField : GameField = builder.getNewGameField
   val undoManager = new UndoManager
   val caretaker = new Caretaker
 
 
   def createGameField() : Unit = {
-    val builder = new ChessGameFieldBuilder
     gameField = builder.getNewGameField
     notifyObservers
   }
