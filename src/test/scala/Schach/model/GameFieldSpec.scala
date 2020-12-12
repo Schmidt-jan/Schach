@@ -80,7 +80,6 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.moveToFieldAllowed(1, 0, Color.WHITE) should be(false)
       gameField.moveToFieldAllowed(0, 2, Color.WHITE) should be(true)
       gameField.moveToFieldAllowed(2, 1, Color.WHITE) should be (false)
-      gameField.moveToFieldAllowed(0, 6, Color.WHITE) should be(true)
     }
 
     "have a nice String representation" in {
