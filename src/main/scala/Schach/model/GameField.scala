@@ -1,9 +1,13 @@
 package Schach.model
 
+import java.awt.Color
+
 import scala.collection.immutable._
 import scala.util.control._
 
 class GameField(private var gameField: Vector[Figure]) {
+
+  var validPlayer = Color.WHITE
 
   def this() = this(Vector())
 
@@ -27,6 +31,8 @@ class GameField(private var gameField: Vector[Figure]) {
       case None =>
     }
 
+    changePlayer()
+
     val figure = getFigure(xNow, yNow).get
     figure match {
       case _: Pawn => gameField = gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color, Some(true))
@@ -45,6 +51,11 @@ class GameField(private var gameField: Vector[Figure]) {
   }
 
   def moveValid(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
+    getFigure(xNow, yNow) match {
+      case Some(value) => if (value.color != validPlayer) return false
+      case None => return false
+    }
+
     val rule = Rules(this)
     rule.moveValidFigure(xNow, yNow, xNext, yNext)
   }
@@ -61,7 +72,6 @@ class GameField(private var gameField: Vector[Figure]) {
       case None => check1
     }
   }
-
 
   def setIntoCheck(figure: Figure, xNext : Int, yNext : Int, king: Figure): Boolean = {
     var output = false
@@ -86,6 +96,10 @@ class GameField(private var gameField: Vector[Figure]) {
 
     if (figureTo.isDefined) figureTo.get.checked = false
     output
+  }
+
+  def isCheckmate() : Boolean = {
+    false
   }
 
   def wayToIsFreeStraight(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
@@ -142,6 +156,13 @@ class GameField(private var gameField: Vector[Figure]) {
     true
   }
 
+  def changePlayer(): Color = {
+    validPlayer match {
+      case Color.BLACK => validPlayer = Color.WHITE
+      case Color.WHITE => validPlayer = Color.BLACK
+    }
+    validPlayer
+  }
 
   def getFigure(xPos: Int, yPos: Int): Option[Figure] = {
     gameField.filter(_.x == xPos).find(_.y == yPos)

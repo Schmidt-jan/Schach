@@ -3,16 +3,17 @@ package Schach.controller
 import Schach.util.Command
 
 class MoveCommand(xNow: Int, yNow: Int, xNext: Int, yNext: Int, controller: Controller) extends Command {
-  var memento = new GameFieldMemento(controller.gameField.getFigures)
+  var memento = new GameFieldMemento(controller.gameField.getFigures, controller.gameField.validPlayer)
 
   override def doStep(): Unit = {
-    memento = new GameFieldMemento(controller.gameField.getFigures)
+    memento = new GameFieldMemento(controller.gameField.getFigures, controller.gameField.validPlayer)
     controller.gameField = controller.gameField.moveTo(xNow, yNow, xNext, yNext)
   }
 
   override def undoStep(): Unit = {
     controller.gameField.clear()
     controller.gameField.addFigures(memento.getFigures)
+    controller.gameField.validPlayer = memento.getPlayer
   }
 
   override def redoStep(): Unit = controller.gameField = controller.gameField.moveTo(xNow, yNow, xNext, yNext)

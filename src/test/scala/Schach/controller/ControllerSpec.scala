@@ -26,7 +26,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         observer.updated should be(true)
       }
       "check if a move is valid" in {
-        val v = Vector(1, 1, 1, 3)
+        val v = Vector(1, 6, 1, 4)
         controller.moveIsValid(v) should be(true)
       }
       "return a string representation of the GameField" in {

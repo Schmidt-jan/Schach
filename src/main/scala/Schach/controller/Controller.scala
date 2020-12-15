@@ -41,7 +41,7 @@ class Controller() extends Observable with Originator{
   }
 
   def save(): Unit = {
-    val memento = new GameFieldMemento(gameField.getFigures)
+    val memento = new GameFieldMemento(gameField.getFigures, gameField.validPlayer)
     caretaker.called = true
     caretaker.addMemento(memento)
   }

@@ -49,7 +49,6 @@ class Tui(controller: Controller) extends Observer{
     Vector(fromX, fromY, toX, toY)
   }
 
-
   def getPoint(input: Char): Int = {
     input match {
       case 'A' => 0

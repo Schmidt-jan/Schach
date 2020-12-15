@@ -78,7 +78,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
     }
 
     "undo and redo a move" in {
-      tui.interactWithUser("move B1 A3")
+      tui.interactWithUser("move B7 A6")
       val old = controller.gameFieldToString
 
       tui.interactWithUser("undo")
