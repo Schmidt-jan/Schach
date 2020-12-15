@@ -1,7 +1,5 @@
 package Schach.model
 
-import java.awt.Color
-
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -30,28 +28,17 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.wayToIsFreeDiagonal(2,0,6,4) should be(false)
       gameField.wayToIsFreeDiagonal(3,2,0,5) should be(true)
 
-      gameField = gameField.moveTo(3,1,3,2)
+      gameField = gameField.moveTo(3,1,3,3)
 
-      gameField = gameField.moveTo(2,0,6,4)
+      gameField = gameField.moveTo(7,6,7,5)
 
-      gameField = gameField.moveTo(6,4,7,3)
+      gameField = gameField.moveTo(4,0,0,4)
 
-      gameField = gameField.moveTo(7,3,6,2)
+      gameField.moveValid(2, 6, 2, 5) should be (false)
 
-      gameField = gameField.moveTo(6,2,4,4)
-
-      gameField = gameField.moveTo(3,2, 0,3)
-
-      gameField.wayToIsFreeStraight(3,0,3,4) should be(true)
-      gameField = gameField.moveTo(3,0,3,1)
-
-      gameField = gameField.moveTo(3,1,4,2)
-
-      gameField.moveTo(4,0,0,4)
-
-      gameField.wayToIsFreeStraight(0,4,3,4) should be (true)
-
+      gameField.wayToIsFreeStraight(0,4,2,4) should be(true)
     }
+
     "do some more move cases" in {
       gameField = builder.getNewGameField
       gameField = gameField.moveTo(0, 1, 0, 3)
