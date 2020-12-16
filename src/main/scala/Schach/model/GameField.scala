@@ -32,9 +32,7 @@ class GameField(private var gameField: Vector[Figure]) {
       case None =>
     }
 
-    changePlayer()
-
-    val figure = getUncheckedFigure(xNow, yNow).get
+    val figure = getFigure(xNow, yNow).get
     figure match {
       case _: Pawn => gameField = gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color, Some(true))
         this
@@ -53,7 +51,11 @@ class GameField(private var gameField: Vector[Figure]) {
 
   def moveValid(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
     getFigure(xNow, yNow) match {
-      case Some(value) => if (value.color != validPlayer) return false
+      case Some(value) =>
+        if (value.color != validPlayer) {
+          println("Wrong player")
+          return false
+        }
       case None => return false
     }
 
@@ -78,7 +80,7 @@ class GameField(private var gameField: Vector[Figure]) {
     var output = false
     val loop = new Breaks
 
-    val figuresEnimy = getFigures.filter(_.color != king.color)
+    val figuresEnimy = getFigures.filter(!_.checked).filter(_.color != king.color)
 
     val figureTo = getFigure(xNext, yNext)
     if (figureTo.isDefined) figureTo.get.checked = true
@@ -166,10 +168,6 @@ class GameField(private var gameField: Vector[Figure]) {
   }
 
   def getFigure(xPos: Int, yPos: Int): Option[Figure] = {
-    gameField.filter(_.x == xPos).find(_.y == yPos)
-  }
-
-  def getUncheckedFigure(xPos: Int, yPos: Int): Option[Figure] = {
     gameField.filter(_.checked == false).filter(_.x == xPos).find(_.y == yPos)
   }
 

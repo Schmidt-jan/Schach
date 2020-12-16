@@ -33,15 +33,17 @@ case class Rules(gameField: GameField) {
     //TODO add support for checking other figures
     if ((figure.color == Color.BLACK && figure.y < yNext) || (figure.color == Color.WHITE && figure.y > yNext)) {
       false
-    } else if (figure.hasBeenMoved) {
-      if (Math.abs(figure.x - xNext) == 0 && Math.abs(figure.y - yNext) == 1) {
-        gameField.wayToIsFreeStraight(figure.x, figure.y, xNext, yNext)
-      } else false
-    } else {
-      if (Math.abs(figure.x - xNext) == 0 && Math.abs(figure.y - yNext) <= 2) {
-        gameField.wayToIsFreeStraight(figure.x, figure.y, xNext, yNext)
-      } else false
     }
+    //walks straight on
+    else if (Math.abs(figure.x - xNext) == 0 && gameField.wayToIsFreeStraight(figure.x, figure.y, xNext, yNext)) {
+      if (figure.hasBeenMoved) Math.abs(figure.y - yNext) == 1
+      else Math.abs(figure.y - yNext) <= 2
+    }
+    //walks diagonal -> needs to check someone
+    else if (Math.abs(xNext - figure.x) == 1 && Math.abs(yNext - figure.y) == 1) {
+      val ret = gameField.getFigure(xNext, yNext).isInstanceOf[Some[Figure]]
+      return ret
+    } else false
   }
 
   def validRookWithoutKingCheck(figure: Rook, xNext: Int, yNext: Int): Boolean = {

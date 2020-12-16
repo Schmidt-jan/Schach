@@ -20,6 +20,7 @@ class Tui(controller: Controller) extends Observer{
           val command = args(1).concat(" ").concat(args(2))
           if (controller.moveIsValid(readInput(command))) {
             controller.movePiece(readInput(command))
+            controller.changePlayer()
           } else {
             println("That Move is against the Rules!")
           }

@@ -30,6 +30,9 @@ class Controller() extends Observable with Originator{
     gameField.moveValid(newPos(0), newPos(1), newPos(2), newPos(3))
   }
 
+  def changePlayer(): Unit = {
+    gameField.changePlayer()
+  }
   def undo(): Unit = {
     undoManager.undoStep()
     notifyObservers
