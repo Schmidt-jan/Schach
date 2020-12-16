@@ -1,5 +1,7 @@
 package Schach.controller
 
+import java.awt.Color
+
 import Schach.model.{ChessGameFieldBuilder, GameField}
 import Schach.util.{Caretaker, Observable, Originator, UndoManager}
 
@@ -30,6 +32,14 @@ class Controller() extends Observable with Originator{
     gameField.moveValid(newPos(0), newPos(1), newPos(2), newPos(3))
   }
 
+  def setPlayer(color : Color): Color = {
+    gameField.setPlayer(color)
+  }
+
+  def getPlayer() : Color = {
+    gameField.getPlayer
+  }
+
   def changePlayer(): Unit = {
     gameField.changePlayer()
   }
@@ -44,7 +54,7 @@ class Controller() extends Observable with Originator{
   }
 
   def save(): Unit = {
-    val memento = new GameFieldMemento(gameField.getFigures, gameField.validPlayer)
+    val memento = new GameFieldMemento(gameField.getFigures, gameField.getPlayer)
     caretaker.called = true
     caretaker.addMemento(memento)
   }

@@ -30,7 +30,6 @@ case class Rules(gameField: GameField) {
   }
   
   def validPawnWithoutKingCheck(figure: Pawn, xNext: Int, yNext: Int): Boolean = {
-    //TODO add support for checking other figures
     if ((figure.color == Color.BLACK && figure.y < yNext) || (figure.color == Color.WHITE && figure.y > yNext)) {
       false
     }
