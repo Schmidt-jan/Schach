@@ -24,6 +24,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       "notify its observer after moving a piece" in {
         controller.movePiece(vec)
         observer.updated should be(true)
+        controller.changePlayer()
       }
       "check if a move is valid" in {
         val v = Vector(1, 6, 1, 4)
