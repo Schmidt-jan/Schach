@@ -27,13 +27,14 @@ class GameField(private var gameField: Vector[Figure]) {
     if (getFigure(xNow, yNow).isEmpty) return this
 
     getFigure(xNext, yNext) match {
-      case Some(fig) => fig.checked = true
+      case Some(fig) =>
+        fig.checked = true
       case None =>
     }
 
     changePlayer()
 
-    val figure = getFigure(xNow, yNow).get
+    val figure = getUncheckedFigure(xNow, yNow).get
     figure match {
       case _: Pawn => gameField = gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color, Some(true))
         this
@@ -168,7 +169,12 @@ class GameField(private var gameField: Vector[Figure]) {
     gameField.filter(_.x == xPos).find(_.y == yPos)
   }
 
+  def getUncheckedFigure(xPos: Int, yPos: Int): Option[Figure] = {
+    gameField.filter(_.checked == false).filter(_.x == xPos).find(_.y == yPos)
+  }
+
   def clear() : Boolean = {
+    validPlayer = Color.WHITE
     gameField = Vector.empty
     gameField.isEmpty
   }
@@ -182,7 +188,7 @@ class GameField(private var gameField: Vector[Figure]) {
     for (y <- Range(7, -1, -1)) {
       build.append(y + 1).append(" │\t")
 
-      val row = gameField.filter(_.y == y)
+      val row = gameField.filter(!_.checked).filter(_.y == y)
 
       for (x <- 0 to 7) {
         row.find(_.x == x) match {

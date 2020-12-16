@@ -30,6 +30,7 @@ case class Rules(gameField: GameField) {
   }
   
   def validPawnWithoutKingCheck(figure: Pawn, xNext: Int, yNext: Int): Boolean = {
+    //TODO add support for checking other figures
     if ((figure.color == Color.BLACK && figure.y < yNext) || (figure.color == Color.WHITE && figure.y > yNext)) {
       false
     } else if (figure.hasBeenMoved) {
@@ -74,18 +75,7 @@ case class Rules(gameField: GameField) {
   //Benni
   //xPos Move Option for diagonal Hit has to be added later
   def validPawn(figure: Pawn, xNext: Int, yNext: Int): Boolean = {
-    if ((figure.color == Color.BLACK && figure.y < yNext) || (figure.color == Color.WHITE && figure.y > yNext)) {
-      false
-    } else if (figure.hasBeenMoved) {
-      if (Math.abs(figure.x - xNext) == 0 && Math.abs(figure.y - yNext) == 1) {
-        gameField.wayToIsFreeStraight(figure.x, figure.y, xNext, yNext) && gameField.moveToFieldAllowed(xNext, yNext, figure)
-      } else false
-    } else {
-      if (Math.abs(figure.x - xNext) == 0 && Math.abs(figure.y - yNext) <= 2) {
-        gameField.wayToIsFreeStraight(figure.x, figure.y, xNext, yNext) && gameField.moveToFieldAllowed(xNext, yNext, figure)
-      } else false
-    }
-
+    validPawnWithoutKingCheck(figure, xNext, yNext) && gameField.moveToFieldAllowed(xNext, yNext, figure)
   }
 
   def validRook(figure: Rook, xNext: Int, yNext: Int): Boolean = {
