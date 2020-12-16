@@ -9,6 +9,7 @@ class UndoManager {
     command.doStep
   }
   def undoStep()  = {
+    //TODO add support for unchecking
     undoStack match {
       case  Nil =>
       case head::stack => {
