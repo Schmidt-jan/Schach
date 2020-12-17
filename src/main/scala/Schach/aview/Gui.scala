@@ -68,7 +68,6 @@ class Gui(controller: Controller) extends Frame with Observer {
             val move = Vector(from._1, from._2, to._1, to._2)
             if (controller.moveIsValid(move)) {
               controller.movePiece(move)
-              controller.changePlayer()
               update
             } else {
               Dialog.showMessage(contents.head, "Invalid move", title = "Error")

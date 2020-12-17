@@ -41,7 +41,7 @@ case class Rules(gameField: GameField) {
     //walks diagonal -> needs to check someone
     else if (Math.abs(xNext - figure.x) == 1 && Math.abs(yNext - figure.y) == 1) {
       val ret = gameField.getFigure(xNext, yNext).isInstanceOf[Some[Figure]]
-      return ret
+      ret
     } else false
   }
 
@@ -72,6 +72,8 @@ case class Rules(gameField: GameField) {
   def validKingWithoutKingCheck(figure: King, xNext: Int, yNext: Int): Boolean = {
     Math.abs(figure.x - xNext) <= 1 && Math.abs(figure.y - yNext) <= 1
   }
+
+
 
   //Benni
   //xPos Move Option for diagonal Hit has to be added later

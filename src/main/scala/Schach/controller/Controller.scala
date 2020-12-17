@@ -27,6 +27,7 @@ class Controller() extends Observable with Originator{
 
   def movePiece(newPos: Vector[Int]): Unit = {
     undoManager.doStep(new MoveCommand(newPos(0), newPos(1), newPos(2), newPos(3), this))
+    changePlayer()
     notifyObservers
   }
 

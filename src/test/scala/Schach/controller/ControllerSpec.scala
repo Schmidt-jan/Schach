@@ -1,8 +1,10 @@
 package Schach.controller
 
+import Schach.model.Figure
 import Schach.util.Observer
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import java.awt.Color
 
 
 
@@ -27,6 +29,8 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.changePlayer()
       }
       "check if a move is valid" in {
+        controller.createGameField()
+        controller.movePiece(vec)
         val v = Vector(1, 6, 1, 4)
         controller.moveIsValid(v) should be(true)
       }
@@ -68,6 +72,21 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       "inform if there is a current save state" in {
         controller.save()
         controller.caretaker.called should be(true)
+      }
+      "return a gameField via getGameField" in {
+        controller.getGameField shouldBe a [Vector[Figure]]
+      }
+      "give the first turn to white and the second to black" in {
+        controller.createGameField()
+        controller.getPlayer() should be (Color.WHITE)
+
+        controller.movePiece(vec)
+        controller.getPlayer() should be (Color.BLACK)
+      }
+      "set a player correctly" in {
+        controller.createGameField()
+        controller.setPlayer(Color.BLACK)
+        controller.getPlayer() should not be (Color.WHITE)
       }
 
     }

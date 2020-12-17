@@ -4,6 +4,8 @@ import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
+import java.awt.Color
+
 class GameFieldSpec extends AnyWordSpec with Matchers {
 
   "Figure should from " should {
@@ -50,6 +52,10 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField = gameField.moveTo(1, 5, 2, 5)
       gameField.getFigure(2, 5) should be(None)
 
+      gameField = builder.getNewGameField
+      gameField.moveTo(2, 0, 2, 1)
+      gameField.getFigure(2, 1) shouldBe a[Some[Bishop]]
+
     }
     "cases for black figures trying to move" in {
       gameField = builder.getNewGameField
@@ -73,6 +79,28 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.toString shouldBe a[String]
     }
 
+    "make use of Figure's equals method" in {
+      val f3 = gameField.getFigure(0,3)
+      val f = new Figure {
+        override val x: Int = 1
+        override val y: Int = 2
+        override val color: Color = color
+      }
+      f.equals(f3) should be (false)
+      gameField.getFigure(2,7) shouldBe a[Some[Bishop]]
+    }
+
+    "check for checkmate" in {
+      gameField = builder.getNewGameField
+      gameField.isCheckmate should be (false)
+      val p = gameField.getFigure(0, 1).get
+      val p2 = Knight(1, 7, Color.BLACK)
+      val k = King(7, 7, Color.WHITE)
+      val k2 = King(1, 4, Color.WHITE)
+      gameField.setSelfIntoCheck(p, 0, 2, k) should be (false)
+      gameField.setSelfIntoCheck(p2,0, 2, k2) should be (true)
+
+    }
     /*
     "set a GameField" in {
       gameField = builder.getNewGameField
