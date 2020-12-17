@@ -29,6 +29,8 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField = builder.getNewGameField
       gameField.wayToIsFreeDiagonal(2,0,6,4) should be(false)
       gameField.wayToIsFreeDiagonal(3,2,0,5) should be(true)
+      gameField.wayToIsFreeDiagonal(0, 3, 1, 2) should be(true)
+      gameField.wayToIsFreeDiagonal(0, 5, 3, 2) should be(true)
 
       gameField = gameField.moveTo(3,1,3,3)
 
