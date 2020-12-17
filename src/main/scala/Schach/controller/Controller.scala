@@ -46,6 +46,7 @@ class Controller() extends Observable with Originator{
     gameField.changePlayer()
   }
   def undo(): Unit = {
+    //TODO when undo checked figure is not shown
     undoManager.undoStep()
     notifyObservers
   }

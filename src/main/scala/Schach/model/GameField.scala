@@ -78,6 +78,7 @@ class GameField(private var gameField: Vector[Figure]) {
   }
 
   def setSelfIntoCheck(figure: Figure, xNext : Int, yNext : Int, king: Figure): Boolean = {
+    //TODO check why it's not working all the time right
     var output = false
     val loop = new Breaks
 
