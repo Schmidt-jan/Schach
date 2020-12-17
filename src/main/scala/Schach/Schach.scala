@@ -1,6 +1,6 @@
 package Schach
 
-import aview.Tui
+import aview.{Tui,Gui}
 import controller.Controller
 import model._
 
@@ -26,6 +26,7 @@ object Schach {
     val builder = new ChessGameFieldBuilder
     builder.makeGameField()
     val controller = new Controller()
+    val gui = new Gui(controller)
     val tui = new Tui(controller)
     controller.notifyObservers
     //println(controller.gameFieldToString)

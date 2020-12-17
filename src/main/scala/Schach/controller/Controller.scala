@@ -2,7 +2,7 @@ package Schach.controller
 
 import java.awt.Color
 
-import Schach.model.{ChessGameFieldBuilder, GameField}
+import Schach.model.{ChessGameFieldBuilder, Figure, GameField}
 import Schach.util.{Caretaker, Observable, Originator, UndoManager}
 
 class Controller() extends Observable with Originator{
@@ -22,6 +22,8 @@ class Controller() extends Observable with Originator{
   }
 
   def gameFieldToString: String = gameField.toString
+
+  def getGameField: Vector[Figure] = gameField.getFigures
 
   def movePiece(newPos: Vector[Int]): Unit = {
     undoManager.doStep(new MoveCommand(newPos(0), newPos(1), newPos(2), newPos(3), this))

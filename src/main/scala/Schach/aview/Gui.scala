@@ -1,65 +1,93 @@
 package Schach.aview
 
+import java.awt.Color
+
+import Schach.controller.Controller
 import Schach.util.Observer
-import scalafx.application.JFXApp
-import scalafx.application.JFXApp.PrimaryStage
-import scalafx.geometry.Insets
-import scalafx.scene.Scene
-import scalafx.scene.control.Label
-import scalafx.scene.effect.DropShadow
-import scalafx.scene.layout.{BorderPane, HBox}
-import scalafx.scene.paint.Color.{Black, Cyan, DodgerBlue, PaleGreen, SeaGreen}
-import scalafx.scene.paint.{LinearGradient, Stops}
-import scalafx.scene.text.Text
+
+import scala.swing._
+import scala.swing.event.ButtonClicked
 
 
+class Gui(controller: Controller) extends Frame with Observer {
 
-object Gui extends JFXApp with Observer {
+  controller.add(this)
 
-  stage = new PrimaryStage {
-    title = "Chess"
-    width = 800
-    height = 600
+  var fromSet = false
+  var from = (-1, -1)
+  var to = (-1, -1)
 
-    width onChange show
-    height onChange show
-  }
+  listenTo(this)
 
 
-  override def update: Unit = ???
-}
+  title = "Chess"
+  minimumSize = new Dimension(500, 500)
 
-object HelloSBT extends JFXApp {
-  stage = new PrimaryStage {
-    title = "Chess"
-    scene = new Scene {
-      fill = Black
-      content = new HBox() {
-        padding = Insets(200)
+  var buttons = Array.ofDim[Button](8,8)
 
-        children = Seq {
-          new Text {
-            text = "Welcome to chess!"
-            style = "-fx-font-size: 48pt"
-            fill = new LinearGradient(
-              endX = 0,
-              stops = Stops(PaleGreen, SeaGreen))
-          }
-          new Text {
-            text = "Test :)"
-            style = "-fx-font-size: 48 pt"
-            fill = new LinearGradient(
-              endX = 0,
-              stops = Stops(Cyan, DodgerBlue)
-            )
-            effect = new DropShadow {
-              color = DodgerBlue
-              radius = 25
-              spread = 0.25
-            }
+  contents = new GridPanel(8, 8) {
+    for (i <- Range(0, 64)) {
+      val cell = i % 8
+      val row = Integer2int(7 - i / 8)
+
+      val button: Button = new Button {
+
+        //set background color
+        if (cell % 2 == 1)
+          if (row % 2 == 1) background = Color.WHITE
+          else background = Color.GRAY
+        else if (row % 2 == 0) background = Color.WHITE
+        else background = Color.GRAY
+
+        reactions += {
+          case e: ButtonClicked => if (!fromSet) {
+            fromSet = true
+            from = (cell, row)
+            println("from : " + from)
+          } else {
+            fromSet = false
+            to = (cell, row)
+            println("move : " + from + " " + to)
           }
         }
       }
+      contents += button
+      listenTo(button)
+      buttons(cell)(row) = button
+    }
+
+  }
+
+  menuBar = new MenuBar {
+    contents += new Menu("File") {
+      contents += new MenuItem(Action("New")(controller.createGameField()))
+      contents += new MenuItem(Action("Close")(System.exit(0)))
+    }
+    contents += new Menu("Edit") {
+      contents += new MenuItem(Action("Undo")(controller.undo()))
+      contents += new MenuItem(Action("Redo")(controller.redo()))
+      contents += new MenuItem(Action("Save")(controller.save()))
+      contents += new MenuItem(Action("Load") {
+        if (controller.caretaker.called) {
+          controller.restore()
+        } else {
+          println("No Save created yet")
+        }
+      })
+    }
+  }
+
+
+  resizable = false
+  visible = true
+
+  override def update: Unit = {
+    println("Frame update called")
+
+    buttons.foreach(_.foreach(_.text = ""))
+    val figures = controller.getGameField.filter(!_.checked)
+    for (figure <- figures) {
+      buttons(figure.x)(figure.y).text = figure.toString
     }
   }
 }
