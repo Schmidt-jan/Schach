@@ -8,7 +8,15 @@ trait Figure {
   val color : Color
   var checked: Boolean = false
 
+  override def equals(input: Any): Boolean = {
+    input match {
+      case obj: Figure =>
+        return (obj.x == this.x) && (obj.y == this.y) && (obj.color == this.color) && (obj.checked == this.checked)
+      case _ => false
+    }
+  }
 }
+
 object Figure {
   def apply(kind : String, x : Int, y : Int, color : Color): Figure = kind.toLowerCase match {
     case "pawn" => Pawn(x, y, color)
