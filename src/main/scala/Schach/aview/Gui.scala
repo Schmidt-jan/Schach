@@ -1,16 +1,15 @@
 package Schach.aview
 
 import java.awt.Color
-
-import Schach.controller.Controller
-import Schach.model.Pawn
+import Schach.controller.controllerComponent.ControllerInterface
+import Schach.model.figureComponent.Pawn
 import Schach.util.Observer
-import javax.swing.BorderFactory
 
+import javax.swing.BorderFactory
 import scala.swing._
 import scala.swing.event.MouseClicked
 
-class Gui(controller: Controller) extends Frame with Observer {
+class Gui(controller: ControllerInterface) extends Frame with Observer {
 
   controller.add(this)
 
@@ -98,12 +97,12 @@ class Gui(controller: Controller) extends Frame with Observer {
     horizontalAlignment = Alignment.Left
   }
 
-  val playersTurn = new Label() {
+  val playersTurn: Label = new Label() {
     horizontalAlignment = Alignment.Left
     font = new Font("Monospaced", 1, 20)
   }
 
-  def gameInfos = new GridPanel(15,1) {
+  def gameInfos: GridPanel = new GridPanel(15,1) {
     border = BorderFactory.createEmptyBorder(0, 10, 0, 10)
     preferredSize = new Dimension(280, 300)
     contents += playersTurn
@@ -128,7 +127,7 @@ class Gui(controller: Controller) extends Frame with Observer {
     contents += checkedElseBlack
   }
 
-  def labelWest = new GridPanel(8, 1) {
+  def labelWest: GridPanel = new GridPanel(8, 1) {
     for (i <- Range(8, 0, -1)) {
       contents += new Label {
         font = new Font("Monospace", 2, 20)
@@ -138,7 +137,7 @@ class Gui(controller: Controller) extends Frame with Observer {
     }
   }
 
-  def labelNorth = new GridPanel(1, 9) {
+  def labelNorth: GridPanel = new GridPanel(1, 9) {
 
     border = BorderFactory.createEmptyBorder(0, 50, 0, 280)
     for (i <- List('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H')) {
@@ -187,7 +186,7 @@ class Gui(controller: Controller) extends Frame with Observer {
       }
 
       contents += new MenuItem(Action("Load")(
-        if (controller.caretaker.called) controller.restore()
+        if (controller.caretakerIsCalled()) controller.restore()
         else println("No Save created yet"))) {
         font = fontItem
       }

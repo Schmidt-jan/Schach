@@ -1,11 +1,11 @@
 package Schach.aview
 
-import Schach.controller.Controller
+import Schach.controller.controllerComponent.ControllerInterface
 import Schach.util.Observer
 
 import scala.util.Success
 
-class Tui(controller: Controller) extends Observer{
+class Tui(controller: ControllerInterface) extends Observer{
 
   controller.add(this)
 
@@ -32,7 +32,7 @@ class Tui(controller: Controller) extends Observer{
       case "redo" => controller.redo()
       case "save" => controller.save()
       case "load" =>
-        if (controller.caretaker.called){
+        if (controller.caretakerIsCalled()){
           controller.restore()
         } else {
           println("No Save created yet")

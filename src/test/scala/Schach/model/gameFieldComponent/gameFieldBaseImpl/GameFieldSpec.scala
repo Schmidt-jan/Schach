@@ -1,5 +1,6 @@
-package Schach.model
+package Schach.model.gameFieldComponent.gameFieldBaseImpl
 
+import Schach.model.figureComponent._
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec

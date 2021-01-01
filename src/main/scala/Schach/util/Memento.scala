@@ -1,8 +1,8 @@
 package Schach.util
 
-import java.awt.Color
+import Schach.model.figureComponent.Figure
 
-import Schach.model.Figure
+import java.awt.Color
 
 trait Memento {
   def getFigures: Vector[Figure]

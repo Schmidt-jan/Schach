@@ -1,7 +1,7 @@
 package Schach.aview
 
-import Schach.controller.Controller
-import Schach.model.GameField
+import Schach.controller.controllerComponent.controllerBaseImpl.Controller
+import Schach.model.gameFieldComponent.gameFieldBaseImpl.GameField
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 

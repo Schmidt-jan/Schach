@@ -1,9 +1,9 @@
-package Schach.controller
+package Schach.controller.controllerComponent.controllerBaseImpl
+
+import Schach.model.figureComponent.Figure
+import Schach.util.Memento
 
 import java.awt.Color
-
-import Schach.model.Figure
-import Schach.util.Memento
 
 class GameFieldMemento(field: Vector[Figure], player: Color) extends Memento{
   private val gameField = field

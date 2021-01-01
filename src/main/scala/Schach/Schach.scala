@@ -1,7 +1,7 @@
 package Schach
 
-import aview.{Tui,Gui}
-import controller.Controller
+import aview.{Gui, Tui}
+import controller.controllerComponent.controllerBaseImpl.Controller
 import model._
 
 
@@ -23,24 +23,18 @@ object Schach {
     */
 
     var break = false
-    val builder = new ChessGameFieldBuilder
-    builder.makeGameField()
     val controller = new Controller()
+    controller.createGameField()
     val gui = new Gui(controller)
     val tui = new Tui(controller)
     controller.notifyObservers
-    //println(controller.gameFieldToString)
-    /*
-    val gameField = new GameField().moveTo(0, 0, 0, 6)
-    println(gameField.toString)
-     */
 
     println("Move the chess pieces: position they are at now -> position they should go to")
     println("Create a new GameField with 'new'")
     println("Usage example: move A2 A3")
     println("Type 'exit' to leave\n")
 
-    while (!break) {
+    while (break == false) {
       val line = scala.io.StdIn.readLine()
 
       if (line.equals("exit")) {

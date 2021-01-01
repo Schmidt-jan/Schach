@@ -1,6 +1,7 @@
-package Schach.model
+package Schach.model.gameFieldComponent.gameFieldBaseImpl
 
 import java.awt.Color
+import Schach.model.figureComponent._
 
 case class Rules(gameField: GameField) {
 

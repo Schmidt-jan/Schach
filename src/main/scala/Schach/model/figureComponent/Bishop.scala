@@ -1,4 +1,6 @@
-package Schach.model
+package Schach.model.figureComponent
+
+import Schach.model.figureComponent.Figure
 
 import java.awt.Color
 

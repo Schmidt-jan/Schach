@@ -1,13 +1,13 @@
-package Schach.model
+package Schach.model.gameFieldComponent.gameFieldBaseImpl
 
 import java.awt.Color
+import Schach.model.figureComponent._
+import Schach.model.gameFieldComponent.GameFieldInterface
 
 import scala.collection.immutable._
 import scala.util.control._
 
-class GameField(private var gameField: Vector[Figure]) {
-
-
+class GameField(private var gameField: Vector[Figure]) extends GameFieldInterface {
 
   private var validPlayer = Color.WHITE
 

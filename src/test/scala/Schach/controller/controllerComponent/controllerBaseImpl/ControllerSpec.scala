@@ -1,9 +1,10 @@
-package Schach.controller
+package Schach.controller.controllerComponent.controllerBaseImpl
 
-import Schach.model.Figure
+import Schach.model.figureComponent.Figure
 import Schach.util.Observer
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+
 import java.awt.Color
 
 

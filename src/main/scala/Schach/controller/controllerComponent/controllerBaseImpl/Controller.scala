@@ -1,13 +1,16 @@
-package Schach.controller
+package Schach.controller.controllerComponent.controllerBaseImpl
+
+import Schach.controller.controllerComponent._
+import Schach.model.figureComponent.Figure
+import Schach.model.gameFieldComponent.gameFieldBaseImpl.ChessGameFieldBuilder
+import Schach.model.gameFieldComponent.{ChessGameFieldBuilderInterface, GameFieldInterface}
+import Schach.util.{Caretaker, UndoManager}
 
 import java.awt.Color
 
-import Schach.model.{ChessGameFieldBuilder, Figure, GameField}
-import Schach.util.{Caretaker, Observable, Originator, UndoManager}
-
-class Controller() extends Observable with Originator{
-  val builder = new ChessGameFieldBuilder
-  var gameField : GameField = builder.getNewGameField
+class Controller() extends ControllerInterface {
+  val builder : ChessGameFieldBuilderInterface = new ChessGameFieldBuilder
+  var gameField : GameFieldInterface = builder.getNewGameField
   val undoManager = new UndoManager
   val caretaker = new Caretaker
 
@@ -67,6 +70,10 @@ class Controller() extends Observable with Originator{
     gameField.clear()
     gameField.addFigures(caretaker.getMemento.getFigures)
     notifyObservers
+  }
+
+  def caretakerIsCalled(): Boolean = {
+    caretaker.called
   }
 
 }
