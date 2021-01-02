@@ -24,7 +24,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
 
     "moving test" in {
-      gameField = builder.getNewGameField()
+      gameField = builder.getNewGameField
       gameField.wayToIsFreeDiagonal(2,0,6,4) should be(false)
       gameField.wayToIsFreeDiagonal(3,2,0,5) should be(true)
       gameField.wayToIsFreeDiagonal(0, 3, 1, 2) should be(true)
@@ -42,7 +42,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
     }
 
     "do some more move cases" in {
-      gameField = builder.getNewGameField()
+      gameField = builder.getNewGameField
       gameField = gameField.moveTo(0, 1, 0, 3)
       gameField = gameField.moveTo(0, 0, 0, 2)
       gameField.getFigure(0,2).get shouldBe a[Rook]
@@ -58,7 +58,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
     }
     "cases for black figures trying to move" in {
-      gameField = builder.getNewGameField()
+      gameField = builder.getNewGameField
       gameField.wayToIsFreeStraight(1, 6, 1, 4) should be(true)
 
       gameField = gameField.moveTo(1, 6, 1, 4 )
@@ -103,7 +103,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
     }
     "add Figures correctly" in {
-      gameField = builder.getNewGameField()
+      gameField = builder.getNewGameField
       val old = gameField.toString
       
       val vec = Vector(Rook(0, 0, Color.WHITE), Knight(1, 0, Color.WHITE), Bishop(2, 0, Color.WHITE), King(3, 0, Color.WHITE),
