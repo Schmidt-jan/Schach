@@ -1,6 +1,5 @@
 package Schach.model.figureComponent
 
-import Schach.model._
 
 import java.awt.Color
 
