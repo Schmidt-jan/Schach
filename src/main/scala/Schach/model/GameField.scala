@@ -2,10 +2,16 @@ package Schach.model
 
 import java.awt.Color
 
+import scala.collection.immutable._
+import scala.util.control._
 
 class GameField(private var gameField: Vector[Figure]) {
 
 
+
+  private var validPlayer = Color.WHITE
+
+  def this() = this(Vector())
 
   def addFigures(figures : Vector[Figure]) : GameField = {
     for (in <- gameField) {
@@ -15,40 +21,98 @@ class GameField(private var gameField: Vector[Figure]) {
     this
   }
 
-  def getFigures(): Vector[Figure] = {
+  def getFigures: Vector[Figure] = {
     gameField
   }
 
   def moveTo(xNow: Int, yNow: Int, xNext: Int, yNext: Int): GameField = {
     if (getFigure(xNow, yNow).isEmpty) return this
+
+    getFigure(xNext, yNext) match {
+      case Some(fig) => fig.checked = true
+      case None =>
+    }
+
     val figure = getFigure(xNow, yNow).get
     figure match {
-      case p: Pawn => gameField = gameField.filter(_ != figure) :+ Pawn(xNext, yNext, figure.color, Some(true))
+      case _: Pawn => gameField = gameField.filter(!_.equals(figure)) :+ Pawn(xNext, yNext, figure.color, Some(true))
         this
-      case p: Rook => gameField = gameField.filter(_ != figure) :+ Rook(xNext, yNext, figure.color)
+      case _: Rook => gameField = gameField.filter(!_.equals(figure)) :+ Rook(xNext, yNext, figure.color)
         this
-      case p: Knight => gameField = gameField.filter(_ != figure) :+ Knight(xNext, yNext, figure.color)
+      case _: Knight => gameField = gameField.filter(!_.equals(figure)) :+ Knight(xNext, yNext, figure.color)
         this
-      case p: Bishop => gameField = gameField.filter(_ != figure) :+ Bishop(xNext, yNext, figure.color)
+      case _: Bishop => gameField = gameField.filter(!_.equals(figure)) :+ Bishop(xNext, yNext, figure.color)
         this
-      case p: Queen => gameField = gameField.filter(_ != figure) :+ Queen(xNext, yNext, figure.color)
+      case _: Queen => gameField = gameField.filter(!_.equals(figure)) :+ Queen(xNext, yNext, figure.color)
         this
-      case p: King => gameField = gameField.filter(_ != figure) :+ King(xNext, yNext, figure.color)
+      case _: King => gameField = gameField.filter(!_.equals(figure)) :+ King(xNext, yNext, figure.color)
         this
     }
   }
 
   def moveValid(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
+    getFigure(xNow, yNow) match {
+      case Some(value) =>
+        if (value.color != validPlayer) {
+          println("Wrong player")
+          return false
+        }
+      case None => return false
+    }
+
     val rule = Rules(this)
     rule.moveValidFigure(xNow, yNow, xNext, yNext)
   }
 
-  def moveToFieldAllowed(x: Int, y: Int, color: Color): Boolean = getFigure(x, y) match {
-    case Some(figure2) => !figure2.isInstanceOf[King] && figure2.color != color && !isCheck(gameField.filter(_.isInstanceOf[King]).find(_.color == color).get)
-    case None => true
+  def moveToFieldAllowed(x: Int, y: Int, figure: Figure): Boolean = {
+    val kingOfInterest = gameField.filter(_.isInstanceOf[King]).find(_.color == figure.color).get
+    val check1 = !setSelfIntoCheck(figure, x, y, kingOfInterest)
+
+    getFigure(x, y) match {
+      case Some (figure2) =>
+        val check2 = !figure2.isInstanceOf[King] && figure2.color != figure.color
+        check1 && check2
+
+      case None => check1
+    }
   }
 
-  def isCheck(king: Figure): Boolean = false
+  def setSelfIntoCheck(figure: Figure, xNext : Int, yNext : Int, king: Figure): Boolean = {
+    //TODO check why it's not working all the time right
+    var output = false
+    val loop = new Breaks
+
+    val figuresEnimy = getFigures.filter(!_.checked).filter(_.color != king.color)
+
+    val figureTo = getFigure(xNext, yNext)
+
+    //simulate move and check for set yourself into check
+    if (figureTo.isDefined) figureTo.get.checked = true
+
+    moveTo(figure.x, figure.y, xNext, yNext)
+    val rules  = Rules(this)
+    loop.breakable {
+      for (fig <- figuresEnimy) {
+        if (rules.moveValidWithoutKingCheck(fig.x, fig.y, king.x, king.y)) {
+          output = true
+          loop.break
+        }
+      }
+    }
+
+    //reset changes
+    moveTo(xNext, yNext, figure.x, figure.y)
+    figure match {
+      case pawn: Pawn => if (!pawn.hasBeenMoved) getFigure(figure.x, figure.y).get.asInstanceOf[Pawn].hasBeenMoved = false
+      case _ =>
+    }
+    if (figureTo.isDefined) figureTo.get.checked = false
+    output
+  }
+
+  def isCheckmate: Boolean = {
+    false
+  }
 
   def wayToIsFreeStraight(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
     if (xNow == xNext && yNow == yNext) return false
@@ -104,14 +168,28 @@ class GameField(private var gameField: Vector[Figure]) {
     true
   }
 
+  def getPlayer: Color = validPlayer
 
+  def setPlayer(color: Color): Color = {
+    val before = validPlayer
+    validPlayer = color
+    before
+  }
 
+  def changePlayer(): Color = {
+    validPlayer match {
+      case Color.BLACK => validPlayer = Color.WHITE
+      case Color.WHITE => validPlayer = Color.BLACK
+    }
+    validPlayer
+  }
 
   def getFigure(xPos: Int, yPos: Int): Option[Figure] = {
-    gameField.filter(_.x == xPos).find(_.y == yPos)
+    gameField.filter(_.checked == false).filter(_.x == xPos).find(_.y == yPos)
   }
 
   def clear() : Boolean = {
+    validPlayer = Color.WHITE
     gameField = Vector.empty
     gameField.isEmpty
   }
@@ -125,7 +203,7 @@ class GameField(private var gameField: Vector[Figure]) {
     for (y <- Range(7, -1, -1)) {
       build.append(y + 1).append(" │\t")
 
-      val row = gameField.filter(_.y == y)
+      val row = gameField.filter(!_.checked).filter(_.y == y)
 
       for (x <- 0 to 7) {
         row.find(_.x == x) match {
@@ -136,17 +214,5 @@ class GameField(private var gameField: Vector[Figure]) {
       build.append("\n")
     }
     build.toString
-  }
-
-}
-
-object GameField {
-  private var instance : GameField = null
-
-  def getInstance:GameField = {
-    if (instance == null) {
-      instance= new GameField(Vector())
-    }
-    instance
   }
 }

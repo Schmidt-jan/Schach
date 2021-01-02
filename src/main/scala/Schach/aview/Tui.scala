@@ -3,22 +3,27 @@ package Schach.aview
 import Schach.controller.Controller
 import Schach.util.Observer
 
-import scala.util.{Failure, Try}
+
+import scala.util.Success
+
 
 class Tui(controller: Controller) extends Observer{
 
   controller.add(this)
 
-  def interactWithUser(input: String):Unit = {
+
+  def interactWithUser(input: String) : Unit = {
+
     val args = input.split(" ")
 
     args(0) match {
-      case "new" => controller.createGameField
+      case "new" => Success(controller.createGameField)
       case "move" =>
         if (args.size == 3 && controller.controlInput(args(1)) && controller.controlInput(args(2))) {
           val command = args(1).concat(" ").concat(args(2))
           if (controller.moveIsValid(readInput(command))) {
             controller.movePiece(readInput(command))
+            controller.changePlayer()
           } else {
             println("That Move is against the Rules!")
           }
@@ -47,7 +52,6 @@ class Tui(controller: Controller) extends Observer{
     val toY = getPoint(line.charAt(4))
     Vector(fromX, fromY, toX, toY)
   }
-
 
   def getPoint(input: Char): Int = {
     input match {

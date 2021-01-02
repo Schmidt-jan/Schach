@@ -1,17 +1,19 @@
 package Schach.controller
 
-import Schach.model.{ChessGameFieldBuilder, GameField}
+import java.awt.Color
+
+import Schach.model.{ChessGameFieldBuilder, Figure, GameField}
 import Schach.util.{Caretaker, Observable, Originator, UndoManager}
 
 class Controller() extends Observable with Originator{
-  var gameField : GameField = GameField.getInstance
+  val builder = new ChessGameFieldBuilder
+  var gameField : GameField = builder.getNewGameField
   val undoManager = new UndoManager
   val caretaker = new Caretaker
 
 
   def createGameField() : Unit = {
-    val builder = new ChessGameFieldBuilder
-    gameField = builder.getNewGameField()
+    gameField = builder.getNewGameField
     notifyObservers
   }
 
@@ -21,8 +23,11 @@ class Controller() extends Observable with Originator{
 
   def gameFieldToString: String = gameField.toString
 
+  def getGameField: Vector[Figure] = gameField.getFigures
+
   def movePiece(newPos: Vector[Int]): Unit = {
     undoManager.doStep(new MoveCommand(newPos(0), newPos(1), newPos(2), newPos(3), this))
+    changePlayer()
     notifyObservers
   }
 
@@ -30,7 +35,19 @@ class Controller() extends Observable with Originator{
     gameField.moveValid(newPos(0), newPos(1), newPos(2), newPos(3))
   }
 
+  def setPlayer(color : Color): Color = {
+    gameField.setPlayer(color)
+  }
+
+  def getPlayer() : Color = {
+    gameField.getPlayer
+  }
+
+  def changePlayer(): Unit = {
+    gameField.changePlayer()
+  }
   def undo(): Unit = {
+    //TODO when undo checked figure is not shown
     undoManager.undoStep()
     notifyObservers
   }
@@ -41,7 +58,7 @@ class Controller() extends Observable with Originator{
   }
 
   def save(): Unit = {
-    val memento = new GameFieldMemento(gameField.getFigures())
+    val memento = new GameFieldMemento(gameField.getFigures, gameField.getPlayer)
     caretaker.called = true
     caretaker.addMemento(memento)
   }

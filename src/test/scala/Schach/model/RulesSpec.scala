@@ -10,11 +10,11 @@ class RulesSpec extends AnyWordSpec with Matchers {
   "Rules" should {
 
     val builder = new ChessGameFieldBuilder
-    var gameField : GameField = builder.getNewGameField()
+    var gameField : GameField = builder.getNewGameField
     var rule = Rules(gameField)
 
     "confirm if a move is according to the rules" in {
-      gameField = builder.getNewGameField()
+      gameField = builder.getNewGameField
       rule = Rules(gameField)
       gameField.moveValid(0,0,0,2) should be(false)
       gameField.moveValid(1,0,0,2) should be(true)
@@ -26,7 +26,7 @@ class RulesSpec extends AnyWordSpec with Matchers {
     }
 
     "make sure Pawn is moving as intended" in {
-      gameField = builder.getNewGameField()
+      gameField = builder.getNewGameField
       rule = Rules(gameField)
       val p = Pawn(0,1, Color.WHITE)
       p.hasBeenMoved should be(false)
@@ -39,7 +39,6 @@ class RulesSpec extends AnyWordSpec with Matchers {
       rule.validPawn(p3, 7, 2) should be(true)
       rule.validPawn(p, 0, 3) should be(true)
       rule.validPawn(p, 0, 4) should be(false)
-
     }
 
     "make the Knight jump horizontally" in {
@@ -60,6 +59,22 @@ class RulesSpec extends AnyWordSpec with Matchers {
       val r = Rook(0,3, Color.WHITE)
       rule.validRook(r, 7,3) should be(true)
       rule.validRook(r, 2,5) should be(false)
+    }
+    "make sure the about to be moved figure is actually existing" in {
+      rule.moveValidFigure(0, 3, 0, 4) should be(false)
+      rule.moveValidWithoutKingCheck(7, 3, 7, 4) should be(false)
+    }
+    "make sure the bishop is behaving appropriately" in {
+      gameField.moveTo(4, 0, 0, 4)
+      gameField.moveTo(2, 0, 1, 3)
+
+      rule.moveValidFigure(1, 3, 0, 4) should be (false)
+    }
+    "control if pawn can move diagonally if there is an enemy figure" in {
+      gameField = builder.getNewGameField
+      gameField.moveTo(0, 1, 0, 3)
+      gameField.moveTo(1, 6, 1, 4)
+      rule.moveValidWithoutKingCheck(0, 3, 1, 4)
     }
   }
 
