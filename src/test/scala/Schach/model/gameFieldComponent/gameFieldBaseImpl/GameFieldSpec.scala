@@ -104,14 +104,18 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.setSelfIntoCheck(p2,0, 2, k2) should be (true)
 
     }
-    /*
-    "set a GameField" in {
+    "add Figures correctly" in {
       gameField = builder.getNewGameField
-      gameField2 = gameField2.moveTo(1, 0, 2, 2)
-      val old = gameField2.toString
-      gameField = builder.setGameField(gameField2)
-      gameField.toString should be (old)
+      val old = gameField.toString
+
+      val vec = Vector(Rook(0, 0, Color.WHITE), Knight(1, 0, Color.WHITE), Bishop(2, 0, Color.WHITE), King(3, 0, Color.WHITE),
+        Queen(4, 0, Color.WHITE), Bishop(5, 0, Color.WHITE), Knight(6, 0, Color.WHITE), Rook(7, 0, Color.WHITE),
+        Pawn(0, 1, Color.WHITE), Pawn(1, 1, Color.WHITE), Pawn(2, 1, Color.WHITE), Pawn(3, 1, Color.WHITE),
+        Pawn(4, 1, Color.WHITE), Pawn(5, 1, Color.WHITE), Pawn(6, 1, Color.WHITE), Pawn(7, 1, Color.WHITE))
+
+      gameField.addFigures(vec)
+      gameField.toString should be(old)
+
     }
-     */
   }
 }
