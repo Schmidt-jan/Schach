@@ -2,8 +2,6 @@ package Schach.aview
 
 import Schach.controller.controllerComponent.ControllerInterface
 import Schach.util.Observer
-
-
 import scala.util.Success
 
 class Tui(controller: ControllerInterface) extends Observer{
