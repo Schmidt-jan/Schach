@@ -11,8 +11,6 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
   "Figure should from " should {
     val builder = new ChessGameFieldBuilder
     var gameField = builder.getNewGameField
-
-
     val figure = gameField.getFigure(1, 1)
     "should be" in {
       figure.get  mustBe a [Pawn]
@@ -26,7 +24,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
 
     "moving test" in {
-      gameField = builder.getNewGameField
+      gameField = builder.getNewGameField()
       gameField.wayToIsFreeDiagonal(2,0,6,4) should be(false)
       gameField.wayToIsFreeDiagonal(3,2,0,5) should be(true)
       gameField.wayToIsFreeDiagonal(0, 3, 1, 2) should be(true)
@@ -44,7 +42,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
     }
 
     "do some more move cases" in {
-      gameField = builder.getNewGameField
+      gameField = builder.getNewGameField()
       gameField = gameField.moveTo(0, 1, 0, 3)
       gameField = gameField.moveTo(0, 0, 0, 2)
       gameField.getFigure(0,2).get shouldBe a[Rook]
@@ -60,7 +58,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
     }
     "cases for black figures trying to move" in {
-      gameField = builder.getNewGameField
+      gameField = builder.getNewGameField()
       gameField.wayToIsFreeStraight(1, 6, 1, 4) should be(true)
 
       gameField = gameField.moveTo(1, 6, 1, 4 )
@@ -75,6 +73,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.moveToFieldAllowed(1, 0, gameField.getFigure(1,1).get) should be(false)
       gameField.moveToFieldAllowed(0, 2, gameField.getFigure(1,1).get) should be(true)
       gameField.moveToFieldAllowed(2, 1, gameField.getFigure(1,1).get) should be (false)
+
     }
 
     "have a nice String representation" in {
@@ -103,14 +102,18 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.setSelfIntoCheck(p2,0, 2, k2) should be (true)
 
     }
-    /*
-    "set a GameField" in {
-      gameField = builder.getNewGameField
-      gameField2 = gameField2.moveTo(1, 0, 2, 2)
-      val old = gameField2.toString
-      gameField = builder.setGameField(gameField2)
-      gameField.toString should be (old)
+    "add Figures correctly" in {
+      gameField = builder.getNewGameField()
+      val old = gameField.toString
+      
+      val vec = Vector(Rook(0, 0, Color.WHITE), Knight(1, 0, Color.WHITE), Bishop(2, 0, Color.WHITE), King(3, 0, Color.WHITE),
+        Queen(4, 0, Color.WHITE), Bishop(5, 0, Color.WHITE), Knight(6, 0, Color.WHITE), Rook(7, 0, Color.WHITE),
+        Pawn(0, 1, Color.WHITE), Pawn(1, 1, Color.WHITE), Pawn(2, 1, Color.WHITE), Pawn(3, 1, Color.WHITE),
+        Pawn(4, 1, Color.WHITE), Pawn(5, 1, Color.WHITE), Pawn(6, 1, Color.WHITE), Pawn(7, 1, Color.WHITE))
+      
+      gameField.addFigures(vec)
+      gameField.toString should be(old)
+      
     }
-     */
   }
 }

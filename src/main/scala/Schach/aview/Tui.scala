@@ -3,7 +3,9 @@ package Schach.aview
 import Schach.controller.Controller
 import Schach.util.Observer
 
+
 import scala.util.Success
+
 
 class Tui(controller: Controller) extends Observer{
 
@@ -11,6 +13,7 @@ class Tui(controller: Controller) extends Observer{
 
 
   def interactWithUser(input: String) : Unit = {
+
     val args = input.split(" ")
 
     args(0) match {

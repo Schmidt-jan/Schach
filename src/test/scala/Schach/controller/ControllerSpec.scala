@@ -1,6 +1,7 @@
 package Schach.controller
 
 import Schach.model.Figure
+
 import Schach.util.Observer
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -48,6 +49,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
 
       "handle undo/redo correctly" in {
         controller.createGameField()
+
         controller.movePiece(vec)
         val tmp = controller.gameFieldToString
 
