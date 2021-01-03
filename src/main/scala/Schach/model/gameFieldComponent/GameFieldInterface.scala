@@ -14,8 +14,9 @@ trait GameFieldInterface {
   def moveTo(xNow: Int, yNow: Int, xNext: Int, yNext: Int): GameField
   def moveValid(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean
   def moveToFieldAllowed(x: Int, y: Int, figure: Figure): Boolean
-  def setSelfIntoCheck(figure: Figure, xNext : Int, yNext : Int, king: Figure): Boolean
-  def isCheckmate: Boolean
+  def setSelfIntoCheck(figure: Figure, xNext : Int, yNext : Int): Boolean
+  def isChecked(playerCol: Color): Boolean
+  def isCheckmate(playerCol: Color): Boolean
   def wayToIsFreeStraight(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean
   def wayToIsFreeDiagonal(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean
 

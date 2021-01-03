@@ -30,7 +30,6 @@ class Controller() extends ControllerInterface {
 
   def movePiece(newPos: Vector[Int]): Unit = {
     undoManager.doStep(new MoveCommand(newPos(0), newPos(1), newPos(2), newPos(3), this))
-    changePlayer()
     notifyObservers
   }
 
@@ -49,6 +48,19 @@ class Controller() extends ControllerInterface {
   def changePlayer(): Unit = {
     gameField.changePlayer()
   }
+
+  def isChecked(): Boolean = {
+    gameField.isChecked(getPlayer)
+  }
+
+  def isCheckmate(): Boolean = {
+    gameField.isCheckmate(getPlayer)
+  }
+
+  def controlFlow(): Unit = {
+
+  }
+
   def undo(): Unit = {
     //TODO when undo checked figure is not shown
     undoManager.undoStep()
