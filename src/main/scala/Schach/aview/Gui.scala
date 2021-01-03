@@ -197,7 +197,6 @@ class Gui(controller: ControllerInterface) extends Frame with Observer {
   }
 
 
-  resizable = false
   visible = true
 
   override def update: Unit = {

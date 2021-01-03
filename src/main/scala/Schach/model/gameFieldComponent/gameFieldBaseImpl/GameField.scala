@@ -1,6 +1,7 @@
 package Schach.model.gameFieldComponent.gameFieldBaseImpl
 
 import java.awt.Color
+
 import Schach.model.figureComponent._
 import Schach.model.gameFieldComponent.GameFieldInterface
 
@@ -110,8 +111,62 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     output
   }
 
-  def isCheckmate: Boolean = {
-    false
+  def isChecked(playerCol: Color): Boolean = {
+    var output = false
+    val loop = new Breaks
+
+    val figuresEnimy = getFigures.filter(!_.checked).filter(_.color != playerCol)
+    val myKing = getFigures.filter(_.color == playerCol).filter(_.isInstanceOf[King])(0)
+
+    val rules  = Rules(this)
+    loop.breakable {
+      for (fig <- figuresEnimy) {
+        if (rules.moveValidWithoutKingCheck(fig.x, fig.y, myKing.x, myKing.y)) {
+          output = true
+          loop.break
+        }
+      }
+    }
+
+    output
+  }
+
+  override def isCheckmate(playerCol: Color): Boolean = {
+    val myKing = getFigures.filter(_.color == playerCol).filter(_.isInstanceOf[King])(0)
+    val cellFreeAround = cellsFreeAroundFigure(myKing)
+    val loop = new Breaks
+    val figuresEnimy = getFigures.filter(!_.checked).filter(_.color != myKing.color)
+    var cellValidKing : List[Boolean] = List()
+
+    for (cell <- cellFreeAround) {
+      moveTo(myKing.x, myKing.y, cell._1, cell._2)
+      val rules  = Rules(this)
+      loop.breakable {
+        for (fig <- figuresEnimy) {
+          if (rules.moveValidWithoutKingCheck(fig.x, fig.y, cell._1, cell._2)) {
+            cellValidKing = cellValidKing :+ (false)
+            loop.break;
+          }
+        }
+      }
+      moveTo(cell._1, cell._2, myKing.x, myKing.y)
+    }
+
+    cellValidKing.contains(true)
+  }
+
+  def cellsFreeAroundFigure(figure: Figure) : List[(Int, Int)] = {
+    var validMoves : List[(Int, Int)] = List()
+
+    for (x <- Range(-1, 1, 1)) {
+      for (y <- Range(-1, 1, 1)) {
+        getFigure(x, y) match {
+          case Some(value) =>
+          case None => validMoves = validMoves :+ ((x, y))
+        }
+      }
+    }
+    validMoves
   }
 
   def wayToIsFreeStraight(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
@@ -215,4 +270,5 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     }
     build.toString
   }
+
 }

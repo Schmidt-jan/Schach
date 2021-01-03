@@ -49,6 +49,11 @@ class Controller() extends ControllerInterface {
   def changePlayer(): Unit = {
     gameField.changePlayer()
   }
+
+  def controlFlow(): Unit = {
+
+  }
+
   def undo(): Unit = {
     //TODO when undo checked figure is not shown
     undoManager.undoStep()
