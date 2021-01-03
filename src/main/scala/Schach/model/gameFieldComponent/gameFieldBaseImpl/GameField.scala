@@ -166,7 +166,8 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
         getFigure(point._1, point._2) match {
           case Some(value) =>
           case None => {
-            validMoves = validMoves :+ (point)
+            if (point._1 >= 0 && point._1 < 8 && point._2 >= 0 && point._2 < 8)
+              validMoves = validMoves :+ (point)
           }
         }
       }
