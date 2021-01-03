@@ -15,6 +15,8 @@ trait ControllerInterface extends Observable with Originator{
   def setPlayer(color : Color): Color
   def getPlayer() : Color
   def changePlayer(): Unit
+  def isChecked(): Boolean
+  def isCheckmate(): Boolean
   def undo(): Unit
   def redo(): Unit
   def save(): Unit

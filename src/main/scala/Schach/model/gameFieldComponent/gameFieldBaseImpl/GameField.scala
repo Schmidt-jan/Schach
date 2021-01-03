@@ -66,8 +66,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
   }
 
   def moveToFieldAllowed(x: Int, y: Int, figure: Figure): Boolean = {
-    val kingOfInterest = gameField.filter(_.isInstanceOf[King]).find(_.color == figure.color).get
-    val check1 = !setSelfIntoCheck(figure, x, y, kingOfInterest)
+    val check1 = !setSelfIntoCheck(figure, x, y)
 
     getFigure(x, y) match {
       case Some (figure2) =>
@@ -78,19 +77,19 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     }
   }
 
-  def setSelfIntoCheck(figure: Figure, xNext : Int, yNext : Int, king: Figure): Boolean = {
+  def setSelfIntoCheck(figure: Figure, xNext : Int, yNext : Int): Boolean = {
     //TODO check why it's not working all the time right
     var output = false
     val loop = new Breaks
 
-    val figuresEnimy = getFigures.filter(!_.checked).filter(_.color != king.color)
-
     val figureTo = getFigure(xNext, yNext)
-
-    //simulate move and check for set yourself into check
     if (figureTo.isDefined) figureTo.get.checked = true
 
     moveTo(figure.x, figure.y, xNext, yNext)
+
+    val king = getFigures.filter(_.color == figure.color).find(_.isInstanceOf[King]).get
+    val figuresEnimy = getFigures.filter(!_.checked).filter(_.color != king.color)
+
     val rules  = Rules(this)
     loop.breakable {
       for (fig <- figuresEnimy) {
@@ -141,28 +140,34 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     for (cell <- cellFreeAround) {
       moveTo(myKing.x, myKing.y, cell._1, cell._2)
       val rules  = Rules(this)
+      var added = false
       loop.breakable {
         for (fig <- figuresEnimy) {
           if (rules.moveValidWithoutKingCheck(fig.x, fig.y, cell._1, cell._2)) {
             cellValidKing = cellValidKing :+ (false)
+            added = true
             loop.break;
           }
         }
       }
+      if(!added) cellValidKing = cellValidKing :+ (true)
       moveTo(cell._1, cell._2, myKing.x, myKing.y)
     }
 
-    cellValidKing.contains(true)
+    !cellValidKing.contains(true)
   }
 
   def cellsFreeAroundFigure(figure: Figure) : List[(Int, Int)] = {
     var validMoves : List[(Int, Int)] = List()
 
-    for (x <- Range(-1, 1, 1)) {
-      for (y <- Range(-1, 1, 1)) {
-        getFigure(x, y) match {
+    for (x <- Range(-1, 2, 1)) {
+      for (y <- Range(-1, 2, 1)) {
+        val point = (figure.x + x, figure.y + y)
+        getFigure(point._1, point._2) match {
           case Some(value) =>
-          case None => validMoves = validMoves :+ ((x, y))
+          case None => {
+            validMoves = validMoves :+ (point)
+          }
         }
       }
     }

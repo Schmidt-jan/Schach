@@ -21,6 +21,11 @@ class Tui(controller: ControllerInterface) extends Observer{
           if (controller.moveIsValid(readInput(command))) {
             controller.movePiece(readInput(command))
             controller.changePlayer()
+            if (controller.isChecked()) {
+              println(controller.getPlayer + "  is checked")
+              if (controller.isCheckmate())
+                println(controller.getPlayer + "  is checkmate")
+            }
           } else {
             println("That Move is against the Rules!")
           }
