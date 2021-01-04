@@ -95,14 +95,15 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
     "check for checkmate" in {
       gameField = builder.getNewGameField
-      gameField.isCheckmate(gameField.getPlayer) should be (true)
+
       val p = gameField.getFigure(0, 1).get
       val p2 = Knight(1, 7, Color.BLACK)
-      val k = King(7, 7, Color.WHITE)
-      val k2 = King(1, 4, Color.WHITE)
+      val king = gameField.getFigure(3, 7).get
       gameField.setSelfIntoCheck(p, 0, 2) should be (false)
-      gameField.setSelfIntoCheck(p2,0, 2) should be (false)
-
+      gameField.moveTo(5, 1, 5, 2)
+      gameField.moveTo(3, 6, 3, 4)
+      gameField.moveTo(6, 0, 2, 4)
+      gameField.setSelfIntoCheck(king, 3, 6) should be(true)
     }
     "add Figures correctly" in {
       gameField = builder.getNewGameField

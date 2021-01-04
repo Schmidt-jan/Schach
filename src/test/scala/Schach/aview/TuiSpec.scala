@@ -105,6 +105,30 @@ class TuiSpec extends AnyWordSpec with Matchers {
       tui.interactWithUser("load")
       controller.gameFieldToString should be(old)
     }
+    "act accordingly to check and checkmate" in {
+      tui.interactWithUser("new")
+      tui.interactWithUser("move F2 F4")
+      tui.interactWithUser("move E7 E5")
+      tui.interactWithUser("move E1 H4")
+      controller.isCheckmate() should be(true)
+
+      tui.interactWithUser("new")
+      tui.interactWithUser("move F2 F4")
+      tui.interactWithUser("move E7 E5")
+      controller.isChecked() should be (false)
+      tui.interactWithUser("move A2 A4")
+      tui.interactWithUser("move D7 D5")
+      tui.interactWithUser("move E1 H4")
+      controller.isChecked() should be (true)
+
+      tui.interactWithUser("new")
+      tui.interactWithUser("move C2 C4")
+      tui.interactWithUser("move D7 D5")
+      controller.isCheckmate() should be(false)
+      tui.interactWithUser("move H2 H4")
+      tui.interactWithUser("move E8 A4")
+      controller.isCheckmate() should be(true)
+    }
 
   }
 
