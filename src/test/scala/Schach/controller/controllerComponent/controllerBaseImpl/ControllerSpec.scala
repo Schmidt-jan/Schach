@@ -34,6 +34,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.createGameField()
         controller.movePiece(vec)
         val v = Vector(1, 6, 1, 4)
+        controller.changePlayer()
         controller.moveIsValid(v) should be(true)
       }
       "return a string representation of the GameField" in {
@@ -83,7 +84,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.createGameField()
         controller.getPlayer() should be (Color.WHITE)
 
-        controller.movePiece(vec)
+        controller.changePlayer()
         controller.getPlayer() should be (Color.BLACK)
       }
       "set a player correctly" in {
