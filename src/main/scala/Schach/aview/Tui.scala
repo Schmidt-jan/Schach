@@ -12,7 +12,7 @@ class Tui(controller: ControllerInterface) extends Observer{
     val args = input.split(" ")
 
     args(0) match {
-      case "new" => Success(controller.createGameField)
+      case "new" => Success(controller.createGameField())
       case "move" =>
         if (args.size == 3 && controller.controlInput(args(1)) && controller.controlInput(args(2))) {
           val command = args(1).concat(" ").concat(args(2))
@@ -20,9 +20,11 @@ class Tui(controller: ControllerInterface) extends Observer{
             controller.movePiece(readInput(command))
             controller.changePlayer()
             if (controller.isChecked()) {
-              println(controller.getPlayer + "  is checked")
+              val colorName = if (controller.getPlayer().getRed == 0) "Black"
+              else "White"
+              println(colorName + "  is checked")
               if (controller.isCheckmate())
-                println(controller.getPlayer + "  is checkmate")
+                println(colorName + "  is checkmate")
             }
           } else {
             println("That Move is against the Rules!")

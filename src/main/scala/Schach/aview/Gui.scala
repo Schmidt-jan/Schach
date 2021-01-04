@@ -21,8 +21,8 @@ class Gui(controller: ControllerInterface) extends Frame with Observer {
   val fontMenu = new Font("Monospace", 2, 16)
 
   var fromSet = false
-  var from = (-1, -1)
-  var to = (-1, -1)
+  var from: (Int, Int) = (-1, -1)
+  var to: (Int, Int) = (-1, -1)
 
   listenTo(this)
 
@@ -70,10 +70,12 @@ class Gui(controller: ControllerInterface) extends Frame with Observer {
               controller.changePlayer()
               update
               if (controller.isChecked()) {
+                val colorName = if (controller.getPlayer().getRed == 0) "Black"
+                else "White"
                 if (controller.isCheckmate())
-                  Dialog.showMessage(contents.head, controller.getPlayer + "  is checkmate", title = "Checkmate")
+                  Dialog.showMessage(contents.head, colorName + "  is checkmate", title = "Checkmate")
                 else
-                  Dialog.showMessage(contents.head, controller.getPlayer + "  is checked", title = "Checked")
+                  Dialog.showMessage(contents.head, colorName + "  is checked", title = "Checked")
               }
             } else {
               Dialog.showMessage(contents.head, "Invalid move", title = "Error")

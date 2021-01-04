@@ -57,10 +57,6 @@ class Controller() extends ControllerInterface {
     gameField.isCheckmate(getPlayer)
   }
 
-  def controlFlow(): Unit = {
-
-  }
-
   def undo(): Unit = {
     //TODO when undo checked figure is not shown
     undoManager.undoStep()
