@@ -1,7 +1,10 @@
 package Schach.aview
 
+import Schach.GameFieldModule
+import Schach.controller.controllerComponent.ControllerInterface
 import Schach.controller.controllerComponent.controllerBaseImpl.Controller
 import Schach.model.gameFieldComponent.gameFieldBaseImpl.GameField
+import com.google.inject.Guice
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -9,7 +12,8 @@ import org.scalatest.wordspec.AnyWordSpec
 class TuiSpec extends AnyWordSpec with Matchers {
 
   "A Tui" should {
-    val controller = new Controller()
+    val injector = Guice.createInjector(new GameFieldModule)
+    val controller = injector.getInstance(classOf[ControllerInterface])
     val tui = new Tui(controller)
     val input = "A1 F2"
     var field = new GameField

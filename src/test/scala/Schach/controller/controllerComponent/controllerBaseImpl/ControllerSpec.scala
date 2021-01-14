@@ -4,15 +4,21 @@ import Schach.model.figureComponent.Figure
 import Schach.util.Observer
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-
 import java.awt.Color
+
+import Schach.GameFieldModule
+import Schach.controller.controllerComponent.ControllerInterface
+import com.google.inject.Guice
 
 
 
 class ControllerSpec extends AnyWordSpec with Matchers {
+
+  val injector = Guice.createInjector(new GameFieldModule)
+
   "A Controller" when  {
     "observed by an Observer" should {
-      val controller = new Controller()
+      val controller = injector.getInstance(classOf[ControllerInterface])
       val vec = Vector(0, 1, 0, 2)
       val observer = new Observer {
         var updated: Boolean = false
@@ -44,7 +50,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       }
     }
     "used as an Originator" should {
-      val controller = new Controller()
+      val controller = injector.getInstance(classOf[ControllerInterface])
       val vec = Vector(0, 1, 0, 2)
 
       "handle undo/redo correctly" in {

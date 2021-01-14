@@ -1,11 +1,16 @@
 package Schach.controller.controllerComponent
 
-import Schach.model.figureComponent.Figure
-import Schach.util.{Observable, Originator}
-
 import java.awt.Color
 
+import Schach.model.figureComponent.Figure
+import Schach.model.gameFieldComponent.GameFieldInterface
+import Schach.util.{Caretaker, Observable, Originator, UndoManager}
+
 trait ControllerInterface extends Observable with Originator{
+  val undoManager : UndoManager
+  val caretaker : Caretaker
+  var gameField : GameFieldInterface
+
   def createGameField(): Unit
   def controlInput(line: String): Boolean
   def gameFieldToString: String

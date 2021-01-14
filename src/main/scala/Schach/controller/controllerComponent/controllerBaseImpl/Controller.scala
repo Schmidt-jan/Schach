@@ -5,18 +5,17 @@ import java.awt.Color
 import Schach.GameFieldModule
 import Schach.controller.controllerComponent._
 import Schach.model.figureComponent.Figure
-import Schach.model.gameFieldComponent.gameFieldBaseImpl.ChessGameFieldBuilder
-import Schach.model.gameFieldComponent.{ChessGameFieldBuilderInterface, GameFieldInterface}
+import Schach.model.gameFieldComponent.GameFieldInterface
 import Schach.util.{Caretaker, UndoManager}
 import com.google.inject.name.Names
 import com.google.inject.{Guice, Inject}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 
-class Controller @Inject ()(var gameField: GameFieldInterface) extends ControllerInterface {
-  val injector = Guice.createInjector(new GameFieldModule)
-  val builder : ChessGameFieldBuilderInterface = new ChessGameFieldBuilder()
+class Controller @Inject () extends ControllerInterface {
+  var injector = Guice.createInjector(new GameFieldModule)
   val undoManager = new UndoManager
   val caretaker = new Caretaker
+  var gameField : GameFieldInterface = injector.instance[GameFieldInterface](Names.named("Chess"))
 
 
   def createGameField() : Unit = {
@@ -66,7 +65,6 @@ class Controller @Inject ()(var gameField: GameFieldInterface) extends Controlle
   }
 
   def undo(): Unit = {
-    //TODO when undo checked figure is not shown
     undoManager.undoStep()
     notifyObservers
   }
@@ -91,5 +89,7 @@ class Controller @Inject ()(var gameField: GameFieldInterface) extends Controlle
   def caretakerIsCalled(): Boolean = {
     caretaker.called
   }
+
+
 
 }
