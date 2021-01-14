@@ -34,6 +34,8 @@ class Tui(controller: ControllerInterface) extends Observer{
         } else {
           println("No Save created yet")
         }
+      case "save_game" => controller.saveGame()
+      case "load_game" => controller.loadGame()
       case _ => println("No Valid Command")
     }
   }
@@ -72,7 +74,7 @@ class Tui(controller: ControllerInterface) extends Observer{
     controller.getGameStatus() match {
       case 0 => println("RUNNING")
       case 1 => println("PLAYER " + { if (controller.getPlayer().getRed == 0) "Black"
-                                      else "WHITE"} + "CHECKED")
+                                      else "WHITE"} + "IS CHECKED")
       case 2 => println({if (controller.getPlayer().getRed == 0) "BLACK "
                           else "WHITE "} + "IS CHECKMATE")
       case 3 => println("INVALID MOVE")

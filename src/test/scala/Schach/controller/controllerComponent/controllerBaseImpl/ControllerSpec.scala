@@ -1,16 +1,14 @@
 package Schach.controller.controllerComponent.controllerBaseImpl
 
-import Schach.model.figureComponent.Figure
-import Schach.util.Observer
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
-import java.awt.Color
-
 import Schach.GameFieldModule
 import Schach.controller.controllerComponent.ControllerInterface
+import Schach.model.figureComponent.Figure
+import Schach.util.Observer
 import com.google.inject.Guice
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-
+import java.awt.Color
 
 class ControllerSpec extends AnyWordSpec with Matchers {
 
@@ -37,7 +35,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       }
       "check if a move is valid" in {
         injector = Guice.createInjector(new GameFieldModule)
-        var controller = injector.getInstance(classOf[ControllerInterface])
+        val controller = injector.getInstance(classOf[ControllerInterface])
 
         controller.createGameField()
         controller.movePiece(vec)
@@ -52,6 +50,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.subscribers should not contain observer
       }
     }
+
     "used as an Originator" should {
       val controller = injector.getInstance(classOf[ControllerInterface])
       val vec = Vector(0, 1, 0, 2)
@@ -98,7 +97,6 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.setPlayer(Color.BLACK)
         controller.getPlayer() should not be (Color.WHITE)
       }
-
     }
   }
 
