@@ -18,7 +18,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
 
   "A Controller" when  {
     "observed by an Observer" should {
-      val controller = injector.getInstance(classOf[ControllerInterface])
+      val controller : ControllerInterface = injector.getInstance(classOf[ControllerInterface])
       val vec = Vector(0, 1, 0, 2)
       val observer = new Observer {
         var updated: Boolean = false

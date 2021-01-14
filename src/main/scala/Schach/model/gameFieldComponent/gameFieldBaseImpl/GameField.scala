@@ -155,7 +155,9 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
       moveTo(cell._1, cell._2, myKing.x, myKing.y)
     }
 
-    !cellValidKing.contains(true)
+    var back = cellValidKing.contains(true)
+    if (cellValidKing.isEmpty) back = true
+    !back
   }
 
   def cellsFreeAroundFigure(figure: Figure) : List[(Int, Int)] = {

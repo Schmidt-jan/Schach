@@ -4,14 +4,15 @@ import Schach.model.figureComponent._
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-
 import java.awt.Color
+
+import Schach.model.gameFieldComponent.GameFieldInterface
 
 class GameFieldSpec extends AnyWordSpec with Matchers {
 
   "Figure should from " should {
     val builder = new ChessGameFieldBuilder
-    var gameField = builder.getNewGameField
+    var gameField : GameFieldInterface = builder.getNewGameField
 
 
     val figure = gameField.getFigure(1, 1)
@@ -100,7 +101,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       val k = King(7, 7, Color.WHITE)
       val k2 = King(1, 4, Color.WHITE)
       gameField.setSelfIntoCheck(p, 0, 2) should be (false)
-      gameField.setSelfIntoCheck(p2,0, 2) should be (true)
+      gameField.setSelfIntoCheck(p2,0, 2) should be (false)
 
     }
     "add Figures correctly" in {
