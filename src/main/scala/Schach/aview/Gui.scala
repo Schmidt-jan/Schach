@@ -1,11 +1,12 @@
 package Schach.aview
 
 import java.awt.Color
+
 import Schach.controller.controllerComponent.ControllerInterface
 import Schach.model.figureComponent.Pawn
 import Schach.util.Observer
-
 import javax.swing.BorderFactory
+
 import scala.swing._
 import scala.swing.event.MouseClicked
 
@@ -60,19 +61,40 @@ class Gui(controller: ControllerInterface) extends Frame with Observer {
           case e: MouseClicked => if (!fromSet) {
             fromSet = true
             from = (cell, row)
+            mouseClickSet.text = "Cell selected"
           } else {
             fromSet = false
             to = (cell, row)
-
+            mouseClickSet.text = ""
             val move = Vector(from._1, from._2, to._1, to._2)
             controller.movePiece(move)
 
             controller.getGameStatus() match {
-              case 1 => Dialog.showMessage(contents.head, { if (controller.getPlayer().getRed == 0) "Black"
+              case 1 => Dialog.showMessage(contents.head, { if (controller.getPlayer().getRed == 0) "BLACK"
                                                             else "WHITE"} + "  is checked", title = "Checked")
-              case 2 => Dialog.showMessage(contents.head, { if (controller.getPlayer().getRed == 0) "Black"
-                                                            else "WHITE"} + "  is checked", title = "Checkmate")
+              case 2 => Dialog.showMessage(contents.head, { if (controller.getPlayer().getRed == 0) "BLACK"
+                                                            else "WHITE"} + "  is checkmate", title = "Checkmate")
               case 3 => Dialog.showMessage(contents.head, "Invalid move", title = "Error")
+
+              case 4 =>
+                controller.changePlayer()
+
+                var r = Dialog.showInput(contents.head, "Type in 'Queen', 'Bishop', 'Rook', 'Knight'", initial="")
+
+                while (r.get !=  "Queen" && r.get !=  "Bishop" && r.get !=  "Rook" && r.get !=  "Knight") {
+                  r = Dialog.showInput(contents.head, "Type in 'Queen', 'Bishop', 'Rook', 'Knight'", initial="")
+                }
+
+                r.get match {
+                  case "Queen" => controller.convertPawn("queen")
+                  case "Bishop" => controller.convertPawn("bishop")
+                  case "Rook" => controller.convertPawn("rook")
+                  case "Knight" => controller.convertPawn("knight")
+                }
+
+                controller.checkStatus()
+                controller.changePlayer()
+                update
               case _ =>
             }
           }
@@ -81,6 +103,11 @@ class Gui(controller: ControllerInterface) extends Frame with Observer {
 
       contents += panel
     }
+  }
+
+  val mouseClickSet : Label = new Label(){
+    font = new Font("Monospaced", 1, 20)
+    horizontalAlignment = Alignment.Left
   }
 
   val checkedPawnWhite : Label = new Label(){
@@ -110,7 +137,7 @@ class Gui(controller: ControllerInterface) extends Frame with Observer {
     border = BorderFactory.createEmptyBorder(0, 10, 0, 10)
     preferredSize = new Dimension(280, 300)
     contents += playersTurn
-    contents += new Label("")
+    contents += mouseClickSet
 
     contents += new Label("Checked") {
       horizontalAlignment = Alignment.Left

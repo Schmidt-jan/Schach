@@ -1,9 +1,10 @@
 package Schach.controller.controllerComponent.controllerBaseImpl
 
 import java.awt.Color
+
 import Schach.GameFieldModule
 import Schach.controller.controllerComponent._
-import Schach.model.figureComponent.Figure
+import Schach.model.figureComponent.{Bishop, Rook, Knight, Queen, Figure}
 import Schach.model.fileIOComponent.FileIOInterface
 import Schach.model.gameFieldComponent.GameFieldInterface
 import Schach.util.{Caretaker, UndoManager}
@@ -37,15 +38,22 @@ class Controller @Inject() extends ControllerInterface {
     if (moveIsValid(newPos)) {
       undoManager.doStep(new MoveCommand(newPos(0), newPos(1), newPos(2), newPos(3), this))
       changePlayer()
+      checkStatus()
 
-      if (isChecked()) {
-        gameField.setStatus(gameField.CHECKED)
-        if (isCheckmate()) {
-          gameField.setStatus(gameField.CHECKMATE)
-        }
-      }
       notifyObservers
     }
+  }
+
+  def checkStatus() = {
+    if (isChecked()) {
+      gameField.setStatus(gameField.CHECKED)
+      if (isCheckmate())
+        gameField.setStatus(gameField.CHECKMATE)
+    }
+
+
+    if (gameField.pawnHasReachedEnd())
+      gameField.setStatus(gameField.PAWN_REACHED_END)
   }
 
   def moveIsValid(newPos: Vector[Int]): Boolean = {
@@ -73,16 +81,22 @@ class Controller @Inject() extends ControllerInterface {
     gameField.changePlayer()
   }
 
+  def convertPawn(figureType : String)  = {
+    val pawn = gameField.getPawnAtEnd()
+    figureType match {
+      case "queen" => gameField.convertFigure(pawn, Queen(pawn.x, pawn.y, pawn.color))
+      case "rook" => gameField.convertFigure(pawn, Rook(pawn.x, pawn.y, pawn.color))
+      case "knight" => gameField.convertFigure(pawn, Knight(pawn.x, pawn.y, pawn.color))
+      case "bishop" => gameField.convertFigure(pawn, Bishop(pawn.x, pawn.y, pawn.color))
+    }
+  }
+
   def isChecked(): Boolean = {
     gameField.isChecked(getPlayer)
   }
 
   def isCheckmate(): Boolean = {
     gameField.isCheckmate(getPlayer)
-  }
-
-  def controlFlow(): Unit = {
-
   }
 
   def undo(): Unit = {
