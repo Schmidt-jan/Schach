@@ -1,14 +1,13 @@
-package Schach.model.fileIOComponent.fileIOJSONImpl
+package Schach.model.fileIOComponent.fileIOXMLImpl
 
 import Schach.controller.controllerComponent.controllerBaseImpl.Controller
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 
+class FileIOSpecXML extends AnyWordSpec with Matchers {
 
-class FileIOSpec extends AnyWordSpec with Matchers {
-
-  "The JSON FileIO" when {
+  "The XML FileIO" when {
     "making use of the FileIO Implementation" should {
       val fileIo = new FileIO
 
