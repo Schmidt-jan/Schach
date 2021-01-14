@@ -20,7 +20,6 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
     }
 
     "move to" in {
-
       gameField = gameField.moveTo(1, 1, 2, 3)
       gameField.getFigure(2,3).get mustBe a [Pawn]
     }

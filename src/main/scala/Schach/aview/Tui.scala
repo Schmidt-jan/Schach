@@ -9,7 +9,6 @@ class Tui(controller: ControllerInterface) extends Observer{
 
   controller.add(this)
 
-
   def interactWithUser(input: String) : Unit = {
     val args = input.split(" ")
 
@@ -18,17 +17,7 @@ class Tui(controller: ControllerInterface) extends Observer{
       case "move" =>
         if (args.size == 3 && controller.controlInput(args(1)) && controller.controlInput(args(2))) {
           val command = args(1).concat(" ").concat(args(2))
-          if (controller.moveIsValid(readInput(command))) {
-            controller.movePiece(readInput(command))
-            controller.changePlayer()
-            if (controller.isChecked()) {
-              println(controller.getPlayer + "  is checked")
-              if (controller.isCheckmate())
-                println(controller.getPlayer + "  is checkmate")
-            }
-          } else {
-            println("That Move is against the Rules!")
-          }
+          controller.movePiece(readInput(command))
         }
         else {
           println("Wrong Input: Invalid Move")
@@ -77,5 +66,20 @@ class Tui(controller: ControllerInterface) extends Observer{
     }
   }
 
-  override def update: Unit = println(controller.gameFieldToString)
+  def printGameStatus(): Unit = {
+    controller.getGameStatus() match {
+      case 0 => println("RUNNING")
+      case 1 => println("PLAYER " + { if (controller.getPlayer().getRed == 0) "Black"
+                                      else "WHITE"} + "CHECKED")
+      case 2 => println({if (controller.getPlayer().getRed == 0) "BLACK "
+                          else "WHITE "} + "IS CHECKMATE")
+      case 3 => println("INVALID MOVE")
+    }
+  }
+
+
+  override def update: Unit = {
+    printGameStatus()
+    println(controller.gameFieldToString)
+  }
 }

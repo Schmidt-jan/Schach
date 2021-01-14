@@ -1,13 +1,17 @@
 package Schach.model.gameFieldComponent
 
+import java.awt.Color
+
 import Schach.model.figureComponent.Figure
 import Schach.model.gameFieldComponent.gameFieldBaseImpl.GameField
-
-import java.awt.Color
 
 
 
 trait GameFieldInterface {
+  final val RUNNING = 0
+  final val CHECKED = 1
+  final val CHECKMATE = 2
+  final val MOVE_ILLEGAL = 3
 
   def addFigures(figures : Vector[Figure]) : GameField
   def getFigures: Vector[Figure]
@@ -25,6 +29,8 @@ trait GameFieldInterface {
   def changePlayer(): Color
   def getFigure(xPos: Int, yPos: Int): Option[Figure]
   def clear() : Boolean
+  def setStatus(newStatus : Int)
+  def getStatus() : Int
   def toString: String
 
 }

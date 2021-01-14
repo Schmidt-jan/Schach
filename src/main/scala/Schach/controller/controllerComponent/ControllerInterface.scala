@@ -16,6 +16,7 @@ trait ControllerInterface extends Observable with Originator{
   def gameFieldToString: String
   def getGameField: Vector[Figure]
   def movePiece(newPos: Vector[Int]): Unit
+  def getGameStatus() : Int
   def moveIsValid(newPos: Vector[Int]): Boolean
   def setPlayer(color : Color): Color
   def getPlayer() : Color

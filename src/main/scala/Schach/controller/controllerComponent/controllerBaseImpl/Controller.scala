@@ -11,14 +11,14 @@ import com.google.inject.name.Names
 import com.google.inject.{Guice, Inject}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 
-class Controller @Inject () extends ControllerInterface {
+class Controller @Inject() extends ControllerInterface {
   var injector = Guice.createInjector(new GameFieldModule)
   val undoManager = new UndoManager
   val caretaker = new Caretaker
-  var gameField : GameFieldInterface = injector.instance[GameFieldInterface](Names.named("Chess"))
+  var gameField: GameFieldInterface = injector.instance[GameFieldInterface](Names.named("Chess"))
 
 
-  def createGameField() : Unit = {
+  def createGameField(): Unit = {
     gameField = injector.instance[GameFieldInterface](Names.named("Chess"))
     notifyObservers
   }
@@ -32,19 +32,38 @@ class Controller @Inject () extends ControllerInterface {
   def getGameField: Vector[Figure] = gameField.getFigures
 
   def movePiece(newPos: Vector[Int]): Unit = {
-    undoManager.doStep(new MoveCommand(newPos(0), newPos(1), newPos(2), newPos(3), this))
-    notifyObservers
+    if (moveIsValid(newPos)) {
+      undoManager.doStep(new MoveCommand(newPos(0), newPos(1), newPos(2), newPos(3), this))
+      changePlayer()
+
+      if (isChecked()) {
+        gameField.setStatus(gameField.CHECKED)
+        if (isCheckmate()) {
+          gameField.setStatus(gameField.CHECKMATE)
+        }
+      }
+      notifyObservers
+    }
   }
 
   def moveIsValid(newPos: Vector[Int]): Boolean = {
-    gameField.moveValid(newPos(0), newPos(1), newPos(2), newPos(3))
+    val valid = gameField.moveValid(newPos(0), newPos(1), newPos(2), newPos(3))
+
+    if (valid) gameField.setStatus(gameField.RUNNING)
+    else gameField.setStatus(gameField.MOVE_ILLEGAL)
+
+    valid
   }
 
-  def setPlayer(color : Color): Color = {
+  def getGameStatus() : Int = {
+    gameField.getStatus();
+  }
+
+  def setPlayer(color: Color): Color = {
     gameField.setPlayer(color)
   }
 
-  def getPlayer() : Color = {
+  def getPlayer(): Color = {
     gameField.getPlayer
   }
 
@@ -89,7 +108,6 @@ class Controller @Inject () extends ControllerInterface {
   def caretakerIsCalled(): Boolean = {
     caretaker.called
   }
-
 
 
 }

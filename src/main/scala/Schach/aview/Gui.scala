@@ -65,18 +65,15 @@ class Gui(controller: ControllerInterface) extends Frame with Observer {
             to = (cell, row)
 
             val move = Vector(from._1, from._2, to._1, to._2)
-            if (controller.moveIsValid(move)) {
-              controller.movePiece(move)
-              controller.changePlayer()
-              update
-              if (controller.isChecked()) {
-                if (controller.isCheckmate())
-                  Dialog.showMessage(contents.head, controller.getPlayer + "  is checkmate", title = "Checkmate")
-                else
-                  Dialog.showMessage(contents.head, controller.getPlayer + "  is checked", title = "Checked")
-              }
-            } else {
-              Dialog.showMessage(contents.head, "Invalid move", title = "Error")
+            controller.movePiece(move)
+
+            controller.getGameStatus() match {
+              case 1 => Dialog.showMessage(contents.head, { if (controller.getPlayer().getRed == 0) "Black"
+                                                            else "WHITE"} + "  is checked", title = "Checked")
+              case 2 => Dialog.showMessage(contents.head, { if (controller.getPlayer().getRed == 0) "Black"
+                                                            else "WHITE"} + "  is checked", title = "Checkmate")
+              case 3 => Dialog.showMessage(contents.head, "Invalid move", title = "Error")
+              case _ =>
             }
           }
         }

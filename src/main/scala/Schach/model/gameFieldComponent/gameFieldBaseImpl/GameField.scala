@@ -10,6 +10,7 @@ import scala.util.control._
 
 class GameField(private var gameField: Vector[Figure]) extends GameFieldInterface {
 
+  var status = RUNNING
   private var validPlayer = Color.WHITE
 
   def this() = this(Vector())
@@ -253,6 +254,14 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     validPlayer = Color.WHITE
     gameField = Vector.empty
     gameField.isEmpty
+  }
+
+  def setStatus(newState : Int)  = {
+    status = newState;
+  }
+
+  def getStatus() : Int = {
+    status
   }
 
   override def toString: String = {
