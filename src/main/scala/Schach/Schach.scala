@@ -1,9 +1,8 @@
 package Schach
 
-import aview.{Gui, Tui}
-import controller.controllerComponent.controllerBaseImpl.Controller
-import model._
-
+import com.google.inject.Guice
+import controller.controllerComponent._
+import aview._
 
 object Schach {
 
@@ -23,7 +22,8 @@ object Schach {
     */
 
     var break = false
-    val controller = new Controller()
+    val injector = Guice.createInjector(new GameFieldModule)
+    val controller = injector.getInstance(classOf[ControllerInterface])
     controller.createGameField()
     val gui = new Gui(controller)
     val tui = new Tui(controller)

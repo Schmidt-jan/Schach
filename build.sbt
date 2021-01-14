@@ -8,6 +8,8 @@ libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.2"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.2" % "test"
 libraryDependencies += "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
 libraryDependencies += "org.scalafx" %% "scalafx" % "14-R19"
+libraryDependencies += "com.google.inject" % "guice" % "4.2.3"
+libraryDependencies += "net.codingwell" %% "scala-guice" % "4.2.11"
 
 
 val javafxModules = Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")

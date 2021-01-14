@@ -1,22 +1,26 @@
 package Schach.controller.controllerComponent.controllerBaseImpl
 
+import java.awt.Color
+
+import Schach.GameFieldModule
 import Schach.controller.controllerComponent._
 import Schach.model.figureComponent.Figure
 import Schach.model.gameFieldComponent.gameFieldBaseImpl.ChessGameFieldBuilder
 import Schach.model.gameFieldComponent.{ChessGameFieldBuilderInterface, GameFieldInterface}
 import Schach.util.{Caretaker, UndoManager}
+import com.google.inject.name.Names
+import com.google.inject.{Guice, Inject}
+import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 
-import java.awt.Color
-
-class Controller() extends ControllerInterface {
-  val builder : ChessGameFieldBuilderInterface = new ChessGameFieldBuilder
-  var gameField : GameFieldInterface = builder.getNewGameField
+class Controller @Inject ()(var gameField: GameFieldInterface) extends ControllerInterface {
+  val injector = Guice.createInjector(new GameFieldModule)
+  val builder : ChessGameFieldBuilderInterface = new ChessGameFieldBuilder()
   val undoManager = new UndoManager
   val caretaker = new Caretaker
 
 
   def createGameField() : Unit = {
-    gameField = builder.getNewGameField
+    gameField = injector.instance[GameFieldInterface](Names.named("Chess"))
     notifyObservers
   }
 
