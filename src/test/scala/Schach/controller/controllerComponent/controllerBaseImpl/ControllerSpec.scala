@@ -14,11 +14,11 @@ import com.google.inject.Guice
 
 class ControllerSpec extends AnyWordSpec with Matchers {
 
-  val injector = Guice.createInjector(new GameFieldModule)
+  var injector = Guice.createInjector(new GameFieldModule)
 
   "A Controller" when  {
     "observed by an Observer" should {
-      val controller : ControllerInterface = injector.getInstance(classOf[ControllerInterface])
+      var controller : ControllerInterface = injector.getInstance(classOf[ControllerInterface])
       val vec = Vector(0, 1, 0, 2)
       val observer = new Observer {
         var updated: Boolean = false
@@ -36,6 +36,9 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.changePlayer()
       }
       "check if a move is valid" in {
+        injector = Guice.createInjector(new GameFieldModule)
+        var controller = injector.getInstance(classOf[ControllerInterface])
+
         controller.createGameField()
         controller.movePiece(vec)
         val v = Vector(1, 6, 1, 4)
@@ -66,6 +69,9 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       }
 
       "save and load a state" in {
+        injector = Guice.createInjector(new GameFieldModule)
+        var controller = injector.getInstance(classOf[ControllerInterface])
+
         controller.createGameField()
         val old = controller.gameFieldToString
         controller.save()
@@ -84,6 +90,8 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.getGameField shouldBe a [Vector[Figure]]
       }
       "give the first turn to white and the second to black" in {
+        injector = Guice.createInjector(new GameFieldModule)
+        var controller = injector.getInstance(classOf[ControllerInterface])
         controller.createGameField()
         controller.getPlayer() should be (Color.WHITE)
 
