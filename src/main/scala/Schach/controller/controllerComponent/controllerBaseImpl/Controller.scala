@@ -19,6 +19,7 @@ class Controller @Inject() extends ControllerInterface {
 
 
   def createGameField(): Unit = {
+    injector = Guice.createInjector(new GameFieldModule)
     gameField = injector.instance[GameFieldInterface](Names.named("Chess"))
     notifyObservers
   }

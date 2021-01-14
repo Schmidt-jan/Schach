@@ -9,7 +9,6 @@ import scala.collection.immutable._
 import scala.util.control._
 
 class GameField(private var gameField: Vector[Figure]) extends GameFieldInterface {
-
   var status = RUNNING
   private var validPlayer = Color.WHITE
 
