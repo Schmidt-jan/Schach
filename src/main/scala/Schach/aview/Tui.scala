@@ -18,6 +18,9 @@ class Tui(controller: ControllerInterface) extends Observer{
         if (args.size == 3 && controller.controlInput(args(1)) && controller.controlInput(args(2))) {
           val command = args(1).concat(" ").concat(args(2))
           controller.movePiece(readInput(command))
+          //4 = PAWN_REACHED_END -> look at gameFieldInterface
+          if (controller.getGameStatus() == 4)
+            convertPawn();
         }
         else {
           println("Wrong Input: Invalid Move")
@@ -36,7 +39,6 @@ class Tui(controller: ControllerInterface) extends Observer{
       case _ => println("No Valid Command")
     }
   }
-
 
   def readInput(line: String): Vector[Int] = {
     val fromX = getPoint(line.charAt(0))
@@ -76,7 +78,36 @@ class Tui(controller: ControllerInterface) extends Observer{
       case 2 => println({if (controller.getPlayer().getRed == 0) "BLACK "
                           else "WHITE "} + "IS CHECKMATE")
       case 3 => println("INVALID MOVE")
+      case _ =>
     }
+  }
+
+  def convertPawn() ={
+    var break = true
+    controller.changePlayer()
+    println({if (controller.getPlayer().getRed == 0) "Black's "
+            else "White's"} + "player has reached the end of the game field.\n" +
+            "Change it to a 'queen', 'rook', 'knight' or 'bishop' by typing into the console")
+
+    while (!break) {
+      val line = scala.io.StdIn.readLine()
+
+      line match {
+        case "queen" => controller.convertPawn("queen")
+          break = true
+        case "rook" => controller.convertPawn("rook")
+          break = true
+        case "knight" => controller.convertPawn("knight")
+          break = true
+        case "bishop" => controller.convertPawn("bishop")
+          break = true
+        case _ => println("wrong input")
+      }
+    }
+
+    controller.checkStatus()
+    printGameStatus()
+    controller.changePlayer()
   }
 
 

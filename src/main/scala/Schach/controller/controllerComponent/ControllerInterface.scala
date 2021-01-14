@@ -17,10 +17,12 @@ trait ControllerInterface extends Observable with Originator{
   def getGameField: Vector[Figure]
   def movePiece(newPos: Vector[Int]): Unit
   def getGameStatus() : Int
+  def checkStatus()
   def moveIsValid(newPos: Vector[Int]): Boolean
   def setPlayer(color : Color): Color
   def getPlayer() : Color
   def changePlayer(): Unit
+  def convertPawn(figureType : String)
   def isChecked(): Boolean
   def isCheckmate(): Boolean
   def undo(): Unit
