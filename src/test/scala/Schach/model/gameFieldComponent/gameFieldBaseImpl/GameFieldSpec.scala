@@ -1,7 +1,6 @@
 package Schach.model.gameFieldComponent.gameFieldBaseImpl
 
 import Schach.model.figureComponent._
-import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import java.awt.Color
@@ -13,20 +12,22 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
   "Figure should from " should {
     val builder = new ChessGameFieldBuilder
     var gameField : GameFieldInterface = builder.getNewGameField
-
-
     val figure = gameField.getFigure(1, 1)
-    "should be" in {
-      figure.get  mustBe a [Pawn]
+
+    "have some states" in {
+      figure.get shouldBe a[Pawn]
+      gameField.RUNNING should be (0)
+      gameField.CHECKED should be (1)
+      gameField.CHECKMATE should be (2)
+      gameField.MOVE_ILLEGAL should be (3)
     }
 
-    "move to" in {
+    "make moves" in {
       gameField = gameField.moveTo(1, 1, 2, 3)
-      gameField.getFigure(2,3).get mustBe a [Pawn]
+      gameField.getFigure(2,3).get shouldBe a[Pawn]
     }
 
-
-    "moving test" in {
+    "cover some specific moves and check if the way is free" in {
       gameField = builder.getNewGameField
       gameField.wayToIsFreeDiagonal(2,0,6,4) should be(false)
       gameField.wayToIsFreeDiagonal(3,2,0,5) should be(true)
@@ -34,17 +35,14 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.wayToIsFreeDiagonal(0, 5, 3, 2) should be(true)
 
       gameField = gameField.moveTo(3,1,3,3)
-
       gameField = gameField.moveTo(7,6,7,5)
-
       gameField = gameField.moveTo(4,0,0,4)
 
       gameField.moveValid(2, 6, 2, 5) should be (false)
-
       gameField.wayToIsFreeStraight(0,4,2,4) should be(true)
     }
 
-    "do some more move cases" in {
+    "cover some more move cases" in {
       gameField = builder.getNewGameField
       gameField = gameField.moveTo(0, 1, 0, 3)
       gameField = gameField.moveTo(0, 0, 0, 2)
@@ -60,7 +58,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.getFigure(2, 1) shouldBe a[Some[Bishop]]
 
     }
-    "cases for black figures trying to move" in {
+    "cases for black pieces trying to move" in {
       gameField = builder.getNewGameField
       gameField.wayToIsFreeStraight(1, 6, 1, 4) should be(true)
 

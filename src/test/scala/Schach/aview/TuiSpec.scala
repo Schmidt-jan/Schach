@@ -137,6 +137,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
     }
     "save and load a savefile" in {
       tui.interactWithUser("new")
+      tui.interactWithUser("move H2 H4")
       tui.interactWithUser("move A2 A4")
       val old = controller.gameFieldToString
       tui.interactWithUser("save_game")
