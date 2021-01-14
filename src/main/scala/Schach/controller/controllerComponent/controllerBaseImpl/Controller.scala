@@ -51,7 +51,6 @@ class Controller @Inject() extends ControllerInterface {
         gameField.setStatus(gameField.CHECKMATE)
     }
 
-
     if (gameField.pawnHasReachedEnd())
       gameField.setStatus(gameField.PAWN_REACHED_END)
   }
@@ -89,6 +88,7 @@ class Controller @Inject() extends ControllerInterface {
       case "knight" => gameField.convertFigure(pawn, Knight(pawn.x, pawn.y, pawn.color))
       case "bishop" => gameField.convertFigure(pawn, Bishop(pawn.x, pawn.y, pawn.color))
     }
+    notifyObservers
   }
 
   def isChecked(): Boolean = {

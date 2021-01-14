@@ -2,7 +2,7 @@ package Schach.aview
 
 import Schach.GameFieldModule
 import Schach.controller.controllerComponent.ControllerInterface
-import Schach.controller.controllerComponent.controllerBaseImpl.Controller
+import Schach.model.figureComponent._
 import Schach.model.gameFieldComponent.gameFieldBaseImpl.GameField
 import com.google.inject.Guice
 import org.scalatest.matchers.should.Matchers
@@ -138,14 +138,56 @@ class TuiSpec extends AnyWordSpec with Matchers {
     "save and load a savefile" in {
       tui.interactWithUser("new")
       tui.interactWithUser("move H2 H4")
-      tui.interactWithUser("move A2 A4")
+      tui.interactWithUser("move B7 B5")
       val old = controller.gameFieldToString
       tui.interactWithUser("save_game")
+      tui.interactWithUser("move C2 C3")
       tui.interactWithUser("move A7 A5")
       controller.gameFieldToString should not be (old)
       tui.interactWithUser("load_game")
       controller.gameFieldToString should be (old)
     }
+
+    "when a Pawn has reached the other side of the GameField" should {
+
+      "change the Pawn into a Queen" in {
+        tui.interactWithUser("new")
+        tui.interactWithUser("move G2 G4")
+        tui.interactWithUser("move H7 H5")
+        tui.interactWithUser("move A7 A6")
+        tui.interactWithUser("move G4 H5")
+        tui.interactWithUser("move H8 H6")
+        tui.interactWithUser("move A2 A3")
+        tui.interactWithUser("move H6 C6")
+        tui.interactWithUser("move H5 H6")
+        tui.interactWithUser("move C6 C5")
+        tui.interactWithUser("move H6 H7")
+        tui.interactWithUser("move C5 C4")
+        tui.interactWithUser("move H7 H8")
+        tui.interactWithUser("save_game")
+        tui.convertPawn("queen")
+        controller.gameField.getFigure(7, 7).get shouldBe a[Queen]
+      }
+      "change the Pawn into a Rook, Knight or Bishop" in {
+        tui.interactWithUser("new")
+        tui.interactWithUser("load_game")
+        tui.convertPawn("rook")
+        controller.gameField.getFigure(7, 7).get shouldBe a[Rook]
+
+        tui.interactWithUser("new")
+        tui.interactWithUser("load_game")
+        tui.convertPawn("knight")
+        controller.gameField.getFigure(7, 7).get shouldBe a[Knight]
+
+        tui.interactWithUser("new")
+        tui.interactWithUser("load_game")
+        tui.convertPawn("bishop")
+        controller.gameField.getFigure(7, 7).get shouldBe a[Bishop]
+
+        tui.convertPawn("abc")
+      }
+    }
+
 
   }
 

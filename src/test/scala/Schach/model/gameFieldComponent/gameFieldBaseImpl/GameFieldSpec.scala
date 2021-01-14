@@ -20,6 +20,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.CHECKED should be (1)
       gameField.CHECKMATE should be (2)
       gameField.MOVE_ILLEGAL should be (3)
+      gameField.PAWN_REACHED_END should be (4)
     }
 
     "make moves" in {
