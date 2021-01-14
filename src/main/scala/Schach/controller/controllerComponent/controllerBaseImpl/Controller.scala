@@ -81,9 +81,6 @@ class Controller @Inject() extends ControllerInterface {
     gameField.isCheckmate(getPlayer)
   }
 
-  def controlFlow(): Unit = {
-
-  }
 
   def undo(): Unit = {
     undoManager.undoStep()

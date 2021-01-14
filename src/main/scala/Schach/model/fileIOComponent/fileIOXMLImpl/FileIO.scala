@@ -9,7 +9,7 @@ import java.io._
 import scala.xml.{Elem, PrettyPrinter}
 
 class FileIO extends FileIOInterface{
-  //ToDo: Improve behaviour on empty cell in GameField
+
   override def loadGame: (Vector[Figure], Color) = {
 
     val file = scala.xml.XML.loadFile("save.xml")
