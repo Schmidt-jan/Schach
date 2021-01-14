@@ -5,6 +5,7 @@ import com.google.inject.name.Names
 import net.codingwell.scalaguice.ScalaModule
 import model.gameFieldComponent.gameFieldBaseImpl._
 import model.gameFieldComponent._
+import model.fileIOComponent._
 import controller.controllerComponent._
 
 class GameFieldModule extends AbstractModule with ScalaModule {
@@ -17,5 +18,8 @@ class GameFieldModule extends AbstractModule with ScalaModule {
     bind[GameFieldInterface].to[GameField]
     bind[ControllerInterface].to[controllerBaseImpl.Controller]
     bind[GameFieldInterface].annotatedWithName("Chess").toInstance(new GameField(builder.getNewGameField.getFigures));
+
+    bind[FileIOInterface].to[fileIOXMLImpl.FileIO]
+    //bind[FileIOInterface].to[fileIOJSONImpl.FileIO]
   }
 }

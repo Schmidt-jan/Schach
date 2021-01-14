@@ -1,10 +1,10 @@
 package Schach.controller.controllerComponent.controllerBaseImpl
 
 import java.awt.Color
-
 import Schach.GameFieldModule
 import Schach.controller.controllerComponent._
 import Schach.model.figureComponent.Figure
+import Schach.model.fileIOComponent.FileIOInterface
 import Schach.model.gameFieldComponent.GameFieldInterface
 import Schach.util.{Caretaker, UndoManager}
 import com.google.inject.name.Names
@@ -16,6 +16,7 @@ class Controller @Inject() extends ControllerInterface {
   val undoManager = new UndoManager
   val caretaker = new Caretaker
   var gameField: GameFieldInterface = injector.instance[GameFieldInterface](Names.named("Chess"))
+  val fileIo = injector.instance[FileIOInterface]
 
 
   def createGameField(): Unit = {
@@ -108,6 +109,19 @@ class Controller @Inject() extends ControllerInterface {
 
   def caretakerIsCalled(): Boolean = {
     caretaker.called
+  }
+
+  def saveGame(): Unit = {
+    fileIo.saveGame(gameField)
+    notifyObservers
+  }
+
+  def loadGame(): Unit = {
+    gameField.clear()
+    val (vec, col) = fileIo.loadGame
+    gameField.addFigures(vec)
+    gameField.setPlayer(col)
+    notifyObservers
   }
 
 

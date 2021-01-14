@@ -28,4 +28,6 @@ trait ControllerInterface extends Observable with Originator{
   def save(): Unit
   def restore(): Unit
   def caretakerIsCalled(): Boolean
+  def saveGame(): Unit
+  def loadGame(): Unit
 }

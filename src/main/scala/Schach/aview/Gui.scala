@@ -173,6 +173,14 @@ class Gui(controller: ControllerInterface) extends Frame with Observer {
       contents += new MenuItem(Action("Close")(System.exit(0))){
         font = fontItem
       }
+
+      contents += new MenuItem(Action("Save Game")(controller.saveGame())){
+        font = fontItem
+      }
+
+      contents += new MenuItem(Action("Load Game")(controller.loadGame())){
+        font = fontItem
+      }
     }
     contents += new Menu("Edit") {
       font = fontMenu
@@ -194,6 +202,7 @@ class Gui(controller: ControllerInterface) extends Frame with Observer {
         else println("No Save created yet"))) {
         font = fontItem
       }
+
     }
     contents += new Menu("About") {
       font = fontMenu
