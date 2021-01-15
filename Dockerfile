@@ -1,4 +1,4 @@
 FROM hseeberger/scala-sbt
-WORKDIR /sudoku
-ADD . /sudoku
-CMD sbt test
+WORKDIR /schach
+ADD . /schach
+CMD sbt run
