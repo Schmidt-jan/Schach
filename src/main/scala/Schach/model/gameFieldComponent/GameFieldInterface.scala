@@ -8,11 +8,11 @@ import Schach.model.gameFieldComponent.gameFieldBaseImpl.GameField
 
 
 trait GameFieldInterface {
-  final val RUNNING = 0
-  final val CHECKED = 1
-  final val CHECKMATE = 2
-  final val MOVE_ILLEGAL = 3
-  final val PAWN_REACHED_END = 4
+  val RUNNING = 0
+  val CHECKED = 1
+  val CHECKMATE = 2
+  val MOVE_ILLEGAL = 3
+  val PAWN_REACHED_END = 4
 
   def addFigures(figures : Vector[Figure]) : GameField
   def getFigures: Vector[Figure]
