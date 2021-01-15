@@ -85,12 +85,14 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
     "make use of Figure's equals method" in {
       gameField = builder.getNewGameField
       val f3 = gameField.getFigure(0,1).get
+      val f4 = gameField.getFigure(0,3)
       val f = new Figure {
         override val x: Int = 1
         override val y: Int = 2
         override val color: Color = color
       }
       f.equals(f3) should be (false)
+      f.equals(f4) should be (false)
       gameField.getFigure(2,7) shouldBe a[Some[Bishop]]
     }
 
