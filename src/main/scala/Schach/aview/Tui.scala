@@ -18,11 +18,6 @@ class Tui(controller: ControllerInterface) extends Observer{
         if (args.size == 3 && controller.controlInput(args(1)) && controller.controlInput(args(2))) {
           val command = args(1).concat(" ").concat(args(2))
           controller.movePiece(readInput(command))
-          //4 = PAWN_REACHED_END -> look at gameFieldInterface
-          /*
-          if (controller.getGameStatus() == 4)
-            convertPawn("queen")
-           */
         }
         else {
           println("Wrong Input: Invalid Move")
