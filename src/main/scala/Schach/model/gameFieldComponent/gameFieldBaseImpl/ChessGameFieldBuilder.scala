@@ -19,8 +19,8 @@ class ChessGameFieldBuilder extends GameFieldBuilder with ChessGameFieldBuilderI
       Figure("Pawn", 2, 1, Color.WHITE), Figure("Pawn", 3, 1, Color.WHITE),
       Figure("Pawn", 4, 1, Color.WHITE), Figure("Pawn", 5, 1, Color.WHITE),
       Figure("Pawn", 6, 1, Color.WHITE), Figure("Pawn", 7, 1, Color.WHITE)))
-
   }
+
 
   private def buildBlack(): Unit = {
     instance.addFigures(Vector(
