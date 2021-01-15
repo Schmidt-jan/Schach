@@ -3,9 +3,8 @@ package Schach.controller.controllerComponent.controllerBaseImpl
 import Schach.GameFieldModule
 import Schach.controller.controllerComponent.ControllerInterface
 import Schach.model.figureComponent.Figure
-
 import Schach.util.Observer
-import com.google.inject.Guice
+import com.google.inject.{Guice, Injector}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -13,7 +12,7 @@ import java.awt.Color
 
 class ControllerSpec extends AnyWordSpec with Matchers {
 
-  var injector = Guice.createInjector(new GameFieldModule)
+  var injector: Injector = Guice.createInjector(new GameFieldModule)
 
   "A Controller" when  {
     "observed by an Observer" should {
@@ -21,19 +20,22 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       val vec = Vector(0, 1, 0, 2)
       val observer = new Observer {
         var updated: Boolean = false
-        def isUpdated: Boolean = updated
+
         override def update: Unit = updated = true
       }
+
       controller.add(observer)
       "notify its observer after init" in {
         controller.createGameField()
         observer.updated should be(true)
       }
+
       "notify its observer after moving a piece" in {
         controller.movePiece(vec)
         observer.updated should be(true)
         controller.changePlayer()
       }
+
       "check if a move is valid" in {
         injector = Guice.createInjector(new GameFieldModule)
         val controller = injector.getInstance(classOf[ControllerInterface])
@@ -43,9 +45,11 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         val v = Vector(1, 6, 1, 4)
         controller.moveIsValid(v) should be(true)
       }
+
       "return a string representation of the GameField" in {
         controller.gameFieldToString shouldBe a[String]
       }
+
       "remove an observer" in {
         controller.remove(observer)
         controller.subscribers should not contain observer
@@ -80,13 +84,16 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.restore()
         controller.gameFieldToString should be(old)
       }
+
       "inform if there is a current save state" in {
         controller.save()
         controller.caretaker.called should be(true)
       }
+
       "return a gameField via getGameField" in {
         controller.getGameField shouldBe a [Vector[Figure]]
       }
+
       "give the first turn to white and the second to black" in {
         controller.createGameField()
         controller.getPlayer() should be (Color.WHITE)
@@ -94,10 +101,11 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.changePlayer()
         controller.getPlayer() should be (Color.BLACK)
       }
+
       "set a player correctly" in {
         controller.createGameField()
         controller.setPlayer(Color.BLACK)
-        controller.getPlayer() should not be (Color.WHITE)
+        controller.getPlayer() should not be Color.WHITE
       }
     }
   }

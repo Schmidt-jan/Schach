@@ -9,7 +9,7 @@ import Schach.model.gameFieldComponent.GameFieldInterface
 
 class GameFieldSpec extends AnyWordSpec with Matchers {
 
-  "Figure should from " should {
+  "A GameField" should {
     val builder = new ChessGameFieldBuilder
     var gameField : GameFieldInterface = builder.getNewGameField
     val figure = gameField.getFigure(1, 1)
@@ -59,7 +59,8 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.getFigure(2, 1) shouldBe a[Some[Bishop]]
 
     }
-    "cases for black pieces trying to move" in {
+
+    "cover some cases for black pieces trying to move" in {
       gameField = builder.getNewGameField
       gameField.wayToIsFreeStraight(1, 6, 1, 4) should be(true)
 
@@ -82,7 +83,8 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
     }
 
     "make use of Figure's equals method" in {
-      val f3 = gameField.getFigure(0,3)
+      gameField = builder.getNewGameField
+      val f3 = gameField.getFigure(0,1).get
       val f = new Figure {
         override val x: Int = 1
         override val y: Int = 2
@@ -104,6 +106,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.moveTo(6, 0, 2, 4)
       gameField.setSelfIntoCheck(king, 3, 6) should be(true)
     }
+
     "add Figures correctly" in {
       gameField = builder.getNewGameField
       val old = gameField.toString
@@ -115,7 +118,6 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
       gameField.addFigures(vec)
       gameField.toString should be(old)
-
     }
   }
 }

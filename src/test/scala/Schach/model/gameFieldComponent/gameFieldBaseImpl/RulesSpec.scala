@@ -9,7 +9,6 @@ import org.scalatest.wordspec.AnyWordSpec
 class RulesSpec extends AnyWordSpec with Matchers {
 
   "Rules" should {
-
     val builder = new ChessGameFieldBuilder
     var gameField : GameField = builder.getNewGameField
     var rule = Rules(gameField)
@@ -48,30 +47,36 @@ class RulesSpec extends AnyWordSpec with Matchers {
       rule.validKnight(k, 3, 1) should be(false)
       rule.validKnight(k, 0, 4) should be(false)
     }
-    "Queen should be able to move diagonally" in {
+
+    "have the Queen move diagonally" in {
       val q = Queen(3, 2, Color.WHITE)
       rule.validQueen(q, 6, 5) should be(true)
     }
-    "King should not be able to move more than 1 cells" in {
+
+    "make the King not be able to move more than 1 cells" in {
       val king = King(4, 2, Color.WHITE)
       rule.validKing(king, 4, 4) should be(false)
     }
-    "Check if Rook is moving as intended" in {
+
+    "check if the Rook is moving as intended" in {
       val r = Rook(0,3, Color.WHITE)
       rule.validRook(r, 7,3) should be(true)
       rule.validRook(r, 2,5) should be(false)
     }
+
     "make sure the about to be moved figure is actually existing" in {
       rule.moveValidFigure(0, 3, 0, 4) should be(false)
       rule.moveValidWithoutKingCheck(7, 3, 7, 4) should be(false)
     }
+
     "make sure the bishop is behaving appropriately" in {
       gameField.moveTo(4, 0, 0, 4)
       gameField.moveTo(2, 0, 1, 3)
 
       rule.moveValidFigure(1, 3, 0, 4) should be (false)
     }
-    "control if pawn can move diagonally if there is an enemy figure" in {
+
+    "control pawn moving diagonally if there is an enemy figure" in {
       gameField = builder.getNewGameField
       gameField.moveTo(0, 1, 0, 3)
       gameField.moveTo(1, 6, 1, 4)

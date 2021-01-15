@@ -16,7 +16,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
     val controller = injector.getInstance(classOf[ControllerInterface])
     val tui = new Tui(controller)
     val input = "A1 F2"
-    var field = new GameField
+
     "work correctly on undoing an invalid command and loading an invalid save" in {
       tui.interactWithUser("new")
       val old = controller.gameFieldToString
@@ -30,7 +30,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
       tui.interactWithUser("load")
       controller.gameFieldToString should be(old)
     }
-    "convert a letter into a number for the GameField" in {
+
+    "convert a letter into a number for the GameField access" in {
       tui.getPoint(input.charAt(0)) should be(0)
       tui.getPoint(input.charAt(1)) should be (0)
       tui.getPoint(input.charAt(3)) should be(5)
@@ -50,12 +51,14 @@ class TuiSpec extends AnyWordSpec with Matchers {
       tui.getPoint('X') should be(-1)
 
     }
+
     "control the input via regex" in {
       controller.controlInput("A1") should be(true)
       controller.controlInput("abc def") should be(false)
       controller.controlInput("1A 2B") should be(false)
       controller.controlInput("a1 a2") should be(false)
     }
+
     "read input for the movePiece method via getPoint()" in {
       val read = tui.readInput(input)
       read(0) should be(0)
@@ -63,10 +66,12 @@ class TuiSpec extends AnyWordSpec with Matchers {
       read(2) should be(5)
       read(3) should be(1)
     }
+
     "create a new GameField on command 'new'" in {
       tui.interactWithUser("new")
       controller.gameField shouldBe a [GameField]
     }
+
     "move according to the input" in {
       tui.interactWithUser("move A1 A2")
       controller.moveIsValid(tui.readInput("A2 A3")) should be(true)
@@ -78,7 +83,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
       tui.interactWithUser("machmal XY ZX")
       controller.gameFieldToString should be(old)
       tui.interactWithUser("move A2 A3")
-      controller.gameFieldToString should not be (old)
+      controller.gameFieldToString should not be old
     }
 
     "undo and redo a move" in {
@@ -86,11 +91,12 @@ class TuiSpec extends AnyWordSpec with Matchers {
       val old = controller.gameFieldToString
 
       tui.interactWithUser("undo")
-      controller.gameFieldToString should not be (old)
+      controller.gameFieldToString should not be old
 
       tui.interactWithUser("redo")
       controller.gameFieldToString should be (old)
     }
+
     "save and load a state" in {
       tui.interactWithUser("move B1 A3")
       tui.interactWithUser("save")
@@ -99,6 +105,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
       tui.interactWithUser("load")
       controller.gameFieldToString should be(old)
     }
+
     "act accordingly to check and checkmate" in {
       tui.interactWithUser("new")
       tui.interactWithUser("move F2 F4")
@@ -135,22 +142,26 @@ class TuiSpec extends AnyWordSpec with Matchers {
       controller.isCheckmate() should be(true)
       tui.printGameStatus()
     }
+
     "save and load a savefile" in {
       tui.interactWithUser("new")
       tui.interactWithUser("move H2 H4")
       tui.interactWithUser("move B7 B5")
       val old = controller.gameFieldToString
+
       tui.interactWithUser("save_game")
       tui.interactWithUser("move C2 C3")
       tui.interactWithUser("move A7 A5")
-      controller.gameFieldToString should not be (old)
+
+      controller.gameFieldToString should not be old
       tui.interactWithUser("load_game")
+
       controller.gameFieldToString should be (old)
     }
 
-    "switch the Pawn when he has reached the other side of the GameField" should {
+    "switch the Pawn when he has reached the other side of the GameField" when {
 
-      "change the Pawn into a Queen" in {
+      "change the Pawn into a Queen after the user specified it" in {
         tui.interactWithUser("new")
         tui.interactWithUser("move G2 G4")
         tui.interactWithUser("move H7 H5")
@@ -168,7 +179,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
         tui.interactWithUser("switch queen")
         controller.gameField.getFigure(7, 7).get shouldBe a[Queen]
       }
-      "change the Pawn into a Rook, Knight or Bishop" in {
+
+      "change the Pawn into a Rook, Knight or Bishop if the user specified it" in {
         tui.interactWithUser("new")
         tui.interactWithUser("load_game")
         tui.convertPawn("rook")
@@ -187,8 +199,5 @@ class TuiSpec extends AnyWordSpec with Matchers {
         tui.convertPawn("abc")
       }
     }
-
-
   }
-
 }
