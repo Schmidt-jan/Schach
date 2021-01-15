@@ -3,6 +3,7 @@ package Schach.controller.controllerComponent.controllerBaseImpl
 import Schach.GameFieldModule
 import Schach.controller.controllerComponent.ControllerInterface
 import Schach.model.figureComponent.Figure
+
 import Schach.util.Observer
 import com.google.inject.Guice
 import org.scalatest.matchers.should.Matchers
@@ -40,6 +41,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.createGameField()
         controller.movePiece(vec)
         val v = Vector(1, 6, 1, 4)
+        controller.changePlayer()
         controller.moveIsValid(v) should be(true)
       }
       "return a string representation of the GameField" in {
@@ -57,6 +59,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
 
       "handle undo/redo correctly" in {
         controller.createGameField()
+
         controller.movePiece(vec)
         val tmp = controller.gameFieldToString
 
@@ -89,7 +92,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.createGameField()
         controller.getPlayer() should be (Color.WHITE)
 
-        controller.movePiece(vec)
+        controller.changePlayer()
         controller.getPlayer() should be (Color.BLACK)
       }
       "set a player correctly" in {

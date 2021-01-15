@@ -22,8 +22,8 @@ class Gui(controller: ControllerInterface) extends Frame with Observer {
   val fontMenu = new Font("Monospace", 2, 16)
 
   var fromSet = false
-  var from = (-1, -1)
-  var to = (-1, -1)
+  var from: (Int, Int) = (-1, -1)
+  var to: (Int, Int) = (-1, -1)
 
   listenTo(this)
 
@@ -67,6 +67,7 @@ class Gui(controller: ControllerInterface) extends Frame with Observer {
             to = (cell, row)
             mouseClickSet.text = ""
             val move = Vector(from._1, from._2, to._1, to._2)
+
             controller.movePiece(move)
 
             controller.getGameStatus() match {

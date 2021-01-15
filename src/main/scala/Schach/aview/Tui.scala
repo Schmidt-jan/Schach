@@ -2,7 +2,6 @@ package Schach.aview
 
 import Schach.controller.controllerComponent.ControllerInterface
 import Schach.util.Observer
-
 import scala.util.Success
 
 class Tui(controller: ControllerInterface) extends Observer{
@@ -13,7 +12,7 @@ class Tui(controller: ControllerInterface) extends Observer{
     val args = input.split(" ")
 
     args(0) match {
-      case "new" => Success(controller.createGameField)
+      case "new" => Success(controller.createGameField())
       case "move" =>
         if (args.size == 3 && controller.controlInput(args(1)) && controller.controlInput(args(2))) {
           val command = args(1).concat(" ").concat(args(2))

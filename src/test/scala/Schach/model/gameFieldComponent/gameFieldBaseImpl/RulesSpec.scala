@@ -32,19 +32,20 @@ class RulesSpec extends AnyWordSpec with Matchers {
       val p = Pawn(0,1, Color.WHITE)
       p.hasBeenMoved should be(false)
       val p2 = Pawn(0,6, Color.BLACK)
-      val p3 = Pawn(0,1, Color.WHITE, Some(true))
+      val p3 = Pawn(7,1, Color.WHITE, Some(true))
       rule.validPawn(p, 0, 0) should be(false)
       rule.validPawn(p2, 0, 7) should be(false)
       rule.validPawn(p3, 0, 3) should be(false)
 
-      rule.validPawn(p3, 0, 2) should be(true)
+      rule.validPawn(p3, 7, 2) should be(true)
       rule.validPawn(p, 0, 3) should be(true)
       rule.validPawn(p, 0, 4) should be(false)
     }
 
     "make the Knight jump horizontally" in {
-      val k = Knight(2, 2, Color.WHITE)
-      rule.validKnight(k, 0, 3) should be(true)
+      val k = Knight(1, 0, Color.WHITE)
+      rule.validKnight(k, 2, 2) should be(true)
+      rule.validKnight(k, 3, 1) should be(false)
       rule.validKnight(k, 0, 4) should be(false)
     }
     "Queen should be able to move diagonally" in {
