@@ -148,7 +148,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
       controller.gameFieldToString should be (old)
     }
 
-    "when a Pawn has reached the other side of the GameField" should {
+    "switch the Pawn when he has reached the other side of the GameField" should {
 
       "change the Pawn into a Queen" in {
         tui.interactWithUser("new")
@@ -165,7 +165,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
         tui.interactWithUser("move C5 C4")
         tui.interactWithUser("move H7 H8")
         tui.interactWithUser("save_game")
-        tui.convertPawn("queen")
+        tui.interactWithUser("switch queen")
         controller.gameField.getFigure(7, 7).get shouldBe a[Queen]
       }
       "change the Pawn into a Rook, Knight or Bishop" in {

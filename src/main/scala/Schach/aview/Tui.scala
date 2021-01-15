@@ -27,6 +27,7 @@ class Tui(controller: ControllerInterface) extends Observer{
         else {
           println("Wrong Input: Invalid Move")
         }
+      case "switch" => convertPawn(args(1))
       case "undo" => controller.undo()
       case "redo" => controller.redo()
       case "save" => controller.save()
@@ -86,7 +87,6 @@ class Tui(controller: ControllerInterface) extends Observer{
   }
 
   def convertPawn(line: String) ={
-    var break = true
     controller.changePlayer()
     println({if (controller.getPlayer().getRed == 0) "Black's "
             else "White's "} + "player has reached the end of the game field.\n" +
@@ -94,14 +94,10 @@ class Tui(controller: ControllerInterface) extends Observer{
 
     line match {
       case "queen" => controller.convertPawn("queen")
-        break = true
       case "rook" => controller.convertPawn("rook")
-        break = true
       case "knight" => controller.convertPawn("knight")
-        break = true
       case "bishop" => controller.convertPawn("bishop")
-        break = true
-      case _ => println("wrong input")
+      case _ => println("Wrong Input")
     }
 
     controller.checkStatus()
