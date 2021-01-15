@@ -1,22 +1,28 @@
 package Schach.controller.controllerComponent.controllerBaseImpl
 
-import Schach.controller.controllerComponent._
-import Schach.model.figureComponent.Figure
-import Schach.model.gameFieldComponent.gameFieldBaseImpl.ChessGameFieldBuilder
-import Schach.model.gameFieldComponent.{ChessGameFieldBuilderInterface, GameFieldInterface}
-import Schach.util.{Caretaker, UndoManager}
-
 import java.awt.Color
 
-class Controller() extends ControllerInterface {
-  val builder : ChessGameFieldBuilderInterface = new ChessGameFieldBuilder
-  var gameField : GameFieldInterface = builder.getNewGameField
+import Schach.GameFieldModule
+import Schach.controller.controllerComponent._
+import Schach.model.figureComponent.{Bishop, Rook, Knight, Queen, Figure}
+import Schach.model.fileIOComponent.FileIOInterface
+import Schach.model.gameFieldComponent.GameFieldInterface
+import Schach.util.{Caretaker, UndoManager}
+import com.google.inject.name.Names
+import com.google.inject.{Guice, Inject}
+import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
+
+class Controller @Inject() extends ControllerInterface {
+  var injector = Guice.createInjector(new GameFieldModule)
   val undoManager = new UndoManager
   val caretaker = new Caretaker
+  var gameField: GameFieldInterface = injector.instance[GameFieldInterface](Names.named("Chess"))
+  val fileIo = injector.instance[FileIOInterface]
 
 
-  def createGameField() : Unit = {
-    gameField = builder.getNewGameField
+  def createGameField(): Unit = {
+    injector = Guice.createInjector(new GameFieldModule)
+    gameField = injector.instance[GameFieldInterface](Names.named("Chess"))
     notifyObservers
   }
 
@@ -29,24 +35,60 @@ class Controller() extends ControllerInterface {
   def getGameField: Vector[Figure] = gameField.getFigures
 
   def movePiece(newPos: Vector[Int]): Unit = {
-    undoManager.doStep(new MoveCommand(newPos(0), newPos(1), newPos(2), newPos(3), this))
-    notifyObservers
+    if (moveIsValid(newPos)) {
+      undoManager.doStep(new MoveCommand(newPos(0), newPos(1), newPos(2), newPos(3), this))
+      changePlayer()
+      checkStatus()
+
+      notifyObservers
+    }
+  }
+
+  def checkStatus() = {
+    if (isChecked()) {
+      gameField.setStatus(gameField.CHECKED)
+      if (isCheckmate())
+        gameField.setStatus(gameField.CHECKMATE)
+    }
+
+    if (gameField.pawnHasReachedEnd())
+      gameField.setStatus(gameField.PAWN_REACHED_END)
   }
 
   def moveIsValid(newPos: Vector[Int]): Boolean = {
-    gameField.moveValid(newPos(0), newPos(1), newPos(2), newPos(3))
+    val valid = gameField.moveValid(newPos(0), newPos(1), newPos(2), newPos(3))
+
+    if (valid) gameField.setStatus(gameField.RUNNING)
+    else gameField.setStatus(gameField.MOVE_ILLEGAL)
+
+    valid
   }
 
-  def setPlayer(color : Color): Color = {
+  def getGameStatus() : Int = {
+    gameField.getStatus();
+  }
+
+  def setPlayer(color: Color): Color = {
     gameField.setPlayer(color)
   }
 
-  def getPlayer() : Color = {
+  def getPlayer(): Color = {
     gameField.getPlayer
   }
 
   def changePlayer(): Unit = {
     gameField.changePlayer()
+  }
+
+  def convertPawn(figureType : String)  = {
+    val pawn = gameField.getPawnAtEnd()
+    figureType match {
+      case "queen" => gameField.convertFigure(pawn, Queen(pawn.x, pawn.y, pawn.color))
+      case "rook" => gameField.convertFigure(pawn, Rook(pawn.x, pawn.y, pawn.color))
+      case "knight" => gameField.convertFigure(pawn, Knight(pawn.x, pawn.y, pawn.color))
+      case "bishop" => gameField.convertFigure(pawn, Bishop(pawn.x, pawn.y, pawn.color))
+    }
+    notifyObservers
   }
 
   def isChecked(): Boolean = {
@@ -58,7 +100,6 @@ class Controller() extends ControllerInterface {
   }
 
   def undo(): Unit = {
-    //TODO when undo checked figure is not shown
     undoManager.undoStep()
     notifyObservers
   }
@@ -83,5 +124,19 @@ class Controller() extends ControllerInterface {
   def caretakerIsCalled(): Boolean = {
     caretaker.called
   }
+
+  def saveGame(): Unit = {
+    fileIo.saveGame(gameField)
+    notifyObservers
+  }
+
+  def loadGame(): Unit = {
+    gameField.clear()
+    val (vec, col) = fileIo.loadGame
+    gameField.addFigures(vec)
+    gameField.setPlayer(col)
+    notifyObservers
+  }
+
 
 }

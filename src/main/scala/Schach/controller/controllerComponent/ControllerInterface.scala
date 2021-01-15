@@ -1,20 +1,28 @@
 package Schach.controller.controllerComponent
 
-import Schach.model.figureComponent.Figure
-import Schach.util.{Observable, Originator}
-
 import java.awt.Color
 
+import Schach.model.figureComponent.Figure
+import Schach.model.gameFieldComponent.GameFieldInterface
+import Schach.util.{Caretaker, Observable, Originator, UndoManager}
+
 trait ControllerInterface extends Observable with Originator{
+  val undoManager : UndoManager
+  val caretaker : Caretaker
+  var gameField : GameFieldInterface
+
   def createGameField(): Unit
   def controlInput(line: String): Boolean
   def gameFieldToString: String
   def getGameField: Vector[Figure]
   def movePiece(newPos: Vector[Int]): Unit
+  def getGameStatus() : Int
+  def checkStatus()
   def moveIsValid(newPos: Vector[Int]): Boolean
   def setPlayer(color : Color): Color
   def getPlayer() : Color
   def changePlayer(): Unit
+  def convertPawn(figureType : String)
   def isChecked(): Boolean
   def isCheckmate(): Boolean
   def undo(): Unit
@@ -22,4 +30,6 @@ trait ControllerInterface extends Observable with Originator{
   def save(): Unit
   def restore(): Unit
   def caretakerIsCalled(): Boolean
+  def saveGame(): Unit
+  def loadGame(): Unit
 }

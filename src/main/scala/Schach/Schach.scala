@@ -1,29 +1,17 @@
 package Schach
 
-import aview.{Gui, Tui}
-import controller.controllerComponent.controllerBaseImpl.Controller
-import model._
-
+import com.google.inject.Guice
+import controller.controllerComponent._
+import aview._
 
 object Schach {
 
 
   def main(args: Array[String]) {
-    /*
-    println("Welcome to Chess")
-    println("What is your name?")
-    val name = scala.io.StdIn.readLine()
-
-    val playerOne = Player(name)
-    println("Hello " + playerOne.name + "\n")
-    println("This is the Chess Board\n")
-    val field = createGameField()
-    println(field)
-    println(field.length)
-    */
 
     var break = false
-    val controller = new Controller()
+    val injector = Guice.createInjector(new GameFieldModule)
+    val controller = injector.getInstance(classOf[ControllerInterface])
     controller.createGameField()
     val gui = new Gui(controller)
     val tui = new Tui(controller)

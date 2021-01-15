@@ -1,19 +1,23 @@
 package Schach.controller.controllerComponent.controllerBaseImpl
 
+import Schach.GameFieldModule
+import Schach.controller.controllerComponent.ControllerInterface
 import Schach.model.figureComponent.Figure
 
 import Schach.util.Observer
+import com.google.inject.Guice
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import java.awt.Color
 
-
-
 class ControllerSpec extends AnyWordSpec with Matchers {
+
+  var injector = Guice.createInjector(new GameFieldModule)
+
   "A Controller" when  {
     "observed by an Observer" should {
-      val controller = new Controller()
+      val controller : ControllerInterface = injector.getInstance(classOf[ControllerInterface])
       val vec = Vector(0, 1, 0, 2)
       val observer = new Observer {
         var updated: Boolean = false
@@ -31,10 +35,12 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.changePlayer()
       }
       "check if a move is valid" in {
+        injector = Guice.createInjector(new GameFieldModule)
+        val controller = injector.getInstance(classOf[ControllerInterface])
+
         controller.createGameField()
         controller.movePiece(vec)
         val v = Vector(1, 6, 1, 4)
-        controller.changePlayer()
         controller.moveIsValid(v) should be(true)
       }
       "return a string representation of the GameField" in {
@@ -45,8 +51,9 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.subscribers should not contain observer
       }
     }
+
     "used as an Originator" should {
-      val controller = new Controller()
+      val controller = injector.getInstance(classOf[ControllerInterface])
       val vec = Vector(0, 1, 0, 2)
 
       "handle undo/redo correctly" in {
@@ -92,7 +99,6 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.setPlayer(Color.BLACK)
         controller.getPlayer() should not be (Color.WHITE)
       }
-
     }
   }
 

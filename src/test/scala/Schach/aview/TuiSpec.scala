@@ -1,7 +1,10 @@
 package Schach.aview
 
-import Schach.controller.controllerComponent.controllerBaseImpl.Controller
+import Schach.GameFieldModule
+import Schach.controller.controllerComponent.ControllerInterface
+import Schach.model.figureComponent._
 import Schach.model.gameFieldComponent.gameFieldBaseImpl.GameField
+import com.google.inject.Guice
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -9,12 +12,11 @@ import org.scalatest.wordspec.AnyWordSpec
 class TuiSpec extends AnyWordSpec with Matchers {
 
   "A Tui" should {
-    val controller = new Controller()
+    val injector = Guice.createInjector(new GameFieldModule)
+    val controller = injector.getInstance(classOf[ControllerInterface])
     val tui = new Tui(controller)
     val input = "A1 F2"
-
     var field = new GameField
-
     "work correctly on undoing an invalid command and loading an invalid save" in {
       tui.interactWithUser("new")
       val old = controller.gameFieldToString
@@ -66,33 +68,25 @@ class TuiSpec extends AnyWordSpec with Matchers {
       controller.gameField shouldBe a [GameField]
     }
     "move according to the input" in {
-      controller.createGameField()
       tui.interactWithUser("move A1 A2")
       controller.moveIsValid(tui.readInput("A2 A3")) should be(true)
       controller.moveIsValid(tui.readInput("A1 A1")) should be(false)
       controller.gameField.getFigure(0,2) should be(None)
-
-      controller.createGameField()
       val old = controller.gameFieldToString
-
       tui.interactWithUser("move XY ZX")
       controller.gameFieldToString should be(old)
-
       tui.interactWithUser("machmal XY ZX")
       controller.gameFieldToString should be(old)
-
       tui.interactWithUser("move A2 A3")
-      controller.gameFieldToString should not be old
+      controller.gameFieldToString should not be (old)
     }
 
     "undo and redo a move" in {
-
       tui.interactWithUser("move B7 A6")
-
       val old = controller.gameFieldToString
 
       tui.interactWithUser("undo")
-      controller.gameFieldToString should not be old
+      controller.gameFieldToString should not be (old)
 
       tui.interactWithUser("redo")
       controller.gameFieldToString should be (old)
@@ -109,6 +103,14 @@ class TuiSpec extends AnyWordSpec with Matchers {
       tui.interactWithUser("new")
       tui.interactWithUser("move F2 F4")
       tui.interactWithUser("move E7 E5")
+      tui.interactWithUser("move A2 A4")
+      tui.interactWithUser("move D7 D5")
+      tui.interactWithUser("move E1 H4")
+      controller.isChecked() should be(true)
+
+      tui.interactWithUser("new")
+      tui.interactWithUser("move F2 F4")
+      tui.interactWithUser("move E7 E5")
       tui.interactWithUser("move E1 H4")
       controller.isCheckmate() should be(true)
 
@@ -116,19 +118,76 @@ class TuiSpec extends AnyWordSpec with Matchers {
       tui.interactWithUser("move F2 F4")
       tui.interactWithUser("move E7 E5")
       controller.isChecked() should be (false)
+      tui.printGameStatus()
       tui.interactWithUser("move A2 A4")
       tui.interactWithUser("move D7 D5")
       tui.interactWithUser("move E1 H4")
       controller.isChecked() should be (true)
+      tui.printGameStatus()
 
       tui.interactWithUser("new")
       tui.interactWithUser("move C2 C4")
       tui.interactWithUser("move D7 D5")
       controller.isCheckmate() should be(false)
+      tui.printGameStatus()
       tui.interactWithUser("move H2 H4")
       tui.interactWithUser("move E8 A4")
       controller.isCheckmate() should be(true)
+      tui.printGameStatus()
     }
+    "save and load a savefile" in {
+      tui.interactWithUser("new")
+      tui.interactWithUser("move H2 H4")
+      tui.interactWithUser("move B7 B5")
+      val old = controller.gameFieldToString
+      tui.interactWithUser("save_game")
+      tui.interactWithUser("move C2 C3")
+      tui.interactWithUser("move A7 A5")
+      controller.gameFieldToString should not be (old)
+      tui.interactWithUser("load_game")
+      controller.gameFieldToString should be (old)
+    }
+
+    "switch the Pawn when he has reached the other side of the GameField" should {
+
+      "change the Pawn into a Queen" in {
+        tui.interactWithUser("new")
+        tui.interactWithUser("move G2 G4")
+        tui.interactWithUser("move H7 H5")
+        tui.interactWithUser("move A7 A6")
+        tui.interactWithUser("move G4 H5")
+        tui.interactWithUser("move H8 H6")
+        tui.interactWithUser("move A2 A3")
+        tui.interactWithUser("move H6 C6")
+        tui.interactWithUser("move H5 H6")
+        tui.interactWithUser("move C6 C5")
+        tui.interactWithUser("move H6 H7")
+        tui.interactWithUser("move C5 C4")
+        tui.interactWithUser("move H7 H8")
+        tui.interactWithUser("save_game")
+        tui.interactWithUser("switch queen")
+        controller.gameField.getFigure(7, 7).get shouldBe a[Queen]
+      }
+      "change the Pawn into a Rook, Knight or Bishop" in {
+        tui.interactWithUser("new")
+        tui.interactWithUser("load_game")
+        tui.convertPawn("rook")
+        controller.gameField.getFigure(7, 7).get shouldBe a[Rook]
+
+        tui.interactWithUser("new")
+        tui.interactWithUser("load_game")
+        tui.convertPawn("knight")
+        controller.gameField.getFigure(7, 7).get shouldBe a[Knight]
+
+        tui.interactWithUser("new")
+        tui.interactWithUser("load_game")
+        tui.convertPawn("bishop")
+        controller.gameField.getFigure(7, 7).get shouldBe a[Bishop]
+
+        tui.convertPawn("abc")
+      }
+    }
+
 
   }
 

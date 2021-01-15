@@ -16,23 +16,12 @@ class Tui(controller: ControllerInterface) extends Observer{
       case "move" =>
         if (args.size == 3 && controller.controlInput(args(1)) && controller.controlInput(args(2))) {
           val command = args(1).concat(" ").concat(args(2))
-          if (controller.moveIsValid(readInput(command))) {
-            controller.movePiece(readInput(command))
-            controller.changePlayer()
-            if (controller.isChecked()) {
-              val colorName = if (controller.getPlayer().getRed == 0) "Black"
-              else "White"
-              println(colorName + "  is checked")
-              if (controller.isCheckmate())
-                println(colorName + "  is checkmate")
-            }
-          } else {
-            println("That Move is against the Rules!")
-          }
+          controller.movePiece(readInput(command))
         }
         else {
           println("Wrong Input: Invalid Move")
         }
+      case "switch" => convertPawn(args(1))
       case "undo" => controller.undo()
       case "redo" => controller.redo()
       case "save" => controller.save()
@@ -42,10 +31,11 @@ class Tui(controller: ControllerInterface) extends Observer{
         } else {
           println("No Save created yet")
         }
+      case "save_game" => controller.saveGame()
+      case "load_game" => controller.loadGame()
       case _ => println("No Valid Command")
     }
   }
-
 
   def readInput(line: String): Vector[Int] = {
     val fromX = getPoint(line.charAt(0))
@@ -77,5 +67,40 @@ class Tui(controller: ControllerInterface) extends Observer{
     }
   }
 
-  override def update: Unit = println(controller.gameFieldToString)
+  def printGameStatus(): Unit = {
+    controller.getGameStatus() match {
+      case 0 => println("RUNNING")
+      case 1 => println("PLAYER " + { if (controller.getPlayer().getRed == 0) "Black"
+                                      else "WHITE"} + "IS CHECKED")
+      case 2 => println({if (controller.getPlayer().getRed == 0) "BLACK "
+                          else "WHITE "} + "IS CHECKMATE")
+      case 3 => println("INVALID MOVE")
+      case 4 =>
+      //println("PAWN HAS REACHED THE END")
+    }
+  }
+
+  def convertPawn(line: String) ={
+    controller.changePlayer()
+    println({if (controller.getPlayer().getRed == 0) "Black's "
+            else "White's "} + "player has reached the end of the game field.\n" +
+            "Change it to a 'queen', 'rook', 'knight' or 'bishop' by typing into the console")
+
+    line match {
+      case "queen" => controller.convertPawn("queen")
+      case "rook" => controller.convertPawn("rook")
+      case "knight" => controller.convertPawn("knight")
+      case "bishop" => controller.convertPawn("bishop")
+      case _ => println("Wrong Input")
+    }
+
+    controller.checkStatus()
+    printGameStatus()
+    controller.changePlayer()
+  }
+
+  override def update: Unit = {
+    printGameStatus()
+    println(controller.gameFieldToString)
+  }
 }

@@ -9,7 +9,7 @@ import scala.collection.immutable._
 import scala.util.control._
 
 class GameField(private var gameField: Vector[Figure]) extends GameFieldInterface {
-
+  var status = RUNNING
   private var validPlayer = Color.WHITE
 
   def this() = this(Vector())
@@ -24,6 +24,10 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
 
   def getFigures: Vector[Figure] = {
     gameField
+  }
+
+  def convertFigure(figure : Figure, toFigure : Figure) = {
+    gameField = gameField.filter(!_.equals(figure)) :+ toFigure
   }
 
   def moveTo(xNow: Int, yNow: Int, xNext: Int, yNext: Int): GameField = {
@@ -78,7 +82,6 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
   }
 
   def setSelfIntoCheck(figure: Figure, xNext : Int, yNext : Int): Boolean = {
-    //TODO check why it's not working all the time right
     var output = false
     val loop = new Breaks
 
@@ -110,6 +113,16 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     output
   }
 
+  def pawnHasReachedEnd() : Boolean = {
+    val pawns = gameField.filter(_.isInstanceOf[Pawn])
+    pawns.exists(figure => figure.y == 7 || figure.y == 0)
+  }
+
+  def getPawnAtEnd(): Pawn = {
+    val pawnAtEnd = gameField.filter(_.isInstanceOf[Pawn]).filter(figure => figure.y == 0 || figure.y == 7)
+    pawnAtEnd.head.asInstanceOf[Pawn]
+  }
+
   def isChecked(playerCol: Color): Boolean = {
     var output = false
     val loop = new Breaks
@@ -130,7 +143,8 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     output
   }
 
-  override def isCheckmate(playerCol: Color): Boolean = {
+  def isCheckmate(playerCol: Color): Boolean = {
+    //Todo möglichkeit anderen zu schlagen noch nicht beachtet
     val myKing = getFigures.filter(_.color == playerCol).filter(_.isInstanceOf[King])(0)
     val cellFreeAround = cellsFreeAroundFigure(myKing)
     val loop = new Breaks
@@ -154,7 +168,9 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
       moveTo(cell._1, cell._2, myKing.x, myKing.y)
     }
 
-    !cellValidKing.contains(true)
+    var back = cellValidKing.contains(true)
+    if (cellValidKing.isEmpty) back = true
+    !back
   }
 
   def cellsFreeAroundFigure(figure: Figure) : List[(Int, Int)] = {
@@ -253,6 +269,14 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     validPlayer = Color.WHITE
     gameField = Vector.empty
     gameField.isEmpty
+  }
+
+  def setStatus(newState : Int)  = {
+    status = newState;
+  }
+
+  def getStatus() : Int = {
+    status
   }
 
   override def toString: String = {
