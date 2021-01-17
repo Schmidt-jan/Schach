@@ -3,7 +3,7 @@ name := "Schach"
 version := "0.1"
 
 scalaVersion := "2.13.3"
-
+target in Compile in doc := baseDirectory.value / "docs"
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.2"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.2" % "test"
 libraryDependencies += "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
@@ -23,3 +23,4 @@ val osName = System.getProperty("os.name") match {
   case _ => throw new Exception("Unknown platform!")
 }
 libraryDependencies ++= javafxModules.map(m => "org.openjfx" % s"javafx-$m" % "14.0.1" classifier osName)
+
