@@ -1,15 +1,14 @@
 package Schach.model.gameFieldComponent.gameFieldBaseImpl
 
 import java.awt.Color
-
 import Schach.model.figureComponent._
 import Schach.model.gameFieldComponent.GameFieldInterface
-
 import scala.collection.immutable._
 import scala.util.control._
 
+
 class GameField(private var gameField: Vector[Figure]) extends GameFieldInterface {
-  var status = RUNNING
+  var status: Int = RUNNING
   private var validPlayer = Color.WHITE
 
   def this() = this(Vector())
@@ -26,7 +25,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     gameField
   }
 
-  def convertFigure(figure : Figure, toFigure : Figure) = {
+  def convertFigure(figure : Figure, toFigure : Figure): Unit = {
     gameField = gameField.filter(!_.equals(figure)) :+ toFigure
   }
 
@@ -91,11 +90,11 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     moveTo(figure.x, figure.y, xNext, yNext)
 
     val king = getFigures.filter(_.color == figure.color).find(_.isInstanceOf[King]).get
-    val figuresEnimy = getFigures.filter(!_.checked).filter(_.color != king.color)
+    val figuresEnemy = getFigures.filter(!_.checked).filter(_.color != king.color)
 
     val rules  = Rules(this)
     loop.breakable {
-      for (fig <- figuresEnimy) {
+      for (fig <- figuresEnemy) {
         if (rules.moveValidWithoutKingCheck(fig.x, fig.y, king.x, king.y)) {
           output = true
           loop.break
@@ -127,12 +126,12 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     var output = false
     val loop = new Breaks
 
-    val figuresEnimy = getFigures.filter(!_.checked).filter(_.color != playerCol)
+    val figuresEnemy = getFigures.filter(!_.checked).filter(_.color != playerCol)
     val myKing = getFigures.filter(_.color == playerCol).filter(_.isInstanceOf[King])(0)
 
     val rules  = Rules(this)
     loop.breakable {
-      for (fig <- figuresEnimy) {
+      for (fig <- figuresEnemy) {
         if (rules.moveValidWithoutKingCheck(fig.x, fig.y, myKing.x, myKing.y)) {
           output = true
           loop.break
@@ -158,13 +157,13 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
       loop.breakable {
         for (fig <- figuresEnimy) {
           if (rules.moveValidWithoutKingCheck(fig.x, fig.y, cell._1, cell._2)) {
-            cellValidKing = cellValidKing :+ (false)
+            cellValidKing = cellValidKing :+ false
             added = true
-            loop.break;
+            loop.break
           }
         }
       }
-      if(!added) cellValidKing = cellValidKing :+ (true)
+      if(!added) cellValidKing = cellValidKing :+ true
       moveTo(cell._1, cell._2, myKing.x, myKing.y)
     }
 
@@ -180,11 +179,10 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
       for (y <- Range(-1, 2, 1)) {
         val point = (figure.x + x, figure.y + y)
         getFigure(point._1, point._2) match {
-          case Some(value) =>
-          case None => {
+          case Some(_) =>
+          case None =>
             if (point._1 >= 0 && point._1 < 8 && point._2 >= 0 && point._2 < 8)
-              validMoves = validMoves :+ (point)
-          }
+              validMoves = validMoves :+ point
         }
       }
     }
@@ -271,8 +269,8 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     gameField.isEmpty
   }
 
-  def setStatus(newState : Int)  = {
-    status = newState;
+  def setStatus(newState : Int): Unit = {
+    status = newState
   }
 
   def getStatus() : Int = {
