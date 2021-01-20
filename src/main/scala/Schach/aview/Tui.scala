@@ -8,6 +8,10 @@ class Tui(controller: ControllerInterface) extends Observer{
 
   controller.add(this)
 
+  /**
+   *
+   * @param input
+   */
   def interactWithUser(input: String) : Unit = {
     val args = input.split(" ")
 
