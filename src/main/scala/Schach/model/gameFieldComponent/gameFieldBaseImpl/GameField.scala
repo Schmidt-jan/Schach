@@ -150,7 +150,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     val myKing = getFigures.filter(_.color == playerCol).filter(_.isInstanceOf[King])(0)
     val cellFreeAround = cellsFreeAroundFigure(myKing)
     val loop = new Breaks
-    val figuresEnimy = getFigures.filter(!_.checked).filter(_.color != myKing.color)
+    val figuresEnemy = getFigures.filter(!_.checked).filter(_.color != myKing.color)
     var cellValidKing : List[Boolean] = List()
 
     for (cell <- cellFreeAround) {
@@ -158,7 +158,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
       val rules  = Rules(this)
       var added = false
       loop.breakable {
-        for (fig <- figuresEnimy) {
+        for (fig <- figuresEnemy) {
           if (rules.moveValidWithoutKingCheck(fig.x, fig.y, cell._1, cell._2)) {
             cellValidKing = cellValidKing :+ false
             added = true
@@ -171,7 +171,9 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     }
 
     var back = cellValidKing.contains(true)
-    if (cellValidKing.isEmpty) back = true
+    if (cellValidKing.isEmpty) {
+      back = true
+    }
     !back
   }
 

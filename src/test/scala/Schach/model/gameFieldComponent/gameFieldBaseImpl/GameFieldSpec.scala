@@ -107,6 +107,14 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.moveTo(3, 6, 3, 4)
       gameField.moveTo(6, 0, 2, 4)
       gameField.setSelfIntoCheck(king, 3, 6) should be(true)
+
+      gameField = builder.getNewGameField
+      gameField.moveTo(6, 0, 5, 2)
+      gameField.moveTo(0, 6, 0, 5)
+      gameField.moveTo(5, 2, 6, 4)
+      gameField.moveTo(0, 5, 0, 4)
+      gameField.moveTo(6, 4, 5, 6)
+      gameField.isCheckmate(Color.BLACK) should be(false)
     }
 
     "add Figures correctly" in {
