@@ -171,9 +171,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     }
 
     var back = cellValidKing.contains(true)
-    if (cellValidKing.isEmpty) {
-      back = true
-    }
+    if (cellValidKing.isEmpty) back = true
     !back
   }
 
