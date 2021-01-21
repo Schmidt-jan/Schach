@@ -1,0 +1,3 @@
+[submodule "Schach-Docs"]
+	path = Schach-Docs
+	url = https://github.com/BenjaminBruenau/Schach-Docs
