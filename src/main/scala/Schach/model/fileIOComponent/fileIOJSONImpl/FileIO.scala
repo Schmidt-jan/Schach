@@ -4,7 +4,6 @@ import Schach.model.figureComponent._
 import Schach.model.fileIOComponent.FileIOInterface
 import Schach.model.gameFieldComponent.GameFieldInterface
 import play.api.libs.json._
-
 import java.awt.Color
 import java.io._
 import scala.io.Source

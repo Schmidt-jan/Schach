@@ -15,10 +15,11 @@ trait FileIOInterface {
   def getCorrectString(piece: Option[Figure]): String = {
     piece match {
       case Some(value) =>
-        if (value.isInstanceOf[Pawn]) {
-          val pawn = value.asInstanceOf[Pawn]
-          pawn.hasBeenMoved.toString
-        } else { "" }
+        value match {
+          case pawn: Pawn =>
+            pawn.hasBeenMoved.toString
+          case _ => ""
+        }
       case None => ""
     }
   }

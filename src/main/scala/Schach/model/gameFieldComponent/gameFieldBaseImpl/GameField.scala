@@ -6,7 +6,10 @@ import Schach.model.gameFieldComponent.GameFieldInterface
 import scala.collection.immutable._
 import scala.util.control._
 
-
+/** The GameField of our Chess Game, realized as a Vector of Figures
+ *
+ * @param gameField - The Vector which is keeping track of all the moves etc.
+ */
 class GameField(private var gameField: Vector[Figure]) extends GameFieldInterface {
   var status: Int = RUNNING
   private var validPlayer = Color.WHITE
@@ -143,7 +146,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
   }
 
   def isCheckmate(playerCol: Color): Boolean = {
-    //Todo möglichkeit anderen zu schlagen noch nicht beachtet
+
     val myKing = getFigures.filter(_.color == playerCol).filter(_.isInstanceOf[King])(0)
     val cellFreeAround = cellsFreeAroundFigure(myKing)
     val loop = new Breaks
