@@ -13,7 +13,7 @@ libraryDependencies += "com.google.inject" % "guice" % "4.2.3"
 libraryDependencies += "net.codingwell" %% "scala-guice" % "4.2.11"
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.3.0"
-libraryDependencies += "com.typesafe.play" %% "play-json" % "2.8.1"
+libraryDependencies += "com.typesafe.play" %% "play-json" % "2.9.2"
 
 val javafxModules = Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")
 val osName = System.getProperty("os.name") match {
