@@ -56,7 +56,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
       gameField = builder.getNewGameField
       gameField.moveTo(2, 0, 2, 1)
-      gameField.getFigure(2, 1) shouldBe a[Some[Bishop]]
+      gameField.getFigure(2, 1).get shouldBe a[Bishop]
 
     }
 
@@ -89,11 +89,11 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       val f = new Figure {
         override val x: Int = 1
         override val y: Int = 2
-        override val color: Color = color
+        override val color: Color = Color.WHITE
       }
       f.equals(f3) should be (false)
       f.equals(f4) should be (false)
-      gameField.getFigure(2,7) shouldBe a[Some[Bishop]]
+      gameField.getFigure(2,7).get shouldBe a[Bishop]
     }
 
     "check for checkmate" in {

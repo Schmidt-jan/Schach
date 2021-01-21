@@ -91,7 +91,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       }
 
       "return a gameField via getGameField" in {
-        controller.getGameField shouldBe a [Vector[Figure]]
+        controller.getGameField shouldBe a [Vector[_]]
       }
 
       "give the first turn to white and the second to black" in {
