@@ -48,7 +48,7 @@ trait GameFieldInterface {
 
   /**
    * Checks if right player is moving. If true checks if the move is
-   * allowed by the set rules
+   * allowed by the set rules.
    *
    * @param xNow x-value the figure stands at the moment
    * @param yNow y-value the figure stands at the moment
