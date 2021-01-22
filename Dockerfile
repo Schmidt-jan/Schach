@@ -22,5 +22,3 @@ CMD sbt run
     #"-it" allows an interactive session (if you need console input)
     #"--rm" will automatically remove the container after you exit
 
-
-
