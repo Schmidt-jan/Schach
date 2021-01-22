@@ -16,8 +16,11 @@ CMD sbt run
 #To run the Game correctly via Docker and without any crashes regarding the GUI
 #you will need to install (atleast on Windows) VcXsrv X Server for Windows (or something similiar)
     #->https://sourceforge.net/projects/vcxsrv/
-    #after starting it its important to disable "access control" in the extra settings, it won't connect otherwise
-    #->after building the image run it like this "docker run --rm -it -e DISPLAY=[YOUR-IP]:0.0 schach" (without the brackets)
+    #open XLauncher select 'multiple windows' -> submit
+    #select 'start no client' -> submit
+    #enable 'disable access control' -> submit
+    #pull image with 'docker pull schmidtjan0/schach:latest'
+    #->after building the image run it like this "docker run --rm -it -e DISPLAY=[YOUR-IP]:0.0 schmidtjan0/schach" (without the brackets)
     #"-e" defines an environment variable (needed to connect to the Window Server)
     #"-it" allows an interactive session (if you need console input)
     #"--rm" will automatically remove the container after you exit
