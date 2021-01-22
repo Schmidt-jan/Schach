@@ -1,11 +1,12 @@
 package Schach.model.fileIOComponent.fileIOJSONImpl
 
 import Schach.controller.controllerComponent.controllerBaseImpl.Controller
+import org.scalatest.DoNotDiscover
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 
-
+@DoNotDiscover
 class FileIOSpecJSON extends AnyWordSpec with Matchers {
 
   "The JSON FileIO" when {

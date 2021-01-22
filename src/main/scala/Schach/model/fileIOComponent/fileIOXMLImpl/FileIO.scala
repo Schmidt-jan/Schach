@@ -3,7 +3,6 @@ package Schach.model.fileIOComponent.fileIOXMLImpl
 import Schach.model.figureComponent._
 import Schach.model.fileIOComponent.FileIOInterface
 import Schach.model.gameFieldComponent.GameFieldInterface
-
 import java.awt.Color
 import java.io._
 import scala.xml.{Elem, PrettyPrinter}

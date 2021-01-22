@@ -9,7 +9,7 @@ import Schach.model.gameFieldComponent.GameFieldInterface
 
 class GameFieldSpec extends AnyWordSpec with Matchers {
 
-  "Figure should from " should {
+  "A GameField" should {
     val builder = new ChessGameFieldBuilder
     var gameField : GameFieldInterface = builder.getNewGameField
     val figure = gameField.getFigure(1, 1)
@@ -56,10 +56,11 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
       gameField = builder.getNewGameField
       gameField.moveTo(2, 0, 2, 1)
-      gameField.getFigure(2, 1) shouldBe a[Some[Bishop]]
+      gameField.getFigure(2, 1).get shouldBe a[Bishop]
 
     }
-    "cases for black pieces trying to move" in {
+
+    "cover some cases for black pieces trying to move" in {
       gameField = builder.getNewGameField
       gameField.wayToIsFreeStraight(1, 6, 1, 4) should be(true)
 
@@ -82,20 +83,22 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
     }
 
     "make use of Figure's equals method" in {
-      val f3 = gameField.getFigure(0,3)
+      gameField = builder.getNewGameField
+      val f3 = gameField.getFigure(0,1).get
+      val f4 = gameField.getFigure(0,3)
       val f = new Figure {
         override val x: Int = 1
         override val y: Int = 2
-        override val color: Color = color
+        override val color: Color = Color.WHITE
       }
       f.equals(f3) should be (false)
-      gameField.getFigure(2,7) shouldBe a[Some[Bishop]]
+      f.equals(f4) should be (false)
+      gameField.getFigure(2,7).get shouldBe a[Bishop]
     }
 
     "check for checkmate" in {
       gameField = builder.getNewGameField
       val p = gameField.getFigure(0, 1).get
-      val p2 = Knight(1, 7, Color.BLACK)
       val king = gameField.getFigure(3, 7).get
 
       gameField.setSelfIntoCheck(p, 0, 2) should be (false)
@@ -103,7 +106,16 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       gameField.moveTo(3, 6, 3, 4)
       gameField.moveTo(6, 0, 2, 4)
       gameField.setSelfIntoCheck(king, 3, 6) should be(true)
+
+      gameField = builder.getNewGameField
+      gameField.moveTo(6, 0, 5, 2)
+      gameField.moveTo(0, 6, 0, 5)
+      gameField.moveTo(5, 2, 6, 4)
+      gameField.moveTo(0, 5, 0, 4)
+      gameField.moveTo(6, 4, 5, 6)
+      gameField.isCheckmate(Color.BLACK) should be(false)
     }
+
     "add Figures correctly" in {
       gameField = builder.getNewGameField
       val old = gameField.toString
@@ -115,7 +127,6 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
 
       gameField.addFigures(vec)
       gameField.toString should be(old)
-
     }
   }
 }

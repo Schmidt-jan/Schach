@@ -17,9 +17,9 @@ class GameFieldModule extends AbstractModule with ScalaModule {
     bindConstant().annotatedWith(Names.named("Chess")).to(gameField)
     bind[GameFieldInterface].to[GameField]
     bind[ControllerInterface].to[controllerBaseImpl.Controller]
-    bind[GameFieldInterface].annotatedWithName("Chess").toInstance(new GameField(builder.getNewGameField.getFigures));
+    bind[GameFieldInterface].annotatedWithName("Chess").toInstance(new GameField(builder.getNewGameField.getFigures))
 
-    bind[FileIOInterface].to[fileIOXMLImpl.FileIO]
-    //bind[FileIOInterface].to[fileIOJSONImpl.FileIO]
+    //bind[FileIOInterface].to[fileIOXMLImpl.FileIO]
+    bind[FileIOInterface].to[fileIOJSONImpl.FileIO]
   }
 }

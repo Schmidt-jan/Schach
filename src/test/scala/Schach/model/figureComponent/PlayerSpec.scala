@@ -8,12 +8,15 @@ class PlayerSpec extends AnyWordSpec with Matchers {
   "A Player" when {
     "initialized with any value" should {
       val player = Player("TestName")
+
       "have value name" in {
         player.name should be("TestName")
       }
+
       "have a nice String representation" in {
         player.toString should be("TestName")
       }
+
       "have value isActive" in {
         player.isActive should be(false)
       }

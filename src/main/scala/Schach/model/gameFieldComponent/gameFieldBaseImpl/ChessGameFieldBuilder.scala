@@ -5,6 +5,9 @@ import Schach.model.figureComponent._
 import Schach.model.gameFieldComponent.ChessGameFieldBuilderInterface
 import Schach.util.GameFieldBuilder
 
+/** Responsible of initialising a new GameField
+ *
+ */
 class ChessGameFieldBuilder extends GameFieldBuilder with ChessGameFieldBuilderInterface {
 
   private val instance : GameField = new GameField()
@@ -21,7 +24,6 @@ class ChessGameFieldBuilder extends GameFieldBuilder with ChessGameFieldBuilderI
       Figure("Pawn", 6, 1, Color.WHITE), Figure("Pawn", 7, 1, Color.WHITE)))
   }
 
-
   private def buildBlack(): Unit = {
     instance.addFigures(Vector(
       Pawn(0, 6, Color.BLACK), Pawn(1, 6, Color.BLACK),
@@ -33,6 +35,7 @@ class ChessGameFieldBuilder extends GameFieldBuilder with ChessGameFieldBuilderI
       Queen(4, 7, Color.BLACK), Bishop(5, 7, Color.BLACK),
       Knight(6, 7, Color.BLACK), Rook(7, 7, Color.BLACK)))
   }
+
 
   def makeGameField() : Unit = {
     getGameField.clear()
@@ -48,12 +51,5 @@ class ChessGameFieldBuilder extends GameFieldBuilder with ChessGameFieldBuilderI
     makeGameField()
     instance
   }
-
-  /*
-  override def setGameField(newField : GameField) : GameField = {
-    getNewGameField
-    instance.addFigures(newField.getFigures)
-  }
-   */
 
 }

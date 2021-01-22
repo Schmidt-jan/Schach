@@ -1,23 +1,22 @@
 package Schach.controller.controllerComponent.controllerBaseImpl
 
 import java.awt.Color
-
 import Schach.GameFieldModule
 import Schach.controller.controllerComponent._
-import Schach.model.figureComponent.{Bishop, Rook, Knight, Queen, Figure}
+import Schach.model.figureComponent.{Bishop, Figure, Knight, Queen, Rook}
 import Schach.model.fileIOComponent.FileIOInterface
 import Schach.model.gameFieldComponent.GameFieldInterface
 import Schach.util.{Caretaker, UndoManager}
 import com.google.inject.name.Names
-import com.google.inject.{Guice, Inject}
+import com.google.inject.{Guice, Inject, Injector}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 
 class Controller @Inject() extends ControllerInterface {
-  var injector = Guice.createInjector(new GameFieldModule)
+  var injector: Injector = Guice.createInjector(new GameFieldModule)
   val undoManager = new UndoManager
   val caretaker = new Caretaker
   var gameField: GameFieldInterface = injector.instance[GameFieldInterface](Names.named("Chess"))
-  val fileIo = injector.instance[FileIOInterface]
+  val fileIo: FileIOInterface = injector.instance[FileIOInterface]
 
 
   def createGameField(): Unit = {
@@ -44,7 +43,7 @@ class Controller @Inject() extends ControllerInterface {
     }
   }
 
-  def checkStatus() = {
+  def checkStatus(): Unit = {
     if (isChecked()) {
       gameField.setStatus(gameField.CHECKED)
       if (isCheckmate())
@@ -65,7 +64,7 @@ class Controller @Inject() extends ControllerInterface {
   }
 
   def getGameStatus() : Int = {
-    gameField.getStatus();
+    gameField.getStatus()
   }
 
   def setPlayer(color: Color): Color = {
@@ -80,7 +79,7 @@ class Controller @Inject() extends ControllerInterface {
     gameField.changePlayer()
   }
 
-  def convertPawn(figureType : String)  = {
+  def convertPawn(figureType : String): Unit = {
     val pawn = gameField.getPawnAtEnd()
     figureType match {
       case "queen" => gameField.convertFigure(pawn, Queen(pawn.x, pawn.y, pawn.color))
@@ -92,11 +91,11 @@ class Controller @Inject() extends ControllerInterface {
   }
 
   def isChecked(): Boolean = {
-    gameField.isChecked(getPlayer)
+    gameField.isChecked(getPlayer())
   }
 
   def isCheckmate(): Boolean = {
-    gameField.isCheckmate(getPlayer)
+    gameField.isCheckmate(getPlayer())
   }
 
   def undo(): Unit = {
@@ -127,7 +126,6 @@ class Controller @Inject() extends ControllerInterface {
 
   def saveGame(): Unit = {
     fileIo.saveGame(gameField)
-    notifyObservers
   }
 
   def loadGame(): Unit = {

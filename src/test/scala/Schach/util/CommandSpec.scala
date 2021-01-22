@@ -23,8 +23,8 @@ class CommandSpec extends AnyWordSpec with Matchers{
       command.state should be(1)
       command.doStep()
       command.state should be(2)
-
     }
+
     "have an undo step" in {
       val command = new incrCommand
       command.state should be(0)
@@ -33,6 +33,7 @@ class CommandSpec extends AnyWordSpec with Matchers{
       command.undoStep()
       command.state should be(0)
     }
+
     "have a redo step" in {
       val command = new incrCommand
       command.state should be(0)

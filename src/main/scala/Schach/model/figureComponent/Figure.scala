@@ -1,6 +1,5 @@
 package Schach.model.figureComponent
 
-
 import java.awt.Color
 
 trait Figure {
@@ -12,7 +11,7 @@ trait Figure {
   override def equals(input: Any): Boolean = {
     input match {
       case obj: Figure =>
-        return (obj.x == this.x) && (obj.y == this.y) && (obj.color == this.color) && (obj.checked == this.checked)
+        (obj.x == this.x) && (obj.y == this.y) && (obj.color == this.color) && (obj.checked == this.checked)
       case _ => false
     }
   }

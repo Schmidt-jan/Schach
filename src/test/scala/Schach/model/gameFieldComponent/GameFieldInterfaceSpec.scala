@@ -7,6 +7,7 @@ import org.scalatest.wordspec.AnyWordSpec
 class GameFieldInterfaceSpec extends AnyWordSpec with Matchers{
 
   "An Interface" should {
+
     "have some states" in {
       val builder = new ChessGameFieldBuilder
       val gameField: GameFieldInterface = builder.getNewGameField

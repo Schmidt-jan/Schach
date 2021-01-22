@@ -11,7 +11,6 @@ class MoveCommand(xNow: Int, yNow: Int, xNext: Int, yNext: Int, controller: Cont
   }
 
 
-  //TODO add support for reset unchecking
   override def undoStep(): Unit = {
     controller.gameField.clear()
     controller.gameField.addFigures(memento.getFigures)
