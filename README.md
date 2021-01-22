@@ -8,4 +8,4 @@ Game Project for the Software Engineering class in AIN3 at HTWG
 [![Coverage Status](https://coveralls.io/repos/github/Schmidt-jan/Schach/badge.svg?branch=master&kill_cache=1)](https://coveralls.io/github/Schmidt-jan/Schach?branch=master)
 
 
-###Check out the Documentation of our Game(-Logic) [here](https://benjaminbruenau.github.io/Schach-Docs/Schach/model/gameFieldComponent/gameFieldBaseImpl/index.html)
+### Check out the Documentation of our Game(-Logic) [here](https://benjaminbruenau.github.io/Schach-Docs/Schach/model/gameFieldComponent/gameFieldBaseImpl/index.html)
