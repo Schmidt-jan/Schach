@@ -9,9 +9,9 @@ Game Project for the Software Engineering class in AIN3 at HTWG
 
 
 If you dont want to clone the project you can also pull a [docker-image](https://hub.docker.com/r/schmidtjan0/schach).  
-For more information [see](Dockerfile)
+For more information see our [Dockerfile](Dockerfile)
 
-The game uses the common chess rules. If you want to learn those click [here](https://en.wikipedia.org/wiki/Rules_of_chess).  
+The game is using the common chess rules. If you want to know more about those click [here](https://en.wikipedia.org/wiki/Rules_of_chess).  
 So clone this repo or get the docker image and have fun :)  
 
 ### Check out the Documentation of our Game(-Logic) [here](https://benjaminbruenau.github.io/Schach-Docs/Schach/model/gameFieldComponent/gameFieldBaseImpl/index.html)
