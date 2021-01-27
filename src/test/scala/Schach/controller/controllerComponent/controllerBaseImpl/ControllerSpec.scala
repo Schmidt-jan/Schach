@@ -82,7 +82,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.getPlayer() should be (Color.WHITE)
 
         controller.movePiece(vec)
-        controller.getPlayer() should be (Color.BLACK)
+        controller.getPlayer() should not be (Color.BLACK)
       }
       "set a player correctly" in {
         controller.createGameField()
