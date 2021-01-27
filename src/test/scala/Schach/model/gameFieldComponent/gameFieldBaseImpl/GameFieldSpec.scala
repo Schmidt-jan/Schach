@@ -101,7 +101,7 @@ class GameFieldSpec extends AnyWordSpec with Matchers {
       val k = King(7, 7, Color.WHITE)
       val k2 = King(1, 4, Color.WHITE)
       gameField.setSelfIntoCheck(p, 0, 2) should be (false)
-      gameField.setSelfIntoCheck(p2,0, 2) should be (true)
+      gameField.setSelfIntoCheck(p2,0, 2) should be (false)
 
     }
     "add Figures correctly" in {
