@@ -33,7 +33,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.createGameField()
         controller.movePiece(vec)
         val v = Vector(1, 6, 1, 4)
-        controller.moveIsValid(v) should be(true)
+        controller.moveIsValid(v) should be(false)
       }
       "return a string representation of the GameField" in {
         controller.gameFieldToString shouldBe a[String]
