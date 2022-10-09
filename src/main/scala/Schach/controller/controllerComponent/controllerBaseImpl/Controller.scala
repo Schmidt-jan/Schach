@@ -80,12 +80,18 @@ class Controller @Inject() extends ControllerInterface {
   }
 
   def convertPawn(figureType : String): Unit = {
-    val pawn = gameField.getPawnAtEnd()
-    figureType match {
-      case "queen" => gameField.convertFigure(pawn, Queen(pawn.x, pawn.y, pawn.color))
-      case "rook" => gameField.convertFigure(pawn, Rook(pawn.x, pawn.y, pawn.color))
-      case "knight" => gameField.convertFigure(pawn, Knight(pawn.x, pawn.y, pawn.color))
-      case "bishop" => gameField.convertFigure(pawn, Bishop(pawn.x, pawn.y, pawn.color))
+    val result = gameField.getPawnAtEnd()
+
+    result match {
+      case Some(pawn) =>
+        figureType match {
+        case "queen" => gameField.convertFigure(pawn, Queen(pawn.x, pawn.y, pawn.color))
+        case "rook" => gameField.convertFigure(pawn, Rook(pawn.x, pawn.y, pawn.color))
+        case "knight" => gameField.convertFigure(pawn, Knight(pawn.x, pawn.y, pawn.color))
+        case "bishop" => gameField.convertFigure(pawn, Bishop(pawn.x, pawn.y, pawn.color))
+        case _ => gameField.setStatus(gameField.INVALID_CONVERSION)
+      }
+      case None => gameField.setStatus(gameField.INVALID_CONVERSION);
     }
     notifyObservers
   }

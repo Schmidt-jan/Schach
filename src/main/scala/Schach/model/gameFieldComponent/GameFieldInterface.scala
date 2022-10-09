@@ -13,6 +13,7 @@ trait GameFieldInterface {
   val CHECKMATE = 2
   val MOVE_ILLEGAL = 3
   val PAWN_REACHED_END = 4
+  val INVALID_CONVERSION = 5
 
   /** Adds the Figures to the gameField if the gameField does not contain them yet
    *
@@ -94,7 +95,7 @@ trait GameFieldInterface {
    *
    * @return the Pawn at the end
    */
-  def getPawnAtEnd(): Pawn
+  def getPawnAtEnd(): Option[Pawn]
 
   /**
    *  Inspects if the Player is checked by confirming wether any of the other Player's Figures
