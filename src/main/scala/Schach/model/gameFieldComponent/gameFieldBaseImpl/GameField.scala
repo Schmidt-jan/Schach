@@ -120,9 +120,12 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     pawns.exists(figure => figure.y == 7 || figure.y == 0)
   }
 
-  def getPawnAtEnd(): Pawn = {
+  def getPawnAtEnd(): Option[Pawn] = {
     val pawnAtEnd = gameField.filter(_.isInstanceOf[Pawn]).filter(figure => figure.y == 0 || figure.y == 7)
-    pawnAtEnd.head.asInstanceOf[Pawn]
+    val pawn = if (pawnAtEnd.isEmpty)
+      return None
+
+    return Some(pawnAtEnd.head.asInstanceOf[Pawn])
   }
 
   def isChecked(playerCol: Color): Boolean = {

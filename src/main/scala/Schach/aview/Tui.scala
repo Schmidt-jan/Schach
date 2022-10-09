@@ -79,8 +79,9 @@ class Tui(controller: ControllerInterface) extends Observer{
       case 2 => println({if (controller.getPlayer().getRed == 0) "BLACK "
                           else "WHITE "} + "IS CHECKMATE")
       case 3 => println("INVALID MOVE")
-      case 4 =>
-      //println("PAWN HAS REACHED THE END")
+      case 4 => println("PAWN HAS REACHED THE END")
+      case 5 => println("INVALID CONVERSION")
+      case _ => println("TUI : unknown status code")
     }
   }
 

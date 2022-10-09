@@ -106,11 +106,13 @@ case class Rules(gameField: GameField) {
    */
   def validPawnWithoutKingCheck(figure: Pawn, xNext: Int, yNext: Int): Boolean = {
     //can't move backward
+
     if ((figure.color == Color.BLACK && figure.y < yNext) || (figure.color == Color.WHITE && figure.y > yNext)) {
       false
     }
     //walks straight on
     else if (Math.abs(figure.x - xNext) == 0 && gameField.wayToIsFreeStraight(figure.x, figure.y, xNext, yNext)) {
+      if (gameField.getFigure(xNext, yNext).isInstanceOf[Some[Figure]]) return false
       if (figure.hasBeenMoved) Math.abs(figure.y - yNext) == 1
       else Math.abs(figure.y - yNext) <= 2
     }
