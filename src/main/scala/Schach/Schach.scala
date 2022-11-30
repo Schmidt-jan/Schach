@@ -5,13 +5,12 @@ import controller.controllerComponent._
 import aview._
 
 object Schach {
-
+  val injector = Guice.createInjector(new GameFieldModule)
+  val controller = injector.getInstance(classOf[ControllerInterface])
 
   def main(args: Array[String]) {
 
     var break = false
-    val injector = Guice.createInjector(new GameFieldModule)
-    val controller = injector.getInstance(classOf[ControllerInterface])
     controller.createGameField()
     val gui = new Gui(controller)
     val tui = new Tui(controller)

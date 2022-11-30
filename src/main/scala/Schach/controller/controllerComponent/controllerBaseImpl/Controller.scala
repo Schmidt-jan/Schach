@@ -39,8 +39,8 @@ class Controller @Inject() extends ControllerInterface {
       changePlayer()
       checkStatus()
 
-      notifyObservers
     }
+    notifyObservers
   }
 
   def checkStatus(): Unit = {
