@@ -16,7 +16,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
 
   def this() = this(Vector())
 
-  def addFigures(figures : Vector[Figure]) : GameField = {
+  def addFigures(figures: Vector[Figure]): GameField = {
     for (in <- gameField) {
       if (figures.contains(in)) return this
     }
@@ -28,7 +28,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     gameField
   }
 
-  def convertFigure(figure : Figure, toFigure : Figure): Unit = {
+  def convertFigure(figure: Figure, toFigure: Figure): Unit = {
     gameField = gameField.filter(!_.equals(figure)) :+ toFigure
   }
 
@@ -75,7 +75,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     val check1 = !setSelfIntoCheck(figure, x, y)
 
     getFigure(x, y) match {
-      case Some (figure2) =>
+      case Some(figure2) =>
         val check2 = !figure2.isInstanceOf[King] && figure2.color != figure.color
         check1 && check2
 
@@ -83,7 +83,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     }
   }
 
-  def setSelfIntoCheck(figure: Figure, xNext : Int, yNext : Int): Boolean = {
+  def setSelfIntoCheck(figure: Figure, xNext: Int, yNext: Int): Boolean = {
     var output = false
     val loop = new Breaks
 
@@ -95,7 +95,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     val king = getFigures.filter(_.color == figure.color).find(_.isInstanceOf[King]).get
     val figuresEnemy = getFigures.filter(!_.checked).filter(_.color != king.color)
 
-    val rules  = Rules(this)
+    val rules = Rules(this)
     loop.breakable {
       for (fig <- figuresEnemy) {
         if (rules.moveValidWithoutKingCheck(fig.x, fig.y, king.x, king.y)) {
@@ -115,7 +115,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     output
   }
 
-  def pawnHasReachedEnd() : Boolean = {
+  def pawnHasReachedEnd(): Boolean = {
     val pawns = gameField.filter(_.isInstanceOf[Pawn])
     pawns.exists(figure => figure.y == 7 || figure.y == 0)
   }
@@ -135,7 +135,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     val figuresEnemy = getFigures.filter(!_.checked).filter(_.color != playerCol)
     val myKing = getFigures.filter(_.color == playerCol).filter(_.isInstanceOf[King])(0)
 
-    val rules  = Rules(this)
+    val rules = Rules(this)
     loop.breakable {
       for (fig <- figuresEnemy) {
         if (rules.moveValidWithoutKingCheck(fig.x, fig.y, myKing.x, myKing.y)) {
@@ -149,16 +149,53 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
   }
 
   def isCheckmate(playerCol: Color): Boolean = {
+    return canMoveOutOfMate(playerCol);
 
+    /*
+    val checkingFigures = getFigures.filter(figure => {
+      if (figure.color != myKing.color
+        && moveValid(figure.x, figure.y, myKing.x, myKing.y)
+    })
+
+    val cellFreeAround = cellsFreeAroundFigure(myKing)
+    val loop = new Breaks
+    val figuresEnemy = getFigures.filter(!_.checked).filter(_.color != myKing.color)
+    val figuresYou = getFigures.filter(!_.checked).filter(_.color == myKing.color)
+
+    var freeBoardCells = this.cellsFree();
+    for (figure <- figuresYou) {
+      for (cell <- freeBoardCells) {
+        if (moveValid(figure.x, figure.y, cell._1, cell._2)) {
+          moveTo(figure.y, figure.y, cell._1, cell._2)
+
+          // check if any figure of the enemy still checks you
+          for (enemiesFigures <- figuresEnemy) {
+            if (moveValid(enemiesFigures.x, enemiesFigures.y, myKing.x, myKing.y)) {
+              moveTo(cell._1, cell._2, figure.x, figure.y)
+              return false;
+            }
+          }
+
+          // reset
+          moveTo(cell._1, cell._2, figure.x, figure.y)
+        }
+      }
+    }
+    false
+
+     */
+  }
+
+  def canMoveOutOfMate(playerCol: Color): Boolean = {
     val myKing = getFigures.filter(_.color == playerCol).filter(_.isInstanceOf[King])(0)
     val cellFreeAround = cellsFreeAroundFigure(myKing)
     val loop = new Breaks
     val figuresEnemy = getFigures.filter(!_.checked).filter(_.color != myKing.color)
-    var cellValidKing : List[Boolean] = List()
+    var cellValidKing: List[Boolean] = List()
 
     for (cell <- cellFreeAround) {
       moveTo(myKing.x, myKing.y, cell._1, cell._2)
-      val rules  = Rules(this)
+      val rules = Rules(this)
       var added = false
       loop.breakable {
         for (fig <- figuresEnemy) {
@@ -169,7 +206,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
           }
         }
       }
-      if(!added) cellValidKing = cellValidKing :+ true
+      if (!added) cellValidKing = cellValidKing :+ true
       moveTo(cell._1, cell._2, myKing.x, myKing.y)
     }
 
@@ -178,8 +215,27 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     !back
   }
 
-  def cellsFreeAroundFigure(figure: Figure) : List[(Int, Int)] = {
-    var validMoves : List[(Int, Int)] = List()
+  def getNonYouFields(playerCol: Color): List[(Int, Int)] = {
+    val myKing = getFigures.filter(_.color == playerCol).filter(_.isInstanceOf[King])(0)
+    var freeCells: List[(Int, Int)] = List()
+    for (x <- Range(0, 7)) {
+      for (y <- Range(0, 7)) {
+        getFigure(x, y) match {
+          case None => freeCells = freeCells :+ (x, y)
+          case Some(value) => {
+            if (value.color != myKing.color) {
+              freeCells = freeCells :+ (x, y)
+            }
+          }
+        }
+      }
+    }
+
+    freeCells
+  }
+
+  def cellsFreeAroundFigure(figure: Figure): List[(Int, Int)] = {
+    var validMoves: List[(Int, Int)] = List()
 
     for (x <- Range(-1, 2, 1)) {
       for (y <- Range(-1, 2, 1)) {
@@ -193,6 +249,20 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
       }
     }
     validMoves
+  }
+
+  def cellsFree(): List[(Int, Int)] = {
+    var freeCells: List[(Int, Int)] = List()
+
+    for (x <- Range(0, 7)) {
+      for (y <- Range(0, 7)) {
+        getFigure(x, y) match {
+          case None => freeCells = freeCells :+ (x, y)
+        }
+      }
+    }
+
+    freeCells
   }
 
   def wayToIsFreeStraight(xNow: Int, yNow: Int, xNext: Int, yNext: Int): Boolean = {
@@ -269,17 +339,17 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
     gameField.filter(_.checked == false).filter(_.x == xPos).find(_.y == yPos)
   }
 
-  def clear() : Boolean = {
+  def clear(): Boolean = {
     validPlayer = Color.WHITE
     gameField = Vector.empty
     gameField.isEmpty
   }
 
-  def setStatus(newState : Int): Unit = {
+  def setStatus(newState: Int): Unit = {
     status = newState
   }
 
-  def getStatus() : Int = {
+  def getStatus(): Int = {
     status
   }
 
