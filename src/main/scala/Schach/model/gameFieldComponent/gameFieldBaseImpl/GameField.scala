@@ -149,31 +149,19 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
   }
 
   def isCheckmate(playerCol: Color): Boolean = {
-    return canMoveOutOfMate(playerCol);
-
-    /*
-    val checkingFigures = getFigures.filter(figure => {
-      if (figure.color != myKing.color
-        && moveValid(figure.x, figure.y, myKing.x, myKing.y)
-    })
-
-    val cellFreeAround = cellsFreeAroundFigure(myKing)
+    val myKing = getFigures.filter(!_.checked).filter(_.isInstanceOf[King]).head;
+    val possibleCells = getNonYouFields(playerCol);
+    val figuresYou = getFigures.filter(!_.checked).filter(_.color == myKing.color);
     val loop = new Breaks
-    val figuresEnemy = getFigures.filter(!_.checked).filter(_.color != myKing.color)
-    val figuresYou = getFigures.filter(!_.checked).filter(_.color == myKing.color)
 
-    var freeBoardCells = this.cellsFree();
     for (figure <- figuresYou) {
-      for (cell <- freeBoardCells) {
+      for (cell <- possibleCells) {
         if (moveValid(figure.x, figure.y, cell._1, cell._2)) {
           moveTo(figure.y, figure.y, cell._1, cell._2)
 
-          // check if any figure of the enemy still checks you
-          for (enemiesFigures <- figuresEnemy) {
-            if (moveValid(enemiesFigures.x, enemiesFigures.y, myKing.x, myKing.y)) {
-              moveTo(cell._1, cell._2, figure.x, figure.y)
-              return false;
-            }
+          if (!isChecked(playerCol)) {
+            moveTo(cell._1, cell._2, figure.x, figure.y)
+            return false;
           }
 
           // reset
@@ -181,9 +169,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
         }
       }
     }
-    false
-
-     */
+    true;
   }
 
   def canMoveOutOfMate(playerCol: Color): Boolean = {
@@ -258,6 +244,7 @@ class GameField(private var gameField: Vector[Figure]) extends GameFieldInterfac
       for (y <- Range(0, 7)) {
         getFigure(x, y) match {
           case None => freeCells = freeCells :+ (x, y)
+          case _ =>
         }
       }
     }
